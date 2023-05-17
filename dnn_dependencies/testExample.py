@@ -1,17 +1,25 @@
-# Given a protobuf Graph model, print out each layer within the model using Tensorflow
+# Given a protobuf Graph model, print out each layer within the model using
 
-import tensorflow
+from json import load
+from pathlib import Path
 
-# Path to the .pb file
-pb_path: str = "../models/chessbot.pb"
+from keras.models import load_model, model_from_json
 
-with tensorflow.io.gfile.GFile(pb_path, "rb") as f:
-    graph_def = tensorflow.compat.v1.GraphDef()
-    graph_def.ParseFromString(f.read())
+MODEL: Path = Path("../models/bert_base_uncased.h5")
+CONFIG: Path = Path("../models/config.json")
 
-# Extract the subgraph from the graph_def
-subgraph = tensorflow.graph_util.extract_sub_graph(graph_def, ["output_tensor_name"])
 
-# Print the names of the nodes in the subgraph
-for node in subgraph.node:
-    print(node.name)
+def main() -> None:
+    with open(file=CONFIG, mode="r") as modelConfig:
+        mc: str = modelConfig.read()
+        modelConfig.close()
+
+    # model = model_from_json(json_string=mc)
+    model = load_model(filepath=MODEL)
+    print(type(model))
+
+    pass
+
+
+if __name__ == "__main__":
+    main()
