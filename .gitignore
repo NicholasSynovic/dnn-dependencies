@@ -161,3 +161,4 @@ cython_debug/
 *.pb
 *.h5
 *.json
+*.bin
