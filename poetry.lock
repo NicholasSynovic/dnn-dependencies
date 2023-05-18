@@ -598,6 +598,17 @@ numpy = [
 dev = ["absl-py", "pyink", "pylint (>=2.6.0)", "pytest", "pytest-xdist"]
 
 [[package]]
+name = "netron"
+version = "6.8.9"
+description = "Viewer for neural network, deep learning, and machine learning models"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "netron-6.8.9-py3-none-any.whl", hash = "sha256:d7bcd2337324ac605a7773cb4f602ed74024eb87186b979d890a99e06463fcc9"},
+]
+
+[[package]]
 name = "numpy"
 version = "1.23.5"
 description = "NumPy is the fundamental package for array computing with Python."
@@ -1434,4 +1445,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.12"
-content-hash = "ff86d8247a8bd712e2497b73025609674ed387f97450641b32c22ba10f0844b7"
+content-hash = "377aca8e556d7b0b5b9cfd6dc2018d81058429b8199ecd321b29634eb60a4a54"
