@@ -1,10 +1,7 @@
-from collections import OrderedDict
 from pathlib import Path
 
-import torch
-from torch.nn import Embedding, Module, Sequential
-from torchinfo import summary
-from transformers import AutoModel, BertModel
+from torch.nn import Module
+from transformers import AutoModel
 
 MODEL: Path = Path("../models/pytorch_model.bin")
 
