@@ -11,8 +11,6 @@ def main() -> None:
 
     print(model)
 
-    # print(type(modules))
-
 
 if __name__ == "__main__":
     main()
