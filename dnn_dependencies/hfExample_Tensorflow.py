@@ -6,7 +6,10 @@ MODEL: Path = Path("../models/")
 
 
 def main() -> None:
-    model = TFAutoModel.from_pretrained(pretrained_model_name_or_path=MODEL)
+    model = TFAutoModel.from_pretrained(
+        pretrained_model_name_or_path="bert-base-uncased"
+    )
+
     model.summary()
 
 
