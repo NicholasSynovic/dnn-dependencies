@@ -1,3 +1,4 @@
+from argparse import Namespace
 from collections import namedtuple
 from itertools import count
 from json import dumps
@@ -7,7 +8,7 @@ from typing import List
 from onnx import GraphProto, ModelProto, NodeProto, load
 from progress.bar import Bar
 
-MODEL: Path = Path("test.onnx/model.onnx")
+from dnn_dependencies.args.generalArgs import getArgs
 
 ModelNode = namedtuple(
     typename="ModelNode", field_names=["ID", "Name", "Inputs", "Outputs"]
@@ -15,10 +16,15 @@ ModelNode = namedtuple(
 
 
 def main() -> None:
+    args: Namespace = getArgs(
+        programName="ONNX Architecture Exporter",
+        description="A tool to export an ONNX model's layer architecture to a JSON file (architecture.json)",
+    )
+
     modelNodes: list[dict] = []
     ID: count = count()
 
-    model: ModelProto = load(f=MODEL)
+    model: ModelProto = load(f=args.model)
     graph: GraphProto = model.graph
 
     with Bar("Extracting nodes information...", max=len(graph.node)) as bar:
@@ -35,7 +41,7 @@ def main() -> None:
 
     test = dumps(modelNodes, indent=4)
 
-    with open("test.json", "w") as jsonFile:
+    with open("architecture.json", "w") as jsonFile:
         jsonFile.writelines(test)
         jsonFile.close()
 
