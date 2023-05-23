@@ -9,6 +9,7 @@ def getArgs(programName: str, description: str = "") -> Namespace:
         prog=programName,
         description=description,
         epilog=f"Created by: {','.join(argVars.authorsList)}",
+        formatter_class=argVars.AlphabeticalOrderHelpFormatter,
     )
     parser.add_argument(
         "-v",
