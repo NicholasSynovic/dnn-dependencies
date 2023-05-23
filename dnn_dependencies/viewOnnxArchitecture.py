@@ -16,7 +16,7 @@ ModelNode = namedtuple(
 
 def main() -> None:
     modelNodes: list[dict] = []
-    id: count = count()
+    ID: count = count()
 
     model: ModelProto = load(f=MODEL)
     graph: GraphProto = model.graph
@@ -25,7 +25,7 @@ def main() -> None:
         node: NodeProto
         for node in graph.node:
             mn: ModelNode = ModelNode(
-                ID=id.__next__(),
+                ID=ID.__next__(),
                 Name=node.name,
                 Inputs=list(node.input),
                 Outputs=list(node.output),
