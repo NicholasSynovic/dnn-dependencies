@@ -1,14 +1,17 @@
-from pathlib import Path
+from argparse import Namespace
 
 from transformers import TFAutoModel
 
-MODEL: Path = Path("../models/")
+from dnn_dependencies.args.generalArgs import getArgs
 
 
 def main() -> None:
-    model = TFAutoModel.from_pretrained(
-        pretrained_model_name_or_path="bert-base-uncased"
+    args: Namespace = getArgs(
+        programName="HF TensorFlow Model Summary Printer",
+        description="A tool to print the model architecture layer summary to the console of TensorFlow models hosted on HuggingFace",
     )
+
+    model = TFAutoModel.from_pretrained(pretrained_model_name_or_path=args.model)
 
     model.summary()
 
