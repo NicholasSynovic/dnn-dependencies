@@ -22,9 +22,9 @@ def labelOutputs(outputs: list[str]) -> dict[int, str]:
 
     output: str
     for output in outputs:
-        data[OUTPUT_ID] = output
+        data[OUTPUT_ID.__next__()] = output
 
-    return output
+    return data
 
 
 def main() -> None:
@@ -35,7 +35,7 @@ def main() -> None:
 
     modelNodes: list[dict] = []
 
-    model: ModelProto = load(f=args.model)
+    model: ModelProto = load(f=args.model[0])
     graph: GraphProto = model.graph
 
     with Bar("Extracting nodes information...", max=len(graph.node)) as bar:

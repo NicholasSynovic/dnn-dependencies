@@ -8,14 +8,14 @@ def getArgs(programName: str, description: str = "") -> Namespace:
     parser: ArgumentParser = ArgumentParser(
         prog=programName,
         description=description,
-        epilog=f"Created by: {','.join(argVars.authorsList)}",
+        epilog=f"Created by: {', '.join(argVars.authorsList)}",
         formatter_class=argVars.AlphabeticalOrderHelpFormatter,
     )
     parser.add_argument(
         "-v",
         "--version",
         action="version",
-        version=f"{programName}: {version(distribution_name='prime-commits'),}",
+        version=f"{programName}: {version(distribution_name='dnn-dependencies')}",
     )
     parser.add_argument(
         "-m",
@@ -26,4 +26,4 @@ def getArgs(programName: str, description: str = "") -> Namespace:
         required=False,
         help="Path to or HuggingFace repository name to utilize model from",
     )
-    return parser
+    return parser.parse_args()

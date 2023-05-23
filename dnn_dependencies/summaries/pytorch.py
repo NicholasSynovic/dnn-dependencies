@@ -13,7 +13,9 @@ def main() -> None:
         description="A tool to print the model architecture layer summary to the console of PyTorch models hosted on HuggingFace",
     )
 
-    model: Module = AutoModel.from_pretrained(pretrained_model_name_or_path=args.model)
+    model: Module = AutoModel.from_pretrained(
+        pretrained_model_name_or_path=args.model[0]
+    )
 
     print(model)
 
