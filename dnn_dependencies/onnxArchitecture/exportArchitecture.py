@@ -13,6 +13,18 @@ from dnn_dependencies.args.generalArgs import getArgs
 ModelNode = namedtuple(
     typename="ModelNode", field_names=["ID", "Name", "Inputs", "Outputs"]
 )
+NODE_ID: count = count()
+OUTPUT_ID: count = count()
+
+
+def labelOutputs(outputs: list[str]) -> dict[int, str]:
+    data: dict[int, str] = {}
+
+    output: str
+    for output in outputs:
+        data[OUTPUT_ID] = output
+
+    return output
 
 
 def main() -> None:
@@ -22,7 +34,6 @@ def main() -> None:
     )
 
     modelNodes: list[dict] = []
-    ID: count = count()
 
     model: ModelProto = load(f=args.model)
     graph: GraphProto = model.graph
@@ -31,10 +42,10 @@ def main() -> None:
         node: NodeProto
         for node in graph.node:
             mn: ModelNode = ModelNode(
-                ID=ID.__next__(),
+                ID=NODE_ID.__next__(),
                 Name=node.name,
                 Inputs=list(node.input),
-                Outputs=list(node.output),
+                Outputs=labelOutputs(outputs=list(node.output)),
             )
             modelNodes.append(mn._asdict())
             bar.next()
