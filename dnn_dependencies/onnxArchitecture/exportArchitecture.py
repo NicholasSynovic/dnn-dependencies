@@ -28,10 +28,11 @@ def buildDF(nodeID: int, name: str, inputs: List[str], outputs: List[str]) -> Da
 def buildXML(df: DataFrame) -> None:
     rootNode = etree.Element("gexf")
     rootNode.set("xmlns", "http://www.gexf.net/1.3")
-    # rootNode.set("xmlns:viz", "http://www.gexf.net/1.3/viz")
     rootNode.set("version", "1.3")
 
-    graphNode = etree.SubElement(rootNode, "attributes")
+    graphNode = etree.SubElement(rootNode, "graph")
+    graphNode.set("mode", "static")
+    graphNode.set("defaultedgetype", "directed")
 
     attributesNode = etree.SubElement(graphNode, "attributes")
     attributesNode.set("class", "node")
@@ -71,7 +72,9 @@ def buildXML(df: DataFrame) -> None:
             bar.next()
 
     tree = etree.ElementTree(rootNode)
-    tree.write("architecture.gexf", pretty_print=True, encoding="utf-8")
+    tree.write(
+        "architecture.gexf", xml_declaration=True, pretty_print=True, encoding="utf-8"
+    )
 
 
 def main() -> None:
