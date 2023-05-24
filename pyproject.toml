@@ -15,6 +15,7 @@ torchinfo = "^1.8.0"
 onnx = "^1.14.0"
 onnxruntime = "^1.14.1"
 progress = "^1.6"
+pandas = "^2.0.1"
 
 
 [build-system]
