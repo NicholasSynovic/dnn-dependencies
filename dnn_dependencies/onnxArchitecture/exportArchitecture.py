@@ -84,9 +84,7 @@ def buildXML(df: DataFrame, outputPath: Path | List[Path]) -> None:
         )
 
 
-def main() -> None:
-    args: Namespace = getArgs()
-
+def main(args: Namespace) -> None:
     model: ModelProto = load(f=args.model[0])
     graph: GraphProto = model.graph
 
@@ -112,4 +110,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    args: Namespace = getArgs()
+    main(args=args)
