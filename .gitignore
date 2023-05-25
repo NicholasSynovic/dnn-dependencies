@@ -166,3 +166,4 @@ cython_debug/
 *.txt
 *.xml
 *.gexf
+*.xsd

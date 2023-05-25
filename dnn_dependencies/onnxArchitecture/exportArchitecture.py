@@ -27,24 +27,25 @@ def buildDF(nodeID: int, name: str, inputs: List[str], outputs: List[str]) -> Da
 
 def buildXML(df: DataFrame) -> None:
     rootNode = etree.Element("gexf")
-    rootNode.set("xmlns", "http://www.gexf.net/1.3")
-    rootNode.set("version", "1.3")
+    rootNode.set("xmlns", "http://www.gexf.net/1.2draft")
+    rootNode.set("version", "1.2draft")
 
     graphNode = etree.SubElement(rootNode, "graph")
     graphNode.set("mode", "static")
     graphNode.set("defaultedgetype", "directed")
+    graphNode.set("idtype", "integer")
 
     attributesNode = etree.SubElement(graphNode, "attributes")
     attributesNode.set("class", "node")
 
     inputAttributeNode = etree.SubElement(attributesNode, "attribute")
     inputAttributeNode.set("id", "input")
-    inputAttributeNode.set("name", "Input")
+    inputAttributeNode.set("title", "Input")
     inputAttributeNode.set("type", "string")
 
     outputAttributeNode = etree.SubElement(attributesNode, "attribute")
     outputAttributeNode.set("id", "output")
-    outputAttributeNode.set("name", "Output")
+    outputAttributeNode.set("title", "Output")
     outputAttributeNode.set("type", "string")
 
     verticesNode = etree.SubElement(graphNode, "nodes")
@@ -53,7 +54,7 @@ def buildXML(df: DataFrame) -> None:
         for ID, NAME, INPUTS, OUTPUTS in df.itertuples(index=False):
             vertexNode = etree.SubElement(verticesNode, "node")
             vertexNode.set("id", str(ID))
-            vertexNode.set("title", NAME)
+            # vertexNode.set("title", NAME)
 
             attvaluesNode = etree.SubElement(vertexNode, "attvalues")
 
