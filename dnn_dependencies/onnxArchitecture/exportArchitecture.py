@@ -1,5 +1,6 @@
 from argparse import Namespace
 from itertools import count
+from pathlib import Path
 from typing import List
 
 import pandas
@@ -9,7 +10,7 @@ from onnx.onnx_pb import GraphProto, ModelProto, NodeProto
 from pandas import DataFrame
 from progress.bar import Bar
 
-from dnn_dependencies.args.generalArgs import getArgs
+from dnn_dependencies.args.architectureArgs import getArgs
 
 NODE_ID_COUNTER: count = count()
 OUTPUT_DF_LIST: List[DataFrame] = []
@@ -25,7 +26,7 @@ def buildDF(nodeID: int, name: str, inputs: List[str], outputs: List[str]) -> Da
     return DataFrame(data)
 
 
-def buildXML(df: DataFrame) -> None:
+def buildXML(df: DataFrame, outputPath: Path | List[Path]) -> None:
     rootNode = etree.Element("gexf")
     rootNode.set("xmlns", "http://www.gexf.net/1.2draft")
     rootNode.set("version", "1.2draft")
@@ -73,16 +74,18 @@ def buildXML(df: DataFrame) -> None:
             bar.next()
 
     tree = etree.ElementTree(rootNode)
-    tree.write(
-        "architecture.gexf", xml_declaration=True, pretty_print=True, encoding="utf-8"
-    )
+    try:
+        tree.write(
+            outputPath, xml_declaration=True, pretty_print=True, encoding="utf-8"
+        )
+    except TypeError:
+        tree.write(
+            outputPath[0], xml_declaration=True, pretty_print=True, encoding="utf-8"
+        )
 
 
 def main() -> None:
-    args: Namespace = getArgs(
-        programName="ONNX Architecture Exporter",
-        description="A tool to export an ONNX model's layer architecture to a GEXF file (architecture.gexf)",
-    )
+    args: Namespace = getArgs()
 
     model: ModelProto = load(f=args.model[0])
     graph: GraphProto = model.graph
@@ -105,7 +108,7 @@ def main() -> None:
             OUTPUT_DF_LIST.append(df)
             bar.next()
 
-    buildXML(df=pandas.concat(OUTPUT_DF_LIST))
+    buildXML(df=pandas.concat(OUTPUT_DF_LIST), outputPath=args.output)
 
 
 if __name__ == "__main__":
