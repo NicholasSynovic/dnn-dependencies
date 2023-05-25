@@ -4,10 +4,12 @@ from pathlib import Path
 
 from dnn_dependencies import args as argVars
 
+PROGRAM_NAME: str = "ONNX Layer Architecture GEXF Exporter"
+
 
 def getArgs() -> Namespace:
     parser: ArgumentParser = ArgumentParser(
-        prog="ONNX Layer Architecture GEXF Exporter",
+        prog=PROGRAM_NAME,
         description="A program to export an ONNX model's layer architecture as a GEXF file",
         epilog=f"Created by: {', '.join(argVars.authorsList)}",
         formatter_class=argVars.AlphabeticalOrderHelpFormatter,
@@ -16,7 +18,7 @@ def getArgs() -> Namespace:
         "-v",
         "--version",
         action="version",
-        version=f"{programName}: {version(distribution_name='dnn-dependencies')}",
+        version=f"{PROGRAM_NAME}: {version(distribution_name='dnn-dependencies')}",
     )
     parser.add_argument(
         "-m",
