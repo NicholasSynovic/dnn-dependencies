@@ -2,7 +2,7 @@ from argparse import Namespace
 
 from transformers import TFAutoModel
 
-from dnn_dependencies.args.generalArgs import getArgs
+from dnn_dependencies.args.summaryArgs import getArgs
 
 
 def main() -> None:

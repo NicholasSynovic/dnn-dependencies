@@ -4,7 +4,7 @@ from pathlib import Path
 from torch.nn import Module
 from transformers import AutoModel
 
-from dnn_dependencies.args.generalArgs import getArgs
+from dnn_dependencies.args.summaryArgs import getArgs
 
 
 def main() -> None:
