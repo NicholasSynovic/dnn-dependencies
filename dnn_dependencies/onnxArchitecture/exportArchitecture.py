@@ -13,6 +13,7 @@ from progress.bar import Bar
 from dnn_dependencies.args.architectureArgs import getArgs
 
 NODE_ID_COUNTER: count = count()
+EDGE_ID_COUNTER: count = count()
 OUTPUT_DF_LIST: List[DataFrame] = []
 
 
@@ -26,18 +27,18 @@ def buildDF(nodeID: int, name: str, inputs: List[str], outputs: List[str]) -> Da
     return DataFrame(data)
 
 
-def dfIDQuery(df: DataFrame, query: str) -> str | None:
+def dfIDQuery(df: DataFrame, query: str) -> tuple[str, str] | None:
     mask = df["Outputs"].apply(lambda x: query in x)
     tempDF: DataFrame = df[mask]
 
     try:
-        return str(tempDF["ID"].iloc[0])
+        return (tempDF["Name"].iloc[0], str(tempDF["ID"].iloc[0]))
     except IndexError:
         return None
 
 
 def buildXML(df: DataFrame, outputPath: Path | List[Path]) -> None:
-    edgeList: List[tuple[str, str]] = []
+    edgeList: List[tuple[tuple[str, str], str]] = []
 
     rootNode = etree.Element("gexf")
     rootNode.set("xmlns", "http://www.gexf.net/1.2draft")
@@ -69,7 +70,7 @@ def buildXML(df: DataFrame, outputPath: Path | List[Path]) -> None:
             ID: str = str(ID)
             vertexNode = etree.SubElement(verticesNode, "node")
             vertexNode.set("id", ID)
-            # vertexNode.set("title", NAME)
+            vertexNode.set("label", NAME)
 
             attvaluesNode = etree.SubElement(vertexNode, "attvalues")
 
@@ -79,12 +80,13 @@ def buildXML(df: DataFrame, outputPath: Path | List[Path]) -> None:
                 attvalueNode.set("for", "input")
                 attvalueNode.set("value", i)
 
-                parentNodeID: str | None = dfIDQuery(df=df, query=i)
+                parentNodeNameID: tuple[str, str] | None = dfIDQuery(df=df, query=i)
 
-                if parentNodeID is None:
+                if parentNodeNameID is None:
                     pass
                 else:
-                    edgeList.append((parentNodeID, ID))
+                    nodePairing: tuple[tuple[str, str], str] = (parentNodeNameID, ID)
+                    edgeList.append(nodePairing)
 
             o: str
             for o in OUTPUTS:
@@ -95,11 +97,13 @@ def buildXML(df: DataFrame, outputPath: Path | List[Path]) -> None:
             bar.next()
 
     with Bar("Creating GEXF edges...", max=len(edgeList)) as bar:
-        pair: tuple[str, str]
+        pair: tuple[tuple[str, str], str]
         for pair in edgeList:
-            edgeNode = etree.SubElement(verticesNode, "edge")
-            edgeNode.set("source", pair[0])
+            edgeNode = etree.SubElement(edgesNode, "edge")
+            edgeNode.set("id", str(EDGE_ID_COUNTER.__next__()))
+            edgeNode.set("source", pair[0][1])
             edgeNode.set("target", pair[1])
+            edgeNode.set("label", pair[0][0])
             bar.next()
 
     tree = etree.ElementTree(rootNode)
