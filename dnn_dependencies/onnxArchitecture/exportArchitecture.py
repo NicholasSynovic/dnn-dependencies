@@ -37,12 +37,26 @@ def dfIDQuery(df: DataFrame, query: str) -> tuple[str, str] | None:
         return None
 
 
-def buildXML(df: DataFrame, outputPath: Path | List[Path]) -> None:
+def buildXML(
+    df: DataFrame,
+    outputPath: Path | List[Path],
+    mode: str = "production",
+) -> None:
     edgeList: List[tuple[tuple[str, str], str]] = []
 
+    xmlns: str
+    version: str
+    print(mode)
+    if mode == "production":
+        xmlns = "http://www.gexf.net/1.2draft"
+        version = "1.2draft"
+    else:
+        xmlns = "http://www.gexf.net/1.2"
+        version = "1.2"
+
     rootNode = etree.Element("gexf")
-    rootNode.set("xmlns", "http://www.gexf.net/1.2draft")
-    rootNode.set("version", "1.2draft")
+    rootNode.set("xmlns", xmlns)
+    rootNode.set("version", version)
 
     graphNode = etree.SubElement(rootNode, "graph")
     graphNode.set("mode", "static")
@@ -139,7 +153,7 @@ def main(args: Namespace) -> None:
             OUTPUT_DF_LIST.append(df)
             bar.next()
     df: DataFrame = pandas.concat(OUTPUT_DF_LIST)
-    buildXML(df=df, outputPath=args.output)
+    buildXML(df=df, outputPath=args.output, mode=args.mode)
 
 
 if __name__ == "__main__":
