@@ -46,7 +46,6 @@ def buildXML(
 
     xmlns: str
     version: str
-    print(mode)
     if mode == "production":
         xmlns = "http://www.gexf.net/1.2draft"
         version = "1.2draft"
