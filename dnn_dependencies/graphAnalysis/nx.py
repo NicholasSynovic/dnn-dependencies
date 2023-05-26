@@ -1,7 +1,6 @@
 import networkx
-from matplotlib import pyplot
-from networkx import Graph, draw_networkx
+from networkx import Graph
 
 graph: Graph = networkx.read_gexf("architecture.gexf")
-draw_networkx(G=graph)
-pyplot.savefig("test.svg")
+
+print(graph.nodes["0"])
