@@ -37,4 +37,12 @@ def getArgs() -> Namespace:
         required=False,
         help="Filepath to store GEXF output",
     )
+    parser.add_argument(
+        "--mode",
+        default="production",
+        type=str,
+        choices=["production", "validation"],
+        required=False,
+        help="Output a GEXF file for usage in NetworkX or Gephi (production), or for validation (validation)",
+    )
     return parser.parse_args()
