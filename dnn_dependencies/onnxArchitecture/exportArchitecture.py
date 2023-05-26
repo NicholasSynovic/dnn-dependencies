@@ -7,7 +7,7 @@ import pandas
 from lxml import etree
 from onnx import load
 from onnx.onnx_pb import GraphProto, ModelProto, NodeProto
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from progress.bar import Bar
 
 from dnn_dependencies.args.architectureArgs import getArgs
@@ -26,7 +26,19 @@ def buildDF(nodeID: int, name: str, inputs: List[str], outputs: List[str]) -> Da
     return DataFrame(data)
 
 
+def dfIDQuery(df: DataFrame, query: str) -> str | None:
+    mask = df["Outputs"].apply(lambda x: query in x)
+    tempDF: DataFrame = df[mask]
+
+    try:
+        return str(tempDF["ID"].iloc[0])
+    except IndexError:
+        return None
+
+
 def buildXML(df: DataFrame, outputPath: Path | List[Path]) -> None:
+    edgeList: List[tuple[str, str]] = []
+
     rootNode = etree.Element("gexf")
     rootNode.set("xmlns", "http://www.gexf.net/1.2draft")
     rootNode.set("version", "1.2draft")
@@ -50,11 +62,13 @@ def buildXML(df: DataFrame, outputPath: Path | List[Path]) -> None:
     outputAttributeNode.set("type", "string")
 
     verticesNode = etree.SubElement(graphNode, "nodes")
+    edgesNode = etree.SubElement(graphNode, "edges")
 
     with Bar("Creating GEXF nodes...", max=df.shape[0]) as bar:
         for ID, NAME, INPUTS, OUTPUTS in df.itertuples(index=False):
+            ID: str = str(ID)
             vertexNode = etree.SubElement(verticesNode, "node")
-            vertexNode.set("id", str(ID))
+            vertexNode.set("id", ID)
             # vertexNode.set("title", NAME)
 
             attvaluesNode = etree.SubElement(vertexNode, "attvalues")
@@ -65,12 +79,27 @@ def buildXML(df: DataFrame, outputPath: Path | List[Path]) -> None:
                 attvalueNode.set("for", "input")
                 attvalueNode.set("value", i)
 
+                parentNodeID: str | None = dfIDQuery(df=df, query=i)
+
+                if parentNodeID is None:
+                    pass
+                else:
+                    edgeList.append((parentNodeID, ID))
+
             o: str
             for o in OUTPUTS:
                 attvalueNode = etree.SubElement(attvaluesNode, "attvalue")
                 attvalueNode.set("for", "output")
                 attvalueNode.set("value", o)
 
+            bar.next()
+
+    with Bar("Creating GEXF edges...", max=len(edgeList)) as bar:
+        pair: tuple[str, str]
+        for pair in edgeList:
+            edgeNode = etree.SubElement(verticesNode, "edge")
+            edgeNode.set("source", pair[0])
+            edgeNode.set("target", pair[1])
             bar.next()
 
     tree = etree.ElementTree(rootNode)
@@ -105,8 +134,8 @@ def main(args: Namespace) -> None:
             )
             OUTPUT_DF_LIST.append(df)
             bar.next()
-
-    buildXML(df=pandas.concat(OUTPUT_DF_LIST), outputPath=args.output)
+    df: DataFrame = pandas.concat(OUTPUT_DF_LIST)
+    buildXML(df=df, outputPath=args.output)
 
 
 if __name__ == "__main__":
