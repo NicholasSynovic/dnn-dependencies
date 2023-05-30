@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "dnn-dependencies"
+version = "0.1.0"
+description = ""
+authors = ["Nicholas M. Synovic <nicholas.synovic@gmail.com>"]
+readme = "README.md"
+packages = [{include = "dnn_dependencies"}]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.12"
+tensorflow = "^2.12.0"
+transformers = "^4.29.2"
+netron = "^6.8.9"
+torchinfo = "^1.8.0"
+onnx = "^1.14.0"
+onnxruntime = "^1.14.1"
+progress = "^1.6"
+pandas = "^2.0.1"
+lxml = "^4.9.2"
+networkx = "^3.1"
+matplotlib = "^3.7.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
