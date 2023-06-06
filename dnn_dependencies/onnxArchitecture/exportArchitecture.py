@@ -1,6 +1,7 @@
 from argparse import Namespace
 from itertools import count
 from pathlib import Path
+from re import Match, search
 from typing import List
 
 import pandas
@@ -17,10 +18,25 @@ EDGE_ID_COUNTER: count = count()
 OUTPUT_DF_LIST: List[DataFrame] = []
 
 
-def buildDF(nodeID: int, name: str, inputs: List[str], outputs: List[str]) -> DataFrame:
+def extractLayer(nodeName: str) -> str:
+    pattern: str = r"layer\.(\d+)"
+
+    layer: str
+    try:
+        layer = search(pattern=pattern, string=nodeName).group(0)
+    except AttributeError:
+        layer = "layer.-1"
+
+    return layer
+
+
+def buildDF(
+    nodeID: int, name: str, layer: str, inputs: List[str], outputs: List[str]
+) -> DataFrame:
     data: dict[str, List[int | str | List[str]]] = {
         "ID": [nodeID],
         "Name": [name],
+        "Layer": [layer],
         "Inputs": [inputs],
         "Outputs": [outputs],
     }
@@ -146,11 +162,13 @@ def main(args: Namespace) -> None:
         for node in graph.node:
             nodeID: int = NODE_ID_COUNTER.__next__()
             name: str = node.name
+            layer: str = extractLayer(nodeName=name)
             outputs: List[str] = list(node.output)
             inputs: List[str] = list(node.input)
             df: DataFrame = buildDF(
                 nodeID=nodeID,
                 name=name,
+                layer=layer,
                 inputs=inputs,
                 outputs=outputs,
             )
