@@ -3,6 +3,7 @@ from itertools import count
 from pathlib import Path
 from re import Match, search
 from typing import List
+from xml.etree.ElementTree import Element, ElementTree
 
 import pandas
 from lxml import etree
@@ -82,54 +83,54 @@ def buildXML(
         version = "1.2"
         vizNamespace = "{http://www.gexf.net/1.2draft/viz}"
 
-    rootNode = etree.Element("gexf", nsmap={None: xmlns, "viz": xmlnsViz})
+    rootNode: Element = etree.Element("gexf", nsmap={None: xmlns, "viz": xmlnsViz})
     rootNode.set("version", version)
 
-    graphNode = etree.SubElement(rootNode, "graph")
+    graphNode: Element = etree.SubElement(rootNode, "graph")
     graphNode.set("mode", "static")
     graphNode.set("defaultedgetype", "directed")
     graphNode.set("idtype", "integer")
 
-    attributesNode = etree.SubElement(graphNode, "attributes")
+    attributesNode: Element = etree.SubElement(graphNode, "attributes")
     attributesNode.set("class", "node")
 
-    inputAttributeNode = etree.SubElement(attributesNode, "attribute")
+    inputAttributeNode: Element = etree.SubElement(attributesNode, "attribute")
     inputAttributeNode.set("id", "input")
     inputAttributeNode.set("title", "Input")
     inputAttributeNode.set("type", "string")
 
-    outputAttributeNode = etree.SubElement(attributesNode, "attribute")
+    outputAttributeNode: Element = etree.SubElement(attributesNode, "attribute")
     outputAttributeNode.set("id", "output")
     outputAttributeNode.set("title", "Output")
     outputAttributeNode.set("type", "string")
 
-    layerAttributeNode = etree.SubElement(attributesNode, "attribute")
+    layerAttributeNode: Element = etree.SubElement(attributesNode, "attribute")
     layerAttributeNode.set("id", "layer")
     layerAttributeNode.set("title", "Layer")
     layerAttributeNode.set("type", "string")
 
-    verticesNode = etree.SubElement(graphNode, "nodes")
-    edgesNode = etree.SubElement(graphNode, "edges")
+    verticesNode: Element = etree.SubElement(graphNode, "nodes")
+    edgesNode: Element = etree.SubElement(graphNode, "edges")
 
     with Bar("Creating GEXF nodes...", max=df.shape[0]) as bar:
         for ID, NAME, LAYER, INPUTS, OUTPUTS, COLOR in df.itertuples(index=False):
             ID: str = str(ID)
-            vertexNode = etree.SubElement(verticesNode, "node")
+            vertexNode: Element = etree.SubElement(verticesNode, "node")
             vertexNode.set("id", ID)
             vertexNode.set("label", NAME)
 
-            vizColorNode = etree.SubElement(vertexNode, "color")
+            vizColorNode: Element = etree.SubElement(vertexNode, "color")
             vizColorNode.set("hex", COLOR)
 
-            attvaluesNode = etree.SubElement(vertexNode, "attvalues")
+            attvaluesNode: Element = etree.SubElement(vertexNode, "attvalues")
 
-            attvalueNode = etree.SubElement(attvaluesNode, "attvalue")
+            attvalueNode: Element = etree.SubElement(attvaluesNode, "attvalue")
             attvalueNode.set("for", "layer")
             attvalueNode.set("value", LAYER)
 
             i: str
             for i in INPUTS:
-                attvalueNode = etree.SubElement(attvaluesNode, "attvalue")
+                attvalueNode: Element = etree.SubElement(attvaluesNode, "attvalue")
                 attvalueNode.set("for", "input")
                 attvalueNode.set("value", i)
 
@@ -143,7 +144,7 @@ def buildXML(
 
             o: str
             for o in OUTPUTS:
-                attvalueNode = etree.SubElement(attvaluesNode, "attvalue")
+                attvalueNode: Element = etree.SubElement(attvaluesNode, "attvalue")
                 attvalueNode.set("for", "output")
                 attvalueNode.set("value", o)
 
@@ -152,14 +153,14 @@ def buildXML(
     with Bar("Creating GEXF edges...", max=len(edgeList)) as bar:
         pair: tuple[tuple[str, str], str]
         for pair in edgeList:
-            edgeNode = etree.SubElement(edgesNode, "edge")
+            edgeNode: Element = etree.SubElement(edgesNode, "edge")
             edgeNode.set("id", str(EDGE_ID_COUNTER.__next__()))
             edgeNode.set("source", pair[0][1])
             edgeNode.set("target", pair[1])
             edgeNode.set("label", pair[0][0])
             bar.next()
 
-    tree = etree.ElementTree(rootNode)
+    tree: ElementTree = etree.ElementTree(rootNode)
     try:
         tree.write(
             outputPath, xml_declaration=True, pretty_print=True, encoding="utf-8"
