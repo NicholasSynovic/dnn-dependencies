@@ -75,6 +75,11 @@ def buildXML(
     outputAttributeNode.set("title", "Output")
     outputAttributeNode.set("type", "string")
 
+    layerAttributeNode = etree.SubElement(attributesNode, "attribute")
+    layerAttributeNode.set("id", "layer")
+    layerAttributeNode.set("title", "Layer")
+    layerAttributeNode.set("type", "string")
+
     verticesNode = etree.SubElement(graphNode, "nodes")
     edgesNode = etree.SubElement(graphNode, "edges")
 
