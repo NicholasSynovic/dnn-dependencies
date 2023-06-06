@@ -1,13 +1,13 @@
-import networkx as nx
 from pprint import pprint as print
-from networkx.algorithms import isomorphism
-import pdb
 from typing import List
 
-G: nx.DiGraph = nx.read_gexf('architecture.gexf')
+import networkx as nx
+from networkx.algorithms import isomorphism
+
+G: nx.DiGraph = nx.read_gexf("architecture.gexf")
 
 
-#detects communities in graph H
+# detects communities in graph H
 communities: List[dict] = nx.algorithms.community.louvain_communities(G, seed=None)
 
 
@@ -21,11 +21,9 @@ H: nx.DiGraph = nx.subgraph(G, communityNode)
 #     print(f"Community {i+1}: {community}")
 
 
-
-#prints boolean value for isomophism between G and H
-#print(matcher.subgraph_is_isomorphic())
+# prints boolean value for isomophism between G and H
+# print(matcher.subgraph_is_isomorphic())
 def isCommunitiesIsomorphic(G: nx.DiGraph, H: nx.DiGraph) -> bool:
-    #initializes matcher to compare graphs G and H
+    # initializes matcher to compare graphs G and H
     matcher: isomorphism.DiGraphMatcher = isomorphism.DiGraphMatcher(G, H)
     return matcher.subgraph_is_isomorphic()
-

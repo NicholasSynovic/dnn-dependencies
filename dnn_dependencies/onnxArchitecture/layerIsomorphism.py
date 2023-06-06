@@ -1,14 +1,15 @@
-import networkx as nx
 from pprint import pprint as print
 
-G = nx.read_gexf('architecture.gexf')
+import networkx as nx
 
-H = nx.read_gexf('architecture.gexf')
+G = nx.read_gexf("architecture.gexf")
 
-#choose source nodes
+H = nx.read_gexf("architecture.gexf")
+
+# choose source nodes
 sources = ["0"]
 
-#breadth first search traversal for each graph to get layers as a dictionary (key value pairs)
+# breadth first search traversal for each graph to get layers as a dictionary (key value pairs)
 layersG = {}
 for layer, nodes in enumerate(nx.bfs_layers(G, sources)):
     for node in nodes:
@@ -27,8 +28,3 @@ if isomorphic:
     print("True")
 else:
     print("False")
-
-
-
-
-

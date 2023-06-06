@@ -1,11 +1,12 @@
-import networkx as nx 
 from pprint import pprint as print
+
+import networkx as nx
 from networkx.algorithms import isomorphism
 
 # G = nx.barabasi_albert_graph(4, 2)
 # H = nx.barabasi_albert_graph(4,2)
 
-G = nx.read_gexf('architecture.gexf')
+G = nx.read_gexf("architecture.gexf")
 
 communities = nx.algorithms.community.louvain_communities(G, seed=None)
 communityNode = communities[3]
@@ -37,4 +38,3 @@ else:
 # print("they are isomorphic with these mappings: ")
 # for mapping in mappings:
 #     print(mapping)
-
