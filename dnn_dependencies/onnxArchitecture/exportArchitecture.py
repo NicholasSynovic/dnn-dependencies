@@ -6,6 +6,7 @@ from typing import List
 
 import pandas
 from lxml import etree
+from matplotlib.colors import XKCD_COLORS
 from onnx import load
 from onnx.onnx_pb import GraphProto, ModelProto, NodeProto
 from pandas import DataFrame, Series
@@ -25,13 +26,18 @@ def extractLayer(nodeName: str) -> str:
     try:
         layer = search(pattern=pattern, string=nodeName).group(0)
     except AttributeError:
-        layer = "layer.-1"
+        layer = ""
 
     return layer
 
 
 def buildDF(
-    nodeID: int, name: str, layer: str, inputs: List[str], outputs: List[str]
+    nodeID: int,
+    name: str,
+    layer: str,
+    inputs: List[str],
+    outputs: List[str],
+    color: List[str],
 ) -> DataFrame:
     data: dict[str, List[int | str | List[str]]] = {
         "ID": [nodeID],
@@ -39,6 +45,7 @@ def buildDF(
         "Layer": [layer],
         "Inputs": [inputs],
         "Outputs": [outputs],
+        "Color": [color],
     }
     return DataFrame(data)
 
@@ -61,16 +68,21 @@ def buildXML(
     edgeList: List[tuple[tuple[str, str], str]] = []
 
     xmlns: str
+    xmlnsViz: str
     version: str
+    vizNamespace: str
     if mode == "production":
         xmlns = "http://www.gexf.net/1.2draft"
+        xmlnsViz = "http://gexf.net/1.2draft/viz"
         version = "1.2draft"
+        vizNamespace = "{http://www.gexf.net/1.2draft/viz}"
     else:
         xmlns = "http://www.gexf.net/1.2"
+        xmlnsViz = "http://gexf.net/1.2/viz"
         version = "1.2"
+        vizNamespace = "{http://www.gexf.net/1.2draft/viz}"
 
-    rootNode = etree.Element("gexf")
-    rootNode.set("xmlns", xmlns)
+    rootNode = etree.Element("gexf", nsmap={None: xmlns, "viz": xmlnsViz})
     rootNode.set("version", version)
 
     graphNode = etree.SubElement(rootNode, "graph")
@@ -100,11 +112,14 @@ def buildXML(
     edgesNode = etree.SubElement(graphNode, "edges")
 
     with Bar("Creating GEXF nodes...", max=df.shape[0]) as bar:
-        for ID, NAME, LAYER, INPUTS, OUTPUTS in df.itertuples(index=False):
+        for ID, NAME, LAYER, INPUTS, OUTPUTS, COLOR in df.itertuples(index=False):
             ID: str = str(ID)
             vertexNode = etree.SubElement(verticesNode, "node")
             vertexNode.set("id", ID)
             vertexNode.set("label", NAME)
+
+            vizColorNode = etree.SubElement(vertexNode, "color")
+            vizColorNode.set("hex", COLOR)
 
             attvaluesNode = etree.SubElement(vertexNode, "attvalues")
 
@@ -156,17 +171,28 @@ def buildXML(
 
 
 def main(args: Namespace) -> None:
+    colors: List[str] = list(XKCD_COLORS.values())
+
     model: ModelProto = load(f=args.model[0])
     graph: GraphProto = model.graph
 
     with Bar(
         "Extracting information from ONNX computational graph...", max=len(graph.node)
     ) as bar:
+        previousLayer: str = ""
+        colorIDX: int = 0
+
         node: NodeProto
         for node in graph.node:
             nodeID: int = NODE_ID_COUNTER.__next__()
             name: str = node.name
             layer: str = extractLayer(nodeName=name)
+
+            if layer != previousLayer:
+                colorIDX += 1
+                previousLayer = layer
+
+            color: str = colors[colorIDX]
             outputs: List[str] = list(node.output)
             inputs: List[str] = list(node.input)
             df: DataFrame = buildDF(
@@ -175,6 +201,7 @@ def main(args: Namespace) -> None:
                 layer=layer,
                 inputs=inputs,
                 outputs=outputs,
+                color=color,
             )
             OUTPUT_DF_LIST.append(df)
             bar.next()
