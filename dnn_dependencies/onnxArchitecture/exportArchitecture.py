@@ -100,13 +100,17 @@ def buildXML(
     edgesNode = etree.SubElement(graphNode, "edges")
 
     with Bar("Creating GEXF nodes...", max=df.shape[0]) as bar:
-        for ID, NAME, INPUTS, OUTPUTS in df.itertuples(index=False):
+        for ID, NAME, LAYER, INPUTS, OUTPUTS in df.itertuples(index=False):
             ID: str = str(ID)
             vertexNode = etree.SubElement(verticesNode, "node")
             vertexNode.set("id", ID)
             vertexNode.set("label", NAME)
 
             attvaluesNode = etree.SubElement(vertexNode, "attvalues")
+
+            attvalueNode = etree.SubElement(attvaluesNode, "attvalue")
+            attvalueNode.set("for", "layer")
+            attvalueNode.set("value", LAYER)
 
             i: str
             for i in INPUTS:
