@@ -91,3 +91,7 @@ for u in graph3.nodes:
                     graph3.add_edge(u, v)
 
 print(nx.vf2pp_is_isomorphic(graph2, graph3, node_label=None))
+
+def isIsomorphic(graph1: nx.DiGraph, graph2: nx.DiGraph) -> bool:
+    return nx.vf2pp_is_isomorphic(graph1, graph2, node_label=None)
+
