@@ -1,6 +1,6 @@
 from argparse import Namespace
 from itertools import count
-from pathlib import Path
+from pathlib import Path, PosixPath
 from re import Match, search
 from typing import List
 from xml.etree.ElementTree import Element, ElementTree
@@ -63,25 +63,18 @@ def dfIDQuery(df: DataFrame, query: str) -> tuple[str, str] | None:
 
 def buildXML(
     df: DataFrame,
-    outputPath: Path | List[Path],
     mode: str = "production",
-) -> None:
+) -> str:
     edgeList: List[tuple[tuple[str, str], str]] = []
 
-    xmlns: str
-    xmlnsViz: str
     version: str
-    vizNamespace: str
     if mode == "production":
-        xmlns = "http://www.gexf.net/1.2draft"
-        xmlnsViz = "http://gexf.net/1.2draft/viz"
         version = "1.2draft"
-        vizNamespace = "{http://www.gexf.net/1.2draft/viz}"
     else:
-        xmlns = "http://www.gexf.net/1.2"
-        xmlnsViz = "http://gexf.net/1.2/viz"
         version = "1.2"
-        vizNamespace = "{http://www.gexf.net/1.2draft/viz}"
+
+    xmlns: str = f"http://www.gexf.net/{version}"
+    xmlnsViz: str = f"http://gexf.net/{version}/viz"
 
     rootNode: Element = etree.Element("gexf", nsmap={None: xmlns, "viz": xmlnsViz})
     rootNode.set("version", version)
@@ -160,19 +153,20 @@ def buildXML(
             edgeNode.set("label", pair[0][0])
             bar.next()
 
-    tree: ElementTree = etree.ElementTree(rootNode)
-    try:
-        tree.write(
-            outputPath, xml_declaration=True, pretty_print=True, encoding="utf-8"
-        )
-    except TypeError:
-        tree.write(
-            outputPath[0], xml_declaration=True, pretty_print=True, encoding="utf-8"
-        )
+    xmlStr: str = etree.tostring(rootNode, pretty_print=True).decode()
+    xmlStr = xmlStr.replace("<color", "<viz:color")
+
+    return xmlStr
 
 
 def main(args: Namespace) -> None:
     colors: List[str] = list(XKCD_COLORS.values())
+
+    output: Path
+    if type(args.output) is list:
+        output = args.output[0]
+    else:
+        output = args.output
 
     model: ModelProto = load(f=args.model[0])
     graph: GraphProto = model.graph
@@ -207,7 +201,11 @@ def main(args: Namespace) -> None:
             OUTPUT_DF_LIST.append(df)
             bar.next()
     df: DataFrame = pandas.concat(OUTPUT_DF_LIST)
-    buildXML(df=df, outputPath=args.output, mode=args.mode)
+    xmlStr = buildXML(df=df, mode=args.mode)
+
+    with open(file=output, mode="w") as xmlFile:
+        xmlFile.write(xmlStr)
+        xmlFile.close()
 
 
 if __name__ == "__main__":
