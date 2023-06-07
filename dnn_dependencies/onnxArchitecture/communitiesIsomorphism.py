@@ -4,7 +4,7 @@ from typing import List
 import networkx as nx
 from networkx.algorithms import isomorphism
 
-G: nx.DiGraph = nx.read_gexf("architecture.gexf")
+G: nx.DiGraph = nx.read_gexf("bert-base-cased.gexf")
 
 
 # detects communities in graph H
