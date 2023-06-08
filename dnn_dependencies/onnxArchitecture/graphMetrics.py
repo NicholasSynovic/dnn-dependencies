@@ -7,7 +7,7 @@ import numpy as np
 from networkx.algorithms import approximation
 
 # Comparison of degree distributions
-G: nx.DiGraph = nx.read_gexf("architecture.gexf")
+G: nx.DiGraph = nx.read_gexf("bert-base-cased.gexf")
 
 fig: plt.figure = plt.figure("Degree of graph", figsize=(5, 4))
 axgrid = fig.add_gridspec(5, 4)

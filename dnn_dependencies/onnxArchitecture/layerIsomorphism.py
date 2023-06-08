@@ -2,9 +2,9 @@ from pprint import pprint as print
 
 import networkx as nx
 
-G = nx.read_gexf("architecture.gexf")
+G = nx.read_gexf("bert-base-cased.gexf")
 
-H = nx.read_gexf("architecture.gexf")
+H = nx.read_gexf("bert-base-cased.gexf")
 
 # choose source nodes
 sources = ["0"]
