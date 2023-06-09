@@ -41,9 +41,12 @@ def main() -> None:
     ids: Series = df["id"]
     ids.mask(cond=mask, inplace=True)
     ids.dropna(inplace=True)
+    idsArray: ndarray = ids.to_numpy()
 
     with open("baseModels.txt", "w") as txt:
-        txt.writelines(ids)
+        modelID: str
+        for modelID in idsArray:
+            txt.write(modelID + "\n")
         txt.close()
 
 
