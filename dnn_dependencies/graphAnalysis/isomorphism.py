@@ -46,6 +46,11 @@ def compareCommunities(graph1: DiGraph, graph2: DiGraph) -> List[bool]:
     return results
 
 
+def compareGraphs(graph1: DiGraph, graph2: DiGraph) -> bool:
+    matcher: DiGraphMatcher = DiGraphMatcher(G1=graph1, G2=graph2)
+    return matcher.is_isomorphic()
+
+
 def main() -> None:
     graph1: DiGraph = read_gexf("architecture.gexf")
     compareCommunities(graph1, graph1)
