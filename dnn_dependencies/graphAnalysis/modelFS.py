@@ -5,12 +5,13 @@ from typing import List
 
 from bs4 import BeautifulSoup, ResultSet, Tag
 from progress.bar import Bar
+from treelib import Node, Tree
 
 from dnn_dependencies.args.modelFSArgs import getArgs
 
 
-def extractNodeLabels(dom: str) -> List[Path]:
-    data: List[Path] = []
+def extractNodeLabels(dom: str) -> List[str]:
+    data: List[str] = []
 
     soup: BeautifulSoup = BeautifulSoup(markup=dom, features="lxml")
     nodeTags: ResultSet = soup.findAll(name="node")
@@ -18,10 +19,50 @@ def extractNodeLabels(dom: str) -> List[Path]:
     with Bar("Extacting node labels... ", max=len(nodeTags)) as bar:
         tag: Tag
         for tag in nodeTags:
-            data.append(Path(tag.get(key="label")))
+            data.append(str(tag.get(key="label")))
             bar.next()
 
     return data
+
+
+def buildTree(labels: List[str]) -> Tree:
+    rootTag: str = "onnxComputationalGraph"
+    rootID: str = "ocg"
+    edges: List[List[str]] = []
+
+    tree: Tree = Tree()
+    tree.create_node(tag=rootTag, identifier=rootID)
+
+    with Bar("Creating edge list... ", max=len(labels)) as bar:
+        label: str
+        for label in labels:
+            edgeList: List[str] = [rootID]
+            splitLabel: List[str] = label.split(sep="/")
+
+            if len(splitLabel) > 1:
+                foo: str = rootID + label
+                edgeList = foo.split(sep="/")
+            else:
+                edgeList.append(splitLabel[0])
+
+            edges.append(edgeList)
+            bar.next()
+
+    with Bar("Populating tree... ", max=len(edges)) as bar:
+        idx: int
+        edgeList: List[str]
+        for edgeList in edges:
+            parentID: str = rootID
+            for idx in range(len(edgeList)):
+                if idx == 0:
+                    continue
+
+                edge: str = edgeList[idx]
+                foo: Node = tree.create_node(tag=edge, parent=parentID)
+                parentID = foo.identifier
+            bar.next()
+
+    return tree
 
 
 def main() -> None:
@@ -31,19 +72,10 @@ def main() -> None:
         xmlDOM: str = xmlDoc.read()
         xmlDoc.close()
 
-    nodeLabels: List[Path] = extractNodeLabels(dom=xmlDOM)
+    nodeLabels: List[str] = extractNodeLabels(dom=xmlDOM)
 
-    updatedNodes: list[Path] = [
-        Path(args.root[0], gexfFilePath.stem + node.attrib.get("label"))
-        for node in nodes
-    ]
-
-    p: Path
-
-    for p in updatedNodes:
-        directoryComponent: Path = Path(p.parent)
-        os.makedirs(directoryComponent, exist_ok=True)
-        open(file=p, mode="w")
+    tree: Tree = buildTree(labels=nodeLabels)
+    tree.to_graphviz(filename="test.dot")
 
 
 if __name__ == "__main__":
