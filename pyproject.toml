@@ -26,3 +26,6 @@ requests = "^2.31.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+dnn-dependencies-onnx2gexf= "dnn_dependencies.onnxArchitecture.exportArchitecture:main"

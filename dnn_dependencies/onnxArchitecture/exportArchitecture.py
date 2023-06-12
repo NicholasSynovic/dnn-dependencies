@@ -159,7 +159,8 @@ def buildXML(
     return xmlStr
 
 
-def main(args: Namespace) -> None:
+def main() -> None:
+    args: Namespace = getArgs()
     colors: List[str] = list(XKCD_COLORS.values())
 
     output: Path
@@ -209,5 +210,4 @@ def main(args: Namespace) -> None:
 
 
 if __name__ == "__main__":
-    args: Namespace = getArgs()
-    main(args=args)
+    main()
