@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup, ResultSet, Tag
 from progress.bar import Bar
 from treelib import Node, Tree
 
-from dnn_dependencies.args.modelFSArgs import getArgs
+from dnn_dependencies.args.modelTreeExporterArgs import getArgs
 
 
 def extractNodeLabels(dom: str) -> List[str]:
@@ -75,7 +75,7 @@ def main() -> None:
     nodeLabels: List[str] = extractNodeLabels(dom=xmlDOM)
 
     tree: Tree = buildTree(labels=nodeLabels)
-    tree.to_graphviz(filename="test.dot")
+    tree.to_graphviz(filename=args.output[0])
 
 
 if __name__ == "__main__":
