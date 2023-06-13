@@ -168,3 +168,4 @@ cython_debug/
 *.gexf
 *.xsd
 *.dot
+*.test
