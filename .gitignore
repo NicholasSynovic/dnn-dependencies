@@ -167,3 +167,5 @@ cython_debug/
 *.xml
 *.gexf
 *.xsd
+*.dot
+*.test

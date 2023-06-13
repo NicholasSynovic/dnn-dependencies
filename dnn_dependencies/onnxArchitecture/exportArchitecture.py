@@ -1,10 +1,13 @@
 from argparse import Namespace
 from itertools import count
-from pathlib import Path
+from pathlib import Path, PosixPath
+from re import Match, search
 from typing import List
+from xml.etree.ElementTree import Element, ElementTree
 
 import pandas
 from lxml import etree
+from matplotlib.colors import XKCD_COLORS
 from onnx import load
 from onnx.onnx_pb import GraphProto, ModelProto, NodeProto
 from pandas import DataFrame, Series
@@ -17,12 +20,33 @@ EDGE_ID_COUNTER: count = count()
 OUTPUT_DF_LIST: List[DataFrame] = []
 
 
-def buildDF(nodeID: int, name: str, inputs: List[str], outputs: List[str]) -> DataFrame:
+def extractLayer(nodeName: str) -> str:
+    pattern: str = r"layer\.(\d+)"
+
+    layer: str
+    try:
+        layer = search(pattern=pattern, string=nodeName).group(0)
+    except AttributeError:
+        layer = ""
+
+    return layer
+
+
+def buildDF(
+    nodeID: int,
+    name: str,
+    layer: str,
+    inputs: List[str],
+    outputs: List[str],
+    color: List[str],
+) -> DataFrame:
     data: dict[str, List[int | str | List[str]]] = {
         "ID": [nodeID],
         "Name": [name],
+        "Layer": [layer],
         "Inputs": [inputs],
         "Outputs": [outputs],
+        "Color": [color],
     }
     return DataFrame(data)
 
@@ -39,57 +63,67 @@ def dfIDQuery(df: DataFrame, query: str) -> tuple[str, str] | None:
 
 def buildXML(
     df: DataFrame,
-    outputPath: Path | List[Path],
     mode: str = "production",
-) -> None:
+) -> str:
     edgeList: List[tuple[tuple[str, str], str]] = []
 
-    xmlns: str
     version: str
     if mode == "production":
-        xmlns = "http://www.gexf.net/1.2draft"
         version = "1.2draft"
     else:
-        xmlns = "http://www.gexf.net/1.2"
         version = "1.2"
 
-    rootNode = etree.Element("gexf")
-    rootNode.set("xmlns", xmlns)
+    xmlns: str = f"http://www.gexf.net/{version}"
+    xmlnsViz: str = f"http://gexf.net/{version}/viz"
+
+    rootNode: Element = etree.Element("gexf", nsmap={None: xmlns, "viz": xmlnsViz})
     rootNode.set("version", version)
 
-    graphNode = etree.SubElement(rootNode, "graph")
+    graphNode: Element = etree.SubElement(rootNode, "graph")
     graphNode.set("mode", "static")
     graphNode.set("defaultedgetype", "directed")
     graphNode.set("idtype", "integer")
 
-    attributesNode = etree.SubElement(graphNode, "attributes")
+    attributesNode: Element = etree.SubElement(graphNode, "attributes")
     attributesNode.set("class", "node")
 
-    inputAttributeNode = etree.SubElement(attributesNode, "attribute")
+    inputAttributeNode: Element = etree.SubElement(attributesNode, "attribute")
     inputAttributeNode.set("id", "input")
     inputAttributeNode.set("title", "Input")
     inputAttributeNode.set("type", "string")
 
-    outputAttributeNode = etree.SubElement(attributesNode, "attribute")
+    outputAttributeNode: Element = etree.SubElement(attributesNode, "attribute")
     outputAttributeNode.set("id", "output")
     outputAttributeNode.set("title", "Output")
     outputAttributeNode.set("type", "string")
 
-    verticesNode = etree.SubElement(graphNode, "nodes")
-    edgesNode = etree.SubElement(graphNode, "edges")
+    layerAttributeNode: Element = etree.SubElement(attributesNode, "attribute")
+    layerAttributeNode.set("id", "layer")
+    layerAttributeNode.set("title", "Layer")
+    layerAttributeNode.set("type", "string")
+
+    verticesNode: Element = etree.SubElement(graphNode, "nodes")
+    edgesNode: Element = etree.SubElement(graphNode, "edges")
 
     with Bar("Creating GEXF nodes...", max=df.shape[0]) as bar:
-        for ID, NAME, INPUTS, OUTPUTS in df.itertuples(index=False):
+        for ID, NAME, LAYER, INPUTS, OUTPUTS, COLOR in df.itertuples(index=False):
             ID: str = str(ID)
-            vertexNode = etree.SubElement(verticesNode, "node")
+            vertexNode: Element = etree.SubElement(verticesNode, "node")
             vertexNode.set("id", ID)
             vertexNode.set("label", NAME)
 
-            attvaluesNode = etree.SubElement(vertexNode, "attvalues")
+            vizColorNode: Element = etree.SubElement(vertexNode, "color")
+            vizColorNode.set("hex", COLOR)
+
+            attvaluesNode: Element = etree.SubElement(vertexNode, "attvalues")
+
+            attvalueNode: Element = etree.SubElement(attvaluesNode, "attvalue")
+            attvalueNode.set("for", "layer")
+            attvalueNode.set("value", LAYER)
 
             i: str
             for i in INPUTS:
-                attvalueNode = etree.SubElement(attvaluesNode, "attvalue")
+                attvalueNode: Element = etree.SubElement(attvaluesNode, "attvalue")
                 attvalueNode.set("for", "input")
                 attvalueNode.set("value", i)
 
@@ -103,7 +137,7 @@ def buildXML(
 
             o: str
             for o in OUTPUTS:
-                attvalueNode = etree.SubElement(attvaluesNode, "attvalue")
+                attvalueNode: Element = etree.SubElement(attvaluesNode, "attvalue")
                 attvalueNode.set("for", "output")
                 attvalueNode.set("value", o)
 
@@ -112,49 +146,68 @@ def buildXML(
     with Bar("Creating GEXF edges...", max=len(edgeList)) as bar:
         pair: tuple[tuple[str, str], str]
         for pair in edgeList:
-            edgeNode = etree.SubElement(edgesNode, "edge")
+            edgeNode: Element = etree.SubElement(edgesNode, "edge")
             edgeNode.set("id", str(EDGE_ID_COUNTER.__next__()))
             edgeNode.set("source", pair[0][1])
             edgeNode.set("target", pair[1])
             edgeNode.set("label", pair[0][0])
             bar.next()
 
-    tree = etree.ElementTree(rootNode)
-    try:
-        tree.write(
-            outputPath, xml_declaration=True, pretty_print=True, encoding="utf-8"
-        )
-    except TypeError:
-        tree.write(
-            outputPath[0], xml_declaration=True, pretty_print=True, encoding="utf-8"
-        )
+    xmlStr: str = etree.tostring(rootNode, pretty_print=True).decode()
+    xmlStr = xmlStr.replace("<color", "<viz:color")
+
+    return xmlStr
 
 
-def main(args: Namespace) -> None:
+def main() -> None:
+    args: Namespace = getArgs()
+    colors: List[str] = list(XKCD_COLORS.values())
+
+    output: Path
+    if type(args.output) is list:
+        output = args.output[0]
+    else:
+        output = args.output
+
     model: ModelProto = load(f=args.model[0])
     graph: GraphProto = model.graph
 
     with Bar(
         "Extracting information from ONNX computational graph...", max=len(graph.node)
     ) as bar:
+        previousLayer: str = ""
+        colorIDX: int = 0
+
         node: NodeProto
         for node in graph.node:
             nodeID: int = NODE_ID_COUNTER.__next__()
             name: str = node.name
+            layer: str = extractLayer(nodeName=name)
+
+            if layer != previousLayer:
+                colorIDX += 1
+                previousLayer = layer
+
+            color: str = colors[colorIDX]
             outputs: List[str] = list(node.output)
             inputs: List[str] = list(node.input)
             df: DataFrame = buildDF(
                 nodeID=nodeID,
                 name=name,
+                layer=layer,
                 inputs=inputs,
                 outputs=outputs,
+                color=color,
             )
             OUTPUT_DF_LIST.append(df)
             bar.next()
     df: DataFrame = pandas.concat(OUTPUT_DF_LIST)
-    buildXML(df=df, outputPath=args.output, mode=args.mode)
+    xmlStr = buildXML(df=df, mode=args.mode)
+
+    with open(file=output, mode="w") as xmlFile:
+        xmlFile.write(xmlStr)
+        xmlFile.close()
 
 
 if __name__ == "__main__":
-    args: Namespace = getArgs()
-    main(args=args)
+    main()
