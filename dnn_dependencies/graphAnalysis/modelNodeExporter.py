@@ -1,9 +1,12 @@
 from argparse import Namespace
+from itertools import pairwise
 from typing import List
 
 from bs4 import BeautifulSoup, ResultSet, Tag
+from networkx import DiGraph, write_gexf
 from progress.bar import Bar
 from treelib import Node, Tree
+from treelib.exceptions import DuplicatedNodeIdError
 
 from dnn_dependencies.args.modelTreeExporterArgs import getArgs
 
@@ -21,6 +24,36 @@ def extractNodeLabels(dom: str) -> List[str]:
             bar.next()
 
     return data
+
+
+def buildEdgeList(labels: List[str]) -> List[tuple[str, str]]:
+    data: List[tuple[str, str]] = []
+
+    rootTag: str = "onnxComputationalGraph"
+
+    with Bar("Creating edge list... ", max=len(labels)) as bar:
+        label: str
+        for label in labels:
+            nodeList: List[str] = [rootTag]
+            splitLabel: List[str] = label.split(sep="/")
+
+            if len(splitLabel) > 1:
+                foo: str = rootTag + label
+                nodeList = foo.split(sep="/")
+            else:
+                nodeList.append(splitLabel[0])
+
+            edgeList: List[tuple[str, str]] = list(pairwise(nodeList))
+            data.extend(edgeList)
+
+            bar.next()
+    return data
+
+
+def buildDiGraph(edgeList: List[tuple[str, str]]) -> DiGraph:
+    graph: DiGraph = DiGraph()
+    graph.add_edges_from(ebunch_to_add=edgeList)
+    return graph
 
 
 def buildTree(labels: List[str]) -> Tree:
@@ -56,8 +89,16 @@ def buildTree(labels: List[str]) -> Tree:
                     continue
 
                 edge: str = edgeList[idx]
-                baz: Node = tree.create_node(tag=edge, parent=parentID)
-                parentID = baz.identifier
+                edgeID: str = edge.lower()
+
+                try:
+                    baz: Node = tree.create_node(
+                        tag=edge, identifier=edgeID, parent=parentID
+                    )
+                except DuplicatedNodeIdError:
+                    pass
+
+                parentID = edgeID
             bar.next()
 
     return tree
@@ -71,9 +112,9 @@ def main() -> None:
         xmlDoc.close()
 
     nodeLabels: List[str] = extractNodeLabels(dom=xmlDOM)
-
-    tree: Tree = buildTree(labels=nodeLabels)
-    tree.to_graphviz(filename=args.output[0])
+    edgeList: List[tuple[str, str]] = buildEdgeList(labels=nodeLabels)
+    graph: DiGraph = buildDiGraph(edgeList=edgeList)
+    write_gexf(graph, args.output[0])
 
 
 if __name__ == "__main__":
