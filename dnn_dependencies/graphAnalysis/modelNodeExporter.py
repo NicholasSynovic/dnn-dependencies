@@ -1,6 +1,4 @@
-import os
 from argparse import Namespace
-from pathlib import Path
 from typing import List
 
 from bs4 import BeautifulSoup, ResultSet, Tag
@@ -58,8 +56,8 @@ def buildTree(labels: List[str]) -> Tree:
                     continue
 
                 edge: str = edgeList[idx]
-                foo: Node = tree.create_node(tag=edge, parent=parentID)
-                parentID = foo.identifier
+                baz: Node = tree.create_node(tag=edge, parent=parentID)
+                parentID = baz.identifier
             bar.next()
 
     return tree
