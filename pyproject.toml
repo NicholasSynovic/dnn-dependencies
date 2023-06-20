@@ -8,9 +8,6 @@ packages = [{include = "dnn_dependencies"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.12"
-torch = {version = "^2.0.1+cpu", source = "pytorch"}
-torchvision = {version = "^0.15.2+cpu", source = "pytorch"}
-torchaudio = {version = "^2.0.2+cpu", source = "pytorch"}
 matplotlib = "^3.7.1"
 lxml = "^4.9.2"
 pandas = "^2.0.2"
