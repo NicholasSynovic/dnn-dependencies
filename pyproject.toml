@@ -8,9 +8,6 @@ packages = [{include = "dnn_dependencies"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.12"
-torch = {version = "^2.0.1+cpu", source = "pytorch"}
-torchvision = {version = "^0.15.2+cpu", source = "pytorch"}
-torchaudio = {version = "^2.0.2+cpu", source = "pytorch"}
 matplotlib = "^3.7.1"
 lxml = "^4.9.2"
 pandas = "^2.0.2"
@@ -23,14 +20,24 @@ optimum = {version = "^1.8.7", extras = ["exporters"]}
 numpy = "^1.24.3"
 pydot = "^1.4.2"
 
+[tool.poetry.group.dev.dependencies]
+netron = "^6.9.7"
+pydot = "^1.4.2"
+
+[tool.poetry.group.linux.dependencies]
+torch = {version = "^2.0.1+cpu", source = "pytorch"}
+torchvision = {version = "^0.15.2+cpu", source = "pytorch"}
+torchaudio = {version = "^2.0.2+cpu", source = "pytorch"}
+
+[tool.poetry.group.mac.dependencies]
+torch = "^2.0.1"
+torchvision = "^0.15.2"
+torchaudio = "^2.0.2"
+
 [[tool.poetry.source]]
 name = "pytorch"
 url = "https://download.pytorch.org/whl/cpu"
 priority = "explicit"
-
-
-[tool.poetry.group.dev.dependencies]
-netron = "^6.9.7"
 
 [build-system]
 requires = ["poetry-core"]
