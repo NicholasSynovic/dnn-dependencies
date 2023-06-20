@@ -8,7 +8,7 @@ from progress.bar import Bar
 from treelib import Node, Tree
 from treelib.exceptions import DuplicatedNodeIdError
 
-from dnn_dependencies.args.modelTreeExporterArgs import getArgs
+from dnn_dependencies.args.exportLayersArgs import getArgs
 
 
 def extractNodeLabels(dom: str) -> List[str]:

@@ -21,11 +21,16 @@ beautifulsoup4 = "^4.12.2"
 treelib = "^1.6.4"
 optimum = {version = "^1.8.7", extras = ["exporters"]}
 numpy = "^1.24.3"
+pydot = "^1.4.2"
 
 [[tool.poetry.source]]
 name = "pytorch"
 url = "https://download.pytorch.org/whl/cpu"
 priority = "explicit"
+
+
+[tool.poetry.group.dev.dependencies]
+netron = "^6.9.7"
 
 [build-system]
 requires = ["poetry-core"]
@@ -33,3 +38,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 dnn-dependencies-onnx2gexf= "dnn_dependencies.onnxArchitecture.exportArchitecture:main"
+dnn-dependencies-gexfLayerExtraction= "dnn_dependencies.onnxArchitecture.exportLayers:main"
