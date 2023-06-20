@@ -24,21 +24,6 @@ pydot = "^1.4.2"
 netron = "^6.9.7"
 pydot = "^1.4.2"
 
-[tool.poetry.group.linux.dependencies]
-torch = {version = "^2.0.1+cpu", source = "pytorch"}
-torchvision = {version = "^0.15.2+cpu", source = "pytorch"}
-torchaudio = {version = "^2.0.2+cpu", source = "pytorch"}
-
-[tool.poetry.group.mac.dependencies]
-torch = "^2.0.1"
-torchvision = "^0.15.2"
-torchaudio = "^2.0.2"
-
-[[tool.poetry.source]]
-name = "pytorch"
-url = "https://download.pytorch.org/whl/cpu"
-priority = "explicit"
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
