@@ -4,7 +4,6 @@ from typing import List
 
 from bs4 import BeautifulSoup, ResultSet, Tag
 from networkx import DiGraph, write_gexf
-from networkx.algorithms.community import louvain_communities
 from progress.bar import Bar
 from treelib import Node, Tree
 from treelib.exceptions import DuplicatedNodeIdError
@@ -115,10 +114,6 @@ def main() -> None:
     nodeLabels: List[str] = extractNodeLabels(dom=xmlDOM)
     edgeList: List[tuple[str, str]] = buildEdgeList(labels=nodeLabels)
     graph: DiGraph = buildDiGraph(edgeList=edgeList)
-
-    graphCommunities = louvain_communities(graph, seed=42)
-    print(graphCommunities)
-
     write_gexf(graph, args.output[0])
 
 
