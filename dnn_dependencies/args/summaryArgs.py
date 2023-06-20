@@ -21,9 +21,7 @@ def getArgs(programName: str, description: str = "") -> Namespace:
         "-m",
         "--model",
         nargs=1,
-        default="bert-base-uncased",
-        type=str,
-        required=False,
+        required=True,
         help="Path to or HuggingFace repository name to utilize model from",
     )
     return parser.parse_args()
