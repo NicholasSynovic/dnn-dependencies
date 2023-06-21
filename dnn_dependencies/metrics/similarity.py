@@ -1,7 +1,8 @@
 from argparse import Namespace
-from typing import List
+from typing import List, Set
 
 from networkx import DiGraph, read_gexf
+from networkx.algorithms.community import louvain_communities
 
 from dnn_dependencies.args.similarity_args import getArgs
 
@@ -12,6 +13,11 @@ def countNodes(graph: DiGraph) -> int:
 
 def countEdges(graph: DiGraph) -> int:
     return graph.size()
+
+
+def countCommunities(graph: DiGraph) -> int:
+    communities: List[Set[str]] = louvain_communities(graph, seed=42)
+    return len(communities)
 
 
 def main() -> None:
