@@ -1,5 +1,6 @@
 from argparse import Namespace
 from collections import defaultdict
+from pprint import pprint
 from typing import List, Set
 
 from networkx import DiGraph, clustering, read_gexf
@@ -82,7 +83,19 @@ def computeNodeDistribution(graph: DiGraph) -> dict[str, int]:
     data: defaultdict = defaultdict(int)
 
     nodes: NodeView = graph.nodes(data="Operation Type")
-    print(nodes)
+
+    with Bar(
+        "Computing the distribution of node operations types... ", max=len(nodes)
+    ) as progress:
+        opType: str
+        for _, opType in nodes:
+            data[opType] += 1
+            progress.next()
+
+    foo: dict[str, int] = dict(data)
+    bar: dict[str, int] = dict(sorted(foo.items()))
+
+    return bar
 
 
 def main() -> None:
@@ -90,7 +103,7 @@ def main() -> None:
 
     graph: DiGraph = read_gexf(args.input[0])
 
-    computeNodeDistribution(graph)
+    pprint(computeNodeDistribution(graph))
 
 
 if __name__ == "__main__":
