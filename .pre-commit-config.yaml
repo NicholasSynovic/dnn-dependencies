@@ -36,7 +36,3 @@ repos:
       - mdformat-gfm
       - mdformat-tables
       - mdformat-toc
-  - repo: https://gitlab.com/brettops/tools/badgie
-    rev: ""
-    hooks:
-      - id: badgie
