@@ -2,14 +2,18 @@
 
 > Nicholas M. Synovic, Karolina Ryzka, and George K. Thiruvathukal
 
+[![https://img.shields.io/badge/Python-3.10.12-blue](https://img.shields.io/badge/Python-3.10.12-blue)](https://img.shields.io/badge/Python-3.10.12-blue)
+
 ## Table of Contents
 
 - [Identifying Deep Neural Network (DNN) Dependencies Within Pre-Trained Models (PTMs)](#identifying-deep-neural-network-dnn-dependencies-within-pre-trained-models-ptms)
   - [Table of Contents](#table-of-contents)
   - [About](#about)
     - [Dataset Utilized](#dataset-utilized)
+  - [Required Software](#required-software)
   - [How To Install](#how-to-install)
-    - [Requirements](#requirements)
+    - [From Source](#from-source)
+    - [From Released Package](#from-released-package)
   - [How To Run](#how-to-run)
   - [How To Develop](#how-to-develop)
   - [Tools Utilized](#tools-utilized)
@@ -25,16 +29,22 @@ source code.
 
 ### Dataset Utilized
 
-To conduct our research, we utilized the PTMTorrent Dataset. For more
-information about the dataset, as well as instructions on how to download and
-access it, please see this link.
+To conduct our research, we utilized the
+*[PTMTorrent Dataset](https://github.com/SoftwareSystemsLaboratory/PTMTorrent)*.
+For more information about the dataset, as well as instructions on how to
+download and access it, please see this
+[link](https://github.com/SoftwareSystemsLaboratory/PTMTorrent).
+
+## Required Software
 
 ## How To Install
 
-### Requirements
+### From Source
 
-- Python 3.10
-- Graphviz
+1. `poetry build`
+1. `pip install dist/dnn_dependencies*.tar.gz`
+
+### From Released Package
 
 ## How To Run
 
