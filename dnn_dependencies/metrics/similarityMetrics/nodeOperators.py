@@ -4,6 +4,7 @@ from typing import List
 
 import matplotlib.pyplot as plt
 import networkx as nx
+import pandas as pd
 
 
 # Specifies only the operator from node labels
@@ -47,15 +48,34 @@ gexfFilePath = "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies
 # Get List of node operators
 labels = getNodeOperators(gexfFilePath)
 
+labelsDict: dict[str, int] = {}
 
-# Create Histogram of operate distribution
+label: str
+for label in labels:
+    labelsDict[label] = labelsDict.get(label, 0) + 1
+
+
+df = pd.DataFrame.from_dict(labelsDict, orient="index").reset_index()
+print(df)
+
+barGraph = df.plot.bar()
+barGraph.set_xticklabels(df["index"], rotation=-45)
+plt.show()
+
+# Create Histogram of operator distribution
+
+
 def plotNodeOperators(gexfFilePath) -> plt:
-    plt.hist(getNodeOperators(gexfFilePath))
+    plt.bar(x=labelsDict.keys(), height=labelsDict.values())
+    for label, count in labelsDict.items():
+        plt.text(label, count, str(count), ha="center", va="bottom")
     plt.xlabel("Node Operators")
+    plt.xticks(rotation=-45)
     plt.ylabel("# of Operator Iterations")
+    plt.yscale("log")
     plt.title("Distribution of Node Operators in Graph")
     plt.show()
 
 
 # Make plot
-plotNodeOperators(gexfFilePath)
+# plotNodeOperators(gexfFilePath)
