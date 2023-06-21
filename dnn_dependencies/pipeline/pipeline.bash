@@ -7,7 +7,7 @@ mkdir dot
 
 # python3.10 downloadModelJSONList.py
 
-# cat baseModels.txt | parallel -I % --bar optimum-cli export onnx --model % --framework pt --atol 1 --monolith models/%.onnx
+cat baseModels.txt | parallel -I % --bar optimum-cli export onnx --model % --framework pt --atol 1 --monolith models/%.onnx
 
 cat baseModels.txt | parallel -I % --bar dnn-dependencies-onnx2gexf --mode production --model models/%.onnx/model.onnx --output gexf/%.gexf
 
