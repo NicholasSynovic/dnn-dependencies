@@ -29,7 +29,7 @@ def computeDegreeDistribution(graph: DiGraph, inDegree: bool = True) -> dict[int
     def _iterateInDegree(nodes: NodeView, bar: Bar) -> None:
         node: str
         for node in nodes:
-            degree: int = graph.out_degree(node)
+            degree: int = graph.in_degree(node)
             data[degree] += 1
             bar.next()
 
