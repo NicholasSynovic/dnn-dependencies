@@ -6,8 +6,12 @@ from networkx import DiGraph, read_gexf
 from dnn_dependencies.args.similarity_args import getArgs
 
 
-def totalNodes(graph: DiGraph) -> int:
+def countNodes(graph: DiGraph) -> int:
     return graph.number_of_nodes()
+
+
+def countEdges(graph: DiGraph) -> int:
+    return graph.size()
 
 
 def main() -> None:
