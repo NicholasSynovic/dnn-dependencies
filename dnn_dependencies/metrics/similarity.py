@@ -2,7 +2,7 @@ from argparse import Namespace
 from collections import defaultdict
 from typing import List, Set
 
-from networkx import DiGraph, read_gexf
+from networkx import DiGraph, clustering, read_gexf
 from networkx.algorithms.community import louvain_communities
 from networkx.classes.reportviews import NodeView
 from progress.bar import Bar
@@ -45,16 +45,37 @@ def computeDegreeDistribution(graph: DiGraph, inDegree: bool = True) -> dict[int
 
     with Bar(
         f"Computing the {degreeType}-degree distribution of nodes... ", max=len(nodes)
-    ) as bar:
+    ) as progress:
         if inDegree:
-            _iterateInDegree(nodes=nodes, bar=bar)
+            _iterateInDegree(nodes=nodes, bar=progress)
         else:
-            _iterateOutDegree(nodes=nodes, bar=bar)
+            _iterateOutDegree(nodes=nodes, bar=progress)
 
-    data: dict[int, int] = dict(data)
-    data = dict(sorted(data.items()))
+    foo: dict[int, int] = dict(data)
+    bar: dict[int, int] = dict(sorted(foo.items()))
 
-    return data
+    return bar
+
+
+def computeClusterCoefficientDistribution(graph: DiGraph) -> dict[int, int]:
+    data: defaultdict = defaultdict(int)
+
+    nodes: NodeView = graph.nodes()
+
+    with Bar(
+        f"Computing the clustering coefficient distribution of nodes... ",
+        max=len(nodes),
+    ) as progress:
+        node: str
+        for node in nodes:
+            coefficient: int = clustering(G=graph, nodes=node)
+            data[coefficient] += 1
+            progress.next()
+
+    foo: dict[int, int] = dict(data)
+    bar: dict[int, int] = dict(sorted(foo.items()))
+
+    return bar
 
 
 def main() -> None:
