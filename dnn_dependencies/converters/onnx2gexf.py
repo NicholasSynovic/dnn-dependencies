@@ -35,6 +35,7 @@ def extractLayer(nodeName: str) -> str:
 def buildDF(
     nodeID: int,
     name: str,
+    opType: str,
     layer: str,
     inputs: List[str],
     outputs: List[str],
@@ -43,6 +44,7 @@ def buildDF(
     data: dict[str, List[int | str | List[str]]] = {
         "ID": [nodeID],
         "Name": [name],
+        "Op Type": [opType],
         "Layer": [layer],
         "Inputs": [inputs],
         "Outputs": [outputs],
@@ -88,6 +90,11 @@ def buildXML(
     attributesNode.set("class", "node")
 
     inputAttributeNode: Element = etree.SubElement(attributesNode, "attribute")
+    inputAttributeNode.set("id", "type")
+    inputAttributeNode.set("title", "Operation Type")
+    inputAttributeNode.set("type", "string")
+
+    inputAttributeNode: Element = etree.SubElement(attributesNode, "attribute")
     inputAttributeNode.set("id", "input")
     inputAttributeNode.set("title", "Input")
     inputAttributeNode.set("type", "string")
@@ -106,7 +113,9 @@ def buildXML(
     edgesNode: Element = etree.SubElement(graphNode, "edges")
 
     with Bar("Creating GEXF nodes...", max=df.shape[0]) as bar:
-        for ID, NAME, LAYER, INPUTS, OUTPUTS, COLOR in df.itertuples(index=False):
+        for ID, NAME, OPTYPE, LAYER, INPUTS, OUTPUTS, COLOR in df.itertuples(
+            index=False
+        ):
             ID: str = str(ID)
             vertexNode: Element = etree.SubElement(verticesNode, "node")
             vertexNode.set("id", ID)
@@ -116,6 +125,10 @@ def buildXML(
             vizColorNode.set("hex", COLOR)
 
             attvaluesNode: Element = etree.SubElement(vertexNode, "attvalues")
+
+            attvalueNode: Element = etree.SubElement(attvaluesNode, "attvalue")
+            attvalueNode.set("for", "type")
+            attvalueNode.set("value", OPTYPE)
 
             attvalueNode: Element = etree.SubElement(attvaluesNode, "attvalue")
             attvalueNode.set("for", "layer")
@@ -176,6 +189,7 @@ def main() -> None:
         for node in graph.node:
             nodeID: int = NODE_ID_COUNTER.__next__()
             name: str = node.name
+            opType: str = node.op_type
             layer: str = extractLayer(nodeName=name)
 
             if layer != previousLayer:
@@ -188,6 +202,7 @@ def main() -> None:
             df: DataFrame = buildDF(
                 nodeID=nodeID,
                 name=name,
+                opType=opType,
                 layer=layer,
                 inputs=inputs,
                 outputs=outputs,
