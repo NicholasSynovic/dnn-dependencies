@@ -4,7 +4,7 @@ from typing import List, Set
 
 from networkx import DiGraph, read_gexf
 from networkx.algorithms.community import louvain_communities
-from networkx.classes.reportviews import NodeDataView, NodeView
+from networkx.classes.reportviews import NodeView
 from progress.bar import Bar
 
 from dnn_dependencies.args.similarity_args import getArgs
@@ -25,18 +25,31 @@ def countCommunities(graph: DiGraph) -> int:
 
 def computeDegreeDistribution(graph: DiGraph, inDegree: bool = True) -> dict[int, int]:
     data: defaultdict = defaultdict(int)
-    degreeType: str = "in" if inDegree else "out"
 
-    nodes: NodeView = graph.nodes()
-
-    with Bar(
-        f"Computing the distribution of {degreeType} degree nodes... ", max=len(nodes)
-    ) as bar:
+    def _iterateInDegree(nodes: NodeView, bar: Bar) -> None:
         node: str
         for node in nodes:
             degree: int = graph.out_degree(node)
             data[degree] += 1
             bar.next()
+
+    def _iterateOutDegree(nodes: NodeView, bar: Bar) -> None:
+        node: str
+        for node in nodes:
+            degree: int = graph.out_degree(node)
+            data[degree] += 1
+            bar.next()
+
+    degreeType: str = "in" if inDegree else "out"
+    nodes: NodeView = graph.nodes()
+
+    with Bar(
+        f"Computing the {degreeType}-degree distribution of nodes... ", max=len(nodes)
+    ) as bar:
+        if inDegree:
+            _iterateInDegree(nodes=nodes, bar=bar)
+        else:
+            _iterateOutDegree(nodes=nodes, bar=bar)
 
     data: dict[int, int] = dict(data)
     data = dict(sorted(data.items()))
@@ -48,8 +61,6 @@ def main() -> None:
     args: Namespace = getArgs()
 
     graph: Digraph = read_gexf(args.input[0])
-
-    computeDistribution_OutDegree(graph)
 
 
 if __name__ == "__main__":
