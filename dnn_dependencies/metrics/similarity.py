@@ -78,10 +78,19 @@ def computeClusterCoefficientDistribution(graph: DiGraph) -> dict[int, int]:
     return bar
 
 
+def computeNodeDistribution(graph: DiGraph) -> dict[str, int]:
+    data: defaultdict = defaultdict(int)
+
+    nodes: NodeView = graph.nodes(data="Operation Type")
+    print(nodes)
+
+
 def main() -> None:
     args: Namespace = getArgs()
 
-    graph: Digraph = read_gexf(args.input[0])
+    graph: DiGraph = read_gexf(args.input[0])
+
+    computeNodeDistribution(graph)
 
 
 if __name__ == "__main__":
