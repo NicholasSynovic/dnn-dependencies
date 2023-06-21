@@ -123,6 +123,8 @@ def buildXML(
 
             i: str
             for i in INPUTS:
+                i = i.replace(":", "_")
+
                 attvalueNode: Element = etree.SubElement(attvaluesNode, "attvalue")
                 attvalueNode.set("for", "input")
                 attvalueNode.set("value", i)
@@ -137,6 +139,8 @@ def buildXML(
 
             o: str
             for o in OUTPUTS:
+                o = o.replace(":", "_")
+
                 attvalueNode: Element = etree.SubElement(attvaluesNode, "attvalue")
                 attvalueNode.set("for", "output")
                 attvalueNode.set("value", o)
@@ -163,13 +167,7 @@ def main() -> None:
     args: Namespace = getArgs()
     colors: List[str] = list(XKCD_COLORS.values())
 
-    output: Path
-    if type(args.output) is list:
-        output = args.output[0]
-    else:
-        output = args.output
-
-    model: ModelProto = load(f=args.model[0])
+    model: ModelProto = load(f=args.input[0])
     graph: GraphProto = model.graph
 
     with Bar(
@@ -204,7 +202,7 @@ def main() -> None:
     df: DataFrame = pandas.concat(OUTPUT_DF_LIST)
     xmlStr = buildXML(df=df, mode=args.mode)
 
-    with open(file=output, mode="w") as xmlFile:
+    with open(file=args.output[0], mode="w") as xmlFile:
         xmlFile.write(xmlStr)
         xmlFile.close()
 

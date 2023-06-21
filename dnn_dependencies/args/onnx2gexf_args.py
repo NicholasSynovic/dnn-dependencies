@@ -21,10 +21,10 @@ def getArgs() -> Namespace:
         version=f"{PROGRAM_NAME}: {version(distribution_name='dnn-dependencies')}",
     )
     parser.add_argument(
-        "-m",
-        "--model",
+        "-i",
+        "--input",
         nargs=1,
-        type=str,
+        type=Path,
         required=True,
         help="Path to an ONNX model",
     )
@@ -33,6 +33,7 @@ def getArgs() -> Namespace:
         "--output",
         nargs=1,
         type=Path,
+        required=True,
         help="Filepath to store GEXF XML output",
     )
     parser.add_argument(
