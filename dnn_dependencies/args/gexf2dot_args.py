@@ -34,6 +34,6 @@ def getArgs() -> Namespace:
         nargs=1,
         type=Path,
         required=True,
-        help="Filepath to store Graphviz Dot output",
+        help="Path to store Graphviz Dot output",
     )
     return parser.parse_args()
