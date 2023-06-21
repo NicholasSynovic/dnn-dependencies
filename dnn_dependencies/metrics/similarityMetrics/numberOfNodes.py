@@ -8,6 +8,7 @@ G: nx.DiGraph = nx.read_gexf(
 )
 
 
+# Get total number nodes in graph
 def totalNodes(G: nx.DiGraph) -> str:
     return "Number of nodes in graph: " + str(G.number_of_nodes())
 

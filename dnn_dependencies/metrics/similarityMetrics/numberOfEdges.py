@@ -8,6 +8,7 @@ G: nx.DiGraph = nx.read_gexf(
 )
 
 
+# Get total number of edges in graph
 def totalEdges(G: nx.DiGraph) -> str:
     return "Number of edges in graph: " + str(G.size())
 

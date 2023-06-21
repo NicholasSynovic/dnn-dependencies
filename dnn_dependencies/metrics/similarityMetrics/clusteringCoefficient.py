@@ -9,12 +9,17 @@ G: nx.DiGraph = nx.read_gexf(
 )
 
 
+# Create histogram of clustering coefficient distribution
 def clusteringCoefficient(G: nx.DiGraph) -> plt:
     coefficientList: List[int] = []
+
+    # Create list of clustering coefficient for each node
     for node in G.nodes():
         clusteringCoefficient = nx.clustering(G, node)
         coefficientList.append(clusteringCoefficient)
     coefficientList.sort(reverse=True)
+
+    # Plot histogram
     plt.hist(coefficientList)
     plt.xlabel("Clustering Coefficient")
     plt.ylabel("# of Nodes")

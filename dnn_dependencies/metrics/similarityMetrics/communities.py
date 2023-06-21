@@ -9,6 +9,7 @@ G: nx.DiGraph = nx.read_gexf(
 )
 
 
+# Get number of communities in graph
 def numberOfCommunities(G: nx.DiGraph) -> str:
     communities: List = []
     communities = nx.community.louvain_communities(G)
