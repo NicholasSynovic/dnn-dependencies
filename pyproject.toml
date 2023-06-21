@@ -31,5 +31,6 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-dnn-dependencies-onnx2gexf= "dnn_dependencies.onnxArchitecture.exportArchitecture:main"
-dnn-dependencies-gexfLayerExtraction= "dnn_dependencies.onnxArchitecture.exportLayers:main"
+onnx2gexf = "dnn_dependencies.converters.onnx2gexf:main"
+gexf2dot = "dnn_dependencies.converters.gexf2dot:main"
+gexfNodeLabels2graph = "dnn_dependencies.extractors.gexfNodeLabels2graph:main"

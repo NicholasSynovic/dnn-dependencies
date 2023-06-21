@@ -4,13 +4,13 @@ from pathlib import Path
 
 from dnn_dependencies import args as argVars
 
-PROGRAM_NAME: str = "ONNX Layer Architecture GEXF Exporter"
+PROGRAM_NAME: str = "GEXF XML Graph Metrics Computer"
 
 
 def getArgs() -> Namespace:
     parser: ArgumentParser = ArgumentParser(
         prog=PROGRAM_NAME,
-        description="A program to export an ONNX model's layer architecture as a GEXF file",
+        description="A program to compute graph metrics and store them as JSON format",
         epilog=f"Created by: {', '.join(argVars.authorsList)}",
         formatter_class=argVars.AlphabeticalOrderHelpFormatter,
     )
@@ -21,28 +21,19 @@ def getArgs() -> Namespace:
         version=f"{PROGRAM_NAME}: {version(distribution_name='dnn-dependencies')}",
     )
     parser.add_argument(
-        "-m",
-        "--model",
+        "-i",
+        "--input",
         nargs=1,
-        type=str,
+        type=Path,
         required=True,
-        help="Path to an ONNX model",
+        help="Path to a GEXF XML file",
     )
     parser.add_argument(
         "-o",
         "--output",
         nargs=1,
         type=Path,
-        default=Path("architecture.gexf"),
-        required=False,
-        help="Filepath to store GEXF output",
-    )
-    parser.add_argument(
-        "--mode",
-        default="production",
-        type=str,
-        choices=["production", "validation"],
-        required=False,
-        help="Output a GEXF file for usage in NetworkX or Gephi (production), or for validation (validation)",
+        required=True,
+        help="Path to store JSON output",
     )
     return parser.parse_args()

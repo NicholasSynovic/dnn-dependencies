@@ -13,7 +13,7 @@ from onnx.onnx_pb import GraphProto, ModelProto, NodeProto
 from pandas import DataFrame, Series
 from progress.bar import Bar
 
-from dnn_dependencies.args.architectureArgs import getArgs
+from dnn_dependencies.args.onnx2gexf_args import getArgs
 
 NODE_ID_COUNTER: count = count()
 EDGE_ID_COUNTER: count = count()
@@ -125,7 +125,7 @@ def buildXML(
             for i in INPUTS:
                 attvalueNode: Element = etree.SubElement(attvaluesNode, "attvalue")
                 attvalueNode.set("for", "input")
-                attvalueNode.set("value", i)
+                attvalueNode.set("value", f'"{i}"')
 
                 parentNodeNameID: tuple[str, str] | None = dfIDQuery(df=df, query=i)
 
@@ -139,7 +139,7 @@ def buildXML(
             for o in OUTPUTS:
                 attvalueNode: Element = etree.SubElement(attvaluesNode, "attvalue")
                 attvalueNode.set("for", "output")
-                attvalueNode.set("value", o)
+                attvalueNode.set("value", f'"{o}"')
 
             bar.next()
 
@@ -163,13 +163,7 @@ def main() -> None:
     args: Namespace = getArgs()
     colors: List[str] = list(XKCD_COLORS.values())
 
-    output: Path
-    if type(args.output) is list:
-        output = args.output[0]
-    else:
-        output = args.output
-
-    model: ModelProto = load(f=args.model[0])
+    model: ModelProto = load(f=args.input[0])
     graph: GraphProto = model.graph
 
     with Bar(
@@ -204,7 +198,7 @@ def main() -> None:
     df: DataFrame = pandas.concat(OUTPUT_DF_LIST)
     xmlStr = buildXML(df=df, mode=args.mode)
 
-    with open(file=output, mode="w") as xmlFile:
+    with open(file=args.output[0], mode="w") as xmlFile:
         xmlFile.write(xmlStr)
         xmlFile.close()
 

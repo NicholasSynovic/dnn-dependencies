@@ -4,13 +4,13 @@ from pathlib import Path
 
 from dnn_dependencies import args as argVars
 
-PROGRAM_NAME: str = "GEXF to Graphviz (Tree Data Structure) Converter"
+PROGRAM_NAME: str = "ONNX Computational Graph to GEXF XML Converter"
 
 
 def getArgs() -> Namespace:
     parser: ArgumentParser = ArgumentParser(
         prog=PROGRAM_NAME,
-        description="A program to convert a GEXF file into a simplified tree data structure that's compatible with Graphviz",
+        description="A program to convert an ONNX model's computational graph from a Protobuf format to a GEXF XML format",
         epilog=f"Created by: {', '.join(argVars.authorsList)}",
         formatter_class=argVars.AlphabeticalOrderHelpFormatter,
     )
@@ -26,7 +26,7 @@ def getArgs() -> Namespace:
         nargs=1,
         type=Path,
         required=True,
-        help="Path to GEXF file",
+        help="Path to an ONNX model",
     )
     parser.add_argument(
         "-o",
@@ -34,7 +34,14 @@ def getArgs() -> Namespace:
         nargs=1,
         type=Path,
         required=True,
-        help="Path to store Graphviz file (.dot file)",
+        help="Path to store GEXF XML output",
     )
-
+    parser.add_argument(
+        "--mode",
+        default="production",
+        type=str,
+        choices=["production", "validation"],
+        required=False,
+        help="Output a GEXF XML file for usage in NetworkX or Gephi (production), or for validation (validation)",
+    )
     return parser.parse_args()

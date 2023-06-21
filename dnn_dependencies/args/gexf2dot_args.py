@@ -4,13 +4,13 @@ from pathlib import Path
 
 from dnn_dependencies import args as argVars
 
-PROGRAM_NAME: str = "GEXF to Model FS"
+PROGRAM_NAME: str = "GEXF XML to Graphviz Dot Converter"
 
 
 def getArgs() -> Namespace:
     parser: ArgumentParser = ArgumentParser(
         prog=PROGRAM_NAME,
-        description="A program to export a GEXF file to a directory path",
+        description="A program to convert a graph in GEXF file format to a Graphviz Dot file",
         epilog=f"Created by: {', '.join(argVars.authorsList)}",
         formatter_class=argVars.AlphabeticalOrderHelpFormatter,
     )
@@ -26,15 +26,14 @@ def getArgs() -> Namespace:
         nargs=1,
         type=Path,
         required=True,
-        help="Path to GEXF file",
+        help="Path to a GEXF file",
     )
     parser.add_argument(
-        "-r",
-        "--root",
+        "-o",
+        "--output",
         nargs=1,
         type=Path,
         required=True,
-        help="Root folder to store information in",
+        help="Path to store Graphviz Dot output",
     )
-
     return parser.parse_args()
