@@ -42,40 +42,34 @@ def getNodeOperators(filePath) -> List:
     return operatorList
 
 
+def listToDict(labels) -> dict:
+    # Get List of node operators
+
+    labelsDict: dict[str, int] = {}
+
+    label: str
+    for label in labels:
+        labelsDict[label] = labelsDict.get(label, 0) + 1
+
+    return labelsDict
+
+
+# Create Histogram of operator distribution
+def plotNodeOperators(df) -> plt:
+    barGraph = df.plot.bar()
+    barGraph.set_title("Distribution of Node Operators in Graph")
+    barGraph.set_xticklabels(df["index"], rotation=-45)
+    barGraph.bar_label(barGraph.containers[0])
+    barGraph.set_yscale("log")
+    plt.show()
+
+
 # Path to GEXF file
 gexfFilePath = "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/onnxArchitecture/gpt2.gexf"
 
 # Get List of node operators
 labels = getNodeOperators(gexfFilePath)
 
-labelsDict: dict[str, int] = {}
+df = pd.DataFrame.from_dict(listToDict(labels), orient="index").reset_index()
 
-label: str
-for label in labels:
-    labelsDict[label] = labelsDict.get(label, 0) + 1
-
-
-df = pd.DataFrame.from_dict(labelsDict, orient="index").reset_index()
-print(df)
-
-barGraph = df.plot.bar()
-barGraph.set_xticklabels(df["index"], rotation=-45)
-plt.show()
-
-# Create Histogram of operator distribution
-
-
-def plotNodeOperators(gexfFilePath) -> plt:
-    plt.bar(x=labelsDict.keys(), height=labelsDict.values())
-    for label, count in labelsDict.items():
-        plt.text(label, count, str(count), ha="center", va="bottom")
-    plt.xlabel("Node Operators")
-    plt.xticks(rotation=-45)
-    plt.ylabel("# of Operator Iterations")
-    plt.yscale("log")
-    plt.title("Distribution of Node Operators in Graph")
-    plt.show()
-
-
-# Make plot
-# plotNodeOperators(gexfFilePath)
+plotNodeOperators(df)
