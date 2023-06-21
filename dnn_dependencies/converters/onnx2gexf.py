@@ -13,7 +13,7 @@ from onnx.onnx_pb import GraphProto, ModelProto, NodeProto
 from pandas import DataFrame, Series
 from progress.bar import Bar
 
-from dnn_dependencies.args.architectureArgs import getArgs
+from dnn_dependencies.args.onnx2gexf_args import getArgs
 
 NODE_ID_COUNTER: count = count()
 EDGE_ID_COUNTER: count = count()

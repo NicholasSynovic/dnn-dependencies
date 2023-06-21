@@ -4,7 +4,7 @@ from pathlib import Path
 
 from dnn_dependencies import args as argVars
 
-PROGRAM_NAME: str = "GEXF XML to Graphviz Dot"
+PROGRAM_NAME: str = "GEXF XML to Graphviz Dot Converter"
 
 
 def getArgs() -> Namespace:
