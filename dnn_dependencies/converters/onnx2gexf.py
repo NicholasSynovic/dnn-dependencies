@@ -138,7 +138,7 @@ def buildXML(
             for i in INPUTS:
                 attvalueNode: Element = etree.SubElement(attvaluesNode, "attvalue")
                 attvalueNode.set("for", "input")
-                attvalueNode.set("value", f'"{i}"')
+                attvalueNode.set("value", i.replace(":", "-"))
 
                 parentNodeNameID: tuple[str, str] | None = dfIDQuery(df=df, query=i)
 
@@ -152,7 +152,7 @@ def buildXML(
             for o in OUTPUTS:
                 attvalueNode: Element = etree.SubElement(attvaluesNode, "attvalue")
                 attvalueNode.set("for", "output")
-                attvalueNode.set("value", f'"{o}"')
+                attvalueNode.set("value", o.replace(":", "-"))
 
             bar.next()
 
