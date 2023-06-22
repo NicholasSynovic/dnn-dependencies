@@ -2,10 +2,9 @@ from argparse import Namespace
 from collections import defaultdict
 from itertools import product
 from json import dump
-from pprint import pprint as print
 from typing import Any, Generator, List, Set
 
-from networkx import DiGraph, clustering, density, read_gexf
+from networkx import DiGraph, clustering, density, node_attribute_xy, read_gexf
 from networkx.algorithms.community import louvain_communities
 from networkx.classes.reportviews import NodeView
 from progress.bar import Bar
@@ -105,22 +104,18 @@ def computeNodeTypeDistribution(graph: DiGraph) -> dict[str, int]:
 def computeNodeTypePairingDistribution(graph: DiGraph) -> dict[str, int]:
     data: defaultdict = defaultdict(int)
 
-    nodes: NodeView = graph.nodes(data="Operation Type")
-    nodeIDs: List[str] = [node[0] for node in nodes]
+    nodeAttributePairs: List[tuple[str, str]] = list(
+        node_attribute_xy(G=graph, attribute="Operation Type")
+    )
 
     with Bar(
-        "Computing the distribution of node operations types... ", max=len(nodes)
+        "Computing the distribution of node operations types... ",
+        max=len(nodeAttributePairs),
     ) as progress:
-        nodeID: str
-        for nodeID in nodeIDs:
-            children: Generator = graph.successors(n=nodeID)
-            nodeIDPairs: product[tuple[str, str]] = product([nodeID], children)
-
-            pair: tuple[str, str]
-            for pair in nodeIDPairs:
-                key: str = f"{nodes[pair[0]]}, {nodes[pair[1]]}"
-                data[key] += 1
-
+        pair: tuple[str, str]
+        for pair in nodeAttributePairs:
+            key: str = f"{pair[0]}, {pair[1]}"
+            data[key] += 1
             progress.next()
 
     return _sortDict(d=data)
@@ -157,7 +152,8 @@ def createJSON(graph: DiGraph) -> dict[str, Any]:
     data["In Degree Distribution"] = inDegreeDistribution
     data["Out Degree Distribution"] = outDegreeDistribution
     data["Clustering Coefficient Distribution"] = clusteringCoefficientDistribution
-    data["Node Distribution"] = nodeTypePairingDistribution
+    data["Node Distribution"] = nodeTypeDistribution
+    data["Node Pairing Distribution"] = nodeTypePairingDistribution
 
     return _sortDict(d=data)
 
