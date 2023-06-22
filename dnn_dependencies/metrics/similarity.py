@@ -1,12 +1,11 @@
 from argparse import Namespace
 from collections import defaultdict
-from pprint import pprint
 from typing import Any, List, Set
 
 from networkx import DiGraph, clustering, density, read_gexf
-from networkx.algorithms import average_shortest_path_length
 from networkx.algorithms.community import louvain_communities
 from networkx.classes.reportviews import NodeView
+from pandas import DataFrame
 from progress.bar import Bar
 
 from dnn_dependencies.args.similarity_args import getArgs
@@ -17,6 +16,18 @@ def _sortDict(d: defaultdict | dict[Any, Any]) -> dict[Any, Any]:
     bar: dict[Any, Any] = dict(sorted(foo.items()))
 
     return bar
+
+
+def _dict2DataFrame(
+    d: dict[Any, Any], column1: str = "Key", column2: str = "Value"
+) -> DataFrame:
+    data: dict[str, List[Any]] = {}
+    data[column1] = list(d.keys())
+    data[column2] = list(d.values())
+
+    df: DataFrame = DataFrame.from_dict(data=data)
+
+    return df
 
 
 def computeDensity(graph: DiGraph) -> float:
@@ -106,7 +117,26 @@ def main() -> None:
 
     graph: DiGraph = read_gexf(args.input[0])
 
-    pprint(computeAverageShortestPath(graph))
+    graphDensity: float = computeDensity(graph=graph)
+    nodeCount: int = countNodes(graph=graph)
+    edgeCount: int = countEdges(graph=graph)
+    communityCount: int = countCommunities(graph=graph)
+
+    inDegreeDistribution: dict[int, int] = computeDegreeDistribution(
+        graph=graph,
+        inDegree=True,
+    )
+    outDegreeDistribution: dict[int, int] = computeDegreeDistribution(
+        graph=graph,
+        inDegree=False,
+    )
+    clusterCoefficientDistribution: dict[
+        int, int
+    ] = computeClusterCoefficientDistribution(graph=graph)
+    nodeDistribution: dict[str, int] = computeNodeDistribution(graph=graph)
+
+    test: DataFrame = _dict2DataFrame(d=inDegreeDistribution)
+    print(test)
 
 
 if __name__ == "__main__":
