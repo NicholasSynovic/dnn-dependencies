@@ -1,7 +1,7 @@
 from argparse import Namespace
 from collections import defaultdict
 from pprint import pprint
-from typing import List, Set
+from typing import Any, List, Set
 
 from networkx import DiGraph, clustering, read_gexf
 from networkx.algorithms.community import louvain_communities
@@ -9,6 +9,13 @@ from networkx.classes.reportviews import NodeView
 from progress.bar import Bar
 
 from dnn_dependencies.args.similarity_args import getArgs
+
+
+def _sortDict(d: defaultdict | dict[Any, Any]) -> dict[Any, Any]:
+    foo: dict[Any, Any] = dict(d)
+    bar: dict[Any, Any] = dict(sorted(foo.items()))
+
+    return bar
 
 
 def countNodes(graph: DiGraph) -> int:
@@ -52,10 +59,7 @@ def computeDegreeDistribution(graph: DiGraph, inDegree: bool = True) -> dict[int
         else:
             _iterateOutDegree(nodes=nodes, bar=progress)
 
-    foo: dict[int, int] = dict(data)
-    bar: dict[int, int] = dict(sorted(foo.items()))
-
-    return bar
+    return _sortDict(d=data)
 
 
 def computeClusterCoefficientDistribution(graph: DiGraph) -> dict[int, int]:
@@ -73,10 +77,7 @@ def computeClusterCoefficientDistribution(graph: DiGraph) -> dict[int, int]:
             data[coefficient] += 1
             progress.next()
 
-    foo: dict[int, int] = dict(data)
-    bar: dict[int, int] = dict(sorted(foo.items()))
-
-    return bar
+    return _sortDict(d=data)
 
 
 def computeNodeDistribution(graph: DiGraph) -> dict[str, int]:
@@ -92,10 +93,7 @@ def computeNodeDistribution(graph: DiGraph) -> dict[str, int]:
             data[opType] += 1
             progress.next()
 
-    foo: dict[str, int] = dict(data)
-    bar: dict[str, int] = dict(sorted(foo.items()))
-
-    return bar
+    return _sortDict(d=data)
 
 
 def main() -> None:
