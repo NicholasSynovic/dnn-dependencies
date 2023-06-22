@@ -170,3 +170,4 @@ cython_debug/
 *.dot
 *.test
 *.pdf
+.DS_Store
