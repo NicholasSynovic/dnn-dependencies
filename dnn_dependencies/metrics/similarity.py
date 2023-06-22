@@ -3,7 +3,7 @@ from collections import defaultdict
 from pprint import pprint
 from typing import Any, List, Set
 
-from networkx import DiGraph, clustering, read_gexf
+from networkx import DiGraph, clustering, density, read_gexf
 from networkx.algorithms.community import louvain_communities
 from networkx.classes.reportviews import NodeView
 from progress.bar import Bar
@@ -16,6 +16,10 @@ def _sortDict(d: defaultdict | dict[Any, Any]) -> dict[Any, Any]:
     bar: dict[Any, Any] = dict(sorted(foo.items()))
 
     return bar
+
+
+def computeDensity(graph: DiGraph) -> int:
+    return density(G=graph)
 
 
 def countNodes(graph: DiGraph) -> int:
