@@ -1,5 +1,6 @@
 from argparse import Namespace
 from collections import defaultdict
+from json import dump
 from typing import Any, List, Set
 
 from networkx import DiGraph, clustering, density, read_gexf
@@ -78,7 +79,7 @@ def computeDegreeDistribution(graph: DiGraph, inDegree: bool = True) -> dict[int
     return _sortDict(d=data)
 
 
-def computeClusterCoefficientDistribution(graph: DiGraph) -> dict[int, int]:
+def computeClusteringCoefficientDistribution(graph: DiGraph) -> dict[int, int]:
     data: defaultdict = defaultdict(int)
 
     nodes: NodeView = graph.nodes()
@@ -96,7 +97,7 @@ def computeClusterCoefficientDistribution(graph: DiGraph) -> dict[int, int]:
     return _sortDict(d=data)
 
 
-def computeNodeDistribution(graph: DiGraph) -> dict[str, int]:
+def computeNodeTypeDistribution(graph: DiGraph) -> dict[str, int]:
     data: defaultdict = defaultdict(int)
 
     nodes: NodeView = graph.nodes(data="Operation Type")
@@ -112,31 +113,48 @@ def computeNodeDistribution(graph: DiGraph) -> dict[str, int]:
     return _sortDict(d=data)
 
 
-def main() -> None:
-    args: Namespace = getArgs()
+def createJSON(graph: DiGraph) -> dict[str, Any]:
+    data: dict[str, Any] = {}
 
-    graph: DiGraph = read_gexf(args.input[0])
-
-    graphDensity: float = computeDensity(graph=graph)
-    nodeCount: int = countNodes(graph=graph)
-    edgeCount: int = countEdges(graph=graph)
-    communityCount: int = countCommunities(graph=graph)
+    data["Graph Density"] = computeDensity(graph=graph)
+    data["Node Count"] = countNodes(graph=graph)
+    data["Edge Count"] = countEdges(graph=graph)
+    data["Community Count"] = countCommunities(graph=graph)
 
     inDegreeDistribution: dict[int, int] = computeDegreeDistribution(
         graph=graph,
         inDegree=True,
     )
+
     outDegreeDistribution: dict[int, int] = computeDegreeDistribution(
         graph=graph,
         inDegree=False,
     )
-    clusterCoefficientDistribution: dict[
-        int, int
-    ] = computeClusterCoefficientDistribution(graph=graph)
-    nodeDistribution: dict[str, int] = computeNodeDistribution(graph=graph)
 
-    test: DataFrame = _dict2DataFrame(d=inDegreeDistribution)
-    print(test)
+    clusteringCoefficientDistribution: dict[
+        int, int
+    ] = computeClusteringCoefficientDistribution(graph=graph)
+
+    nodeTypeDistribution: dict[str, int] = computeNodeTypeDistribution(graph=graph)
+
+    data["In Degree Distribution"] = inDegreeDistribution
+    data["Out Degree Distribution"] = outDegreeDistribution
+    data["Clustering Coefficient Distribution"] = clusteringCoefficientDistribution
+    data["Node Distribution"] = nodeTypeDistribution
+
+    return _sortDict(d=data)
+
+
+def main() -> None:
+    args: Namespace = getArgs()
+
+    graph: DiGraph = read_gexf(args.input[0])
+
+    json: dict[str, Any] = createJSON(graph=graph)
+
+    with open(args.output[0], "w") as jsonFile:
+        dump(obj=json, fp=jsonFile, indent=4)
+        jsonFile.close()
 
 
 if __name__ == "__main__":
