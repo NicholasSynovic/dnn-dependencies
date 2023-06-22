@@ -4,6 +4,7 @@ from pprint import pprint
 from typing import Any, List, Set
 
 from networkx import DiGraph, clustering, density, read_gexf
+from networkx.algorithms import average_shortest_path_length
 from networkx.algorithms.community import louvain_communities
 from networkx.classes.reportviews import NodeView
 from progress.bar import Bar
@@ -18,7 +19,7 @@ def _sortDict(d: defaultdict | dict[Any, Any]) -> dict[Any, Any]:
     return bar
 
 
-def computeDensity(graph: DiGraph) -> int:
+def computeDensity(graph: DiGraph) -> float:
     return density(G=graph)
 
 
@@ -105,7 +106,7 @@ def main() -> None:
 
     graph: DiGraph = read_gexf(args.input[0])
 
-    pprint(computeNodeDistribution(graph))
+    pprint(computeAverageShortestPath(graph))
 
 
 if __name__ == "__main__":
