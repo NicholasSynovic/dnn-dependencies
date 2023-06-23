@@ -132,11 +132,15 @@ def main() -> None:
         graph=graph, pattern=r"\/"
     )
 
-    condensedGraph: DiGraph = condenseLayers(
-        graph=condensedGraph, layerNodes=root_LayerNodes
+    #    condensedGraph: DiGraph = condenseLayers(
+    #        graph=condensedGraph, layerNodes=root_LayerNodes
+    #    )
+
+    condensedGraph: DiGraph = deleteRelevantNodes(
+        graph=condensedGraph, pattern="Constant"
     )
 
-    finalGraph: DiGraph = deleteRelevantNodes(graph=condensedGraph, pattern="Constant")
+    finalGraph: DiGraph = condensedGraph
 
     write_gexf(finalGraph, "test.gexf")
     write_dot(finalGraph, "test.dot")
