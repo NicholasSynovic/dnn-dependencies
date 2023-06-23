@@ -36,23 +36,24 @@ def main() -> None:
         key: str
         for key in dataKeys:
             condensedLayerNodeLabel: str = f"layer_{key}"
-            startNode: str = data[key][0]
-            endNode: str = data[key][-1]
-
-            parents: List[str] = list(graph.predecessors(n=startNode))
-            children: List[str] = list(graph.successors(n=endNode))
-
-            parentEdges: List[tuple[str, str]] = [
-                (parent, condensedLayerNodeLabel) for parent in parents
-            ]
-            childrenEdges: List[tuple[str, str]] = [
-                (child, condensedLayerNodeLabel) for child in children
-            ]
-
             graph.add_node(node_for_adding=condensedLayerNodeLabel)
 
-            graph.add_edges_from(ebunch_to_add=parentEdges)
-            graph.add_edges_from(ebunch_to_add=childrenEdges)
+            node: str
+            for node in data[key]:
+                nodeParentEdges: List[str] = list(graph.predecessors(n=node))
+                nodeChildEdges: List[str] = list(graph.successors(n=node))
+
+                layerNodeParentEdges: List[tuple[str, str]] = [
+                    (edge, condensedLayerNodeLabel) for edge in nodeParentEdges
+                ]
+                layerNodeChildEdges: List[tuple[str, str]] = [
+                    (edge, condensedLayerNodeLabel) for edge in nodeChildEdges
+                ]
+
+                graph.add_edges_from(ebunch_to_add=layerNodeParentEdges)
+                graph.add_edges_from(ebunch_to_add=layerNodeChildEdges)
+
+            graph.remove_nodes_from(nodes=data[key])
 
             progress.next()
 
