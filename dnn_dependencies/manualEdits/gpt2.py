@@ -23,7 +23,12 @@ def findRelevantNodes(
             idx: str = node[0]
             label: str = node[1]
 
-            match: Match = search(pattern=pattern, string=label)
+            try:
+                match: Match = search(pattern=pattern, string=label)
+            except TypeError:
+                progress.next()
+                continue
+
             if match:
                 data[match.group(0)].append(idx)
 
@@ -32,99 +37,68 @@ def findRelevantNodes(
     return data
 
 
-def main() -> None:
-    pattern: str = r"h\.(\d+)"
+def condenseLayers(graph: DiGraph, layerNodes: defaultdict[str, List[str]]) -> DiGraph:
+    dataKeys: List[str] = list(layerNodes.keys())
 
+    with Bar("Condensing layers... ", max=len(dataKeys)) as progress:
+        key: str
+        for key in dataKeys:
+            condensedLayerNodeLabel: str = f"layer_{key}"
+            graph.add_node(node_for_adding=condensedLayerNodeLabel)
+
+            node: str
+            for node in layerNodes[key]:
+                nodeParentEdges: List[str] = list(graph.predecessors(n=node))
+                nodeChildEdges: List[str] = list(graph.successors(n=node))
+
+                layerNodeParentEdges: List[tuple[str, str]] = [
+                    (edge, condensedLayerNodeLabel) for edge in nodeParentEdges
+                ]
+                layerNodeChildEdges: List[tuple[str, str]] = [
+                    (edge, condensedLayerNodeLabel) for edge in nodeChildEdges
+                ]
+
+                graph.add_edges_from(ebunch_to_add=layerNodeParentEdges)
+                graph.add_edges_from(ebunch_to_add=layerNodeChildEdges)
+
+            graph.remove_nodes_from(nodes=layerNodes[key])
+
+            progress.next()
+
+    return graph
+
+
+def main() -> None:
     graph: DiGraph = read_gexf("gpt2.gexf")
 
-    definedLayerNodes: defaultdict[str, List[str]] = findRelevantNodes(
-        graph=graph, pattern=pattern
+    h_LayerNodes: defaultdict[str, List[str]] = findRelevantNodes(
+        graph=graph,
+        pattern=r"h\.(\d+)",
     )
 
-    dataKeys: List[str] = list(definedLayerNodes.keys())
+    lnf_LayerNodes: defaultdict[str, List[str]] = findRelevantNodes(
+        graph=graph, pattern=r"ln_f"
+    )
 
-    with Bar("Condensing layers... ", max=len(dataKeys)) as progress:
-        key: str
-        for key in dataKeys:
-            condensedLayerNodeLabel: str = f"layer_{key}"
-            graph.add_node(node_for_adding=condensedLayerNodeLabel)
+    wp_LayerNodes: defaultdict[str, List[str]] = findRelevantNodes(
+        graph=graph, pattern=r"wp"
+    )
 
-            node: str
-            for node in data[key]:
-                nodeParentEdges: List[str] = list(graph.predecessors(n=node))
-                nodeChildEdges: List[str] = list(graph.successors(n=node))
+    wt_LayerNodes: defaultdict[str, List[str]] = findRelevantNodes(
+        graph=graph, pattern=r"wt"
+    )
 
-                layerNodeParentEdges: List[tuple[str, str]] = [
-                    (edge, condensedLayerNodeLabel) for edge in nodeParentEdges
-                ]
-                layerNodeChildEdges: List[tuple[str, str]] = [
-                    (edge, condensedLayerNodeLabel) for edge in nodeChildEdges
-                ]
+    condensedGraph: DiGraph = condenseLayers(graph=graph, layerNodes=h_LayerNodes)
+    condensedGraph: DiGraph = condenseLayers(graph=graph, layerNodes=lnf_LayerNodes)
+    condensedGraph: DiGraph = condenseLayers(graph=graph, layerNodes=wp_LayerNodes)
+    condensedGraph: DiGraph = condenseLayers(graph=graph, layerNodes=wt_LayerNodes)
 
-                graph.add_edges_from(ebunch_to_add=layerNodeParentEdges)
-                graph.add_edges_from(ebunch_to_add=layerNodeChildEdges)
+    root_LayerNodes: defaultdict[str, List[str]] = findRelevantNodes(
+        graph=graph, pattern=r"\/"
+    )
 
-            graph.remove_nodes_from(nodes=data[key])
+    condensedGraph: DiGraph = condenseLayers(
+        graph=condensedGraph, layerNodes=root_LayerNodes
+    )
 
-            progress.next()
-
-    rootNodes: defaultdict = defaultdict(list)
-
-    nodes: NodeView = graph.nodes(data="label")
-    with Bar("Identifying smaller layers... ", max=len(nodes)) as progress:
-        node: tuple[str, str]
-        for node in nodes:
-            idx: str = node[0]
-            label: str = node[1]
-
-            if idx.__contains__("layer"):
-                progress.next()
-                continue
-
-            try:
-                label.index("/")
-            except ValueError:
-                progress.next()
-                continue
-
-            splitLabel: List[str] = label.split("/")[1::]
-
-            if len(splitLabel) == 1:
-                progress.next()
-                continue
-
-            rootNodes[splitLabel[0]].append(idx)
-            progress.next()
-
-    dataKeys: List[str] = list(rootNodes.keys())
-
-    with Bar("Condensing layers... ", max=len(dataKeys)) as progress:
-        key: str
-        for key in dataKeys:
-            condensedLayerNodeLabel: str = f"layer_{key}"
-            graph.add_node(node_for_adding=condensedLayerNodeLabel)
-
-            node: str
-            for node in data[key]:
-                nodeParentEdges: List[str] = list(graph.predecessors(n=node))
-                nodeChildEdges: List[str] = list(graph.successors(n=node))
-
-                layerNodeParentEdges: List[tuple[str, str]] = [
-                    (edge, condensedLayerNodeLabel) for edge in nodeParentEdges
-                ]
-                layerNodeChildEdges: List[tuple[str, str]] = [
-                    (edge, condensedLayerNodeLabel) for edge in nodeChildEdges
-                ]
-
-                graph.add_edges_from(ebunch_to_add=layerNodeParentEdges)
-                graph.add_edges_from(ebunch_to_add=layerNodeChildEdges)
-
-            graph.remove_nodes_from(nodes=data[key])
-
-            progress.next()
-
-    write_gexf(graph, "gpt2_large-layers.gexf")
-
-
-if __name__ == "__main__":
-    main()
+    write_gexf(condensedGraph, "test.gexf")
