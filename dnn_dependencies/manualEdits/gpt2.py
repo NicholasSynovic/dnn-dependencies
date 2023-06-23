@@ -4,6 +4,7 @@ from typing import List
 
 from networkx import DiGraph, read_gexf, write_gexf
 from networkx.classes.reportviews import NodeView
+from networkx.drawing.nx_pydot import write_dot
 from progress.bar import Bar
 
 
@@ -68,6 +69,40 @@ def condenseLayers(graph: DiGraph, layerNodes: defaultdict[str, List[str]]) -> D
     return graph
 
 
+def deleteRelevantNodes(
+    graph: DiGraph, pattern: str, attribute: str = "label"
+) -> DiGraph:
+    data: List[str] = []
+
+    nodes: NodeView = graph.nodes(data=attribute)
+
+    with Bar(
+        f"Finding all relevant nodes to delete (matching regex pattern {pattern})... ",
+        max=len(nodes),
+    ) as progress:
+        node: tuple[str, str]
+        for node in nodes:
+            idx: str = node[0]
+            label: str = node[1]
+
+            try:
+                match: Match = search(pattern=pattern, string=label)
+            except TypeError:
+                progress.next()
+                continue
+
+            if match:
+                data.append(idx)
+
+            progress.next()
+
+    graph.remove_nodes_from(nodes=data)
+
+    print(f"Deleted {len(data)} node(s) from the graph")
+
+    return graph
+
+
 def main() -> None:
     graph: DiGraph = read_gexf("gpt2.gexf")
 
@@ -101,4 +136,11 @@ def main() -> None:
         graph=condensedGraph, layerNodes=root_LayerNodes
     )
 
-    write_gexf(condensedGraph, "test.gexf")
+    finalGraph: DiGraph = deleteRelevantNodes(graph=condensedGraph, pattern="Constant")
+
+    write_gexf(finalGraph, "test.gexf")
+    write_dot(finalGraph, "test.dot")
+
+
+if __name__ == "__main__":
+    main()
