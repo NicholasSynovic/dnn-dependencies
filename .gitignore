@@ -171,3 +171,4 @@ cython_debug/
 *.test
 *.pdf
 .DS_Store
+*.svg

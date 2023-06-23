@@ -88,7 +88,7 @@ def computeClusteringCoefficientDistribution(graph: DiGraph) -> dict[int, int]:
 def computeNodeTypeDistribution(graph: DiGraph) -> dict[str, int]:
     data: defaultdict = defaultdict(int)
 
-    nodes: NodeView = graph.nodes(data="Operation Type")
+    nodes: NodeView = graph.nodes(data="Operation_Type")
 
     with Bar(
         "Computing the distribution of node operations types... ", max=len(nodes)
@@ -105,7 +105,7 @@ def computeNodeTypePairingDistribution(graph: DiGraph) -> dict[str, int]:
     data: defaultdict = defaultdict(int)
 
     nodeAttributePairs: List[tuple[str, str]] = list(
-        node_attribute_xy(G=graph, attribute="Operation Type")
+        node_attribute_xy(G=graph, attribute="Operation_Type")
     )
 
     with Bar(
