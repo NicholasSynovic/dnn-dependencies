@@ -1,18 +1,35 @@
 from typing import List
 
 from networkx import DiGraph, read_gexf
-from networkx.classes.reportviews import NodeDataView, NodeView
+from networkx.classes.reportviews import NodeDataView, NodeView, OutEdgeView
 from progress.bar import Bar
 
 
 def addNodesToSubgraph(
-    headGraphNodes: NodeDataView | NodeView, subgraphNodes: List[str]
+    headGraphNodes: NodeDataView | NodeView,
+    subgraphNodes: List[str],
 ) -> DiGraph:
     subgraph: DiGraph = DiGraph()
 
     node: str
     for node in subgraphNodes:
         subgraph.add_node(node, **headGraphNodes[node])
+
+    return subgraph
+
+
+def addEdgesToSubgraph(
+    subgraph: DiGraph,
+    edgeData: OutEdgeView,
+    subgraphNodes: List[str],
+) -> DiGraph:
+    u: str
+    v: str
+    edgeAttributes: dict
+
+    for u, v, edgeAttributes in edgeData:
+        if u in subgraphNodes and v in subgraphNodes:
+            subgraph.add_edge(u, v, **edgeAttributes)
 
     return subgraph
 
