@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 from typing import List
 
 from networkx import DiGraph, read_gexf
@@ -5,12 +6,11 @@ from networkx.classes.reportviews import NodeDataView, NodeView, OutEdgeView
 from progress.bar import Bar
 
 
-def addNodesToSubgraph(
+def _addNodesToSubgraph(
+    subgraph: Digraph,
     headGraphNodes: NodeDataView | NodeView,
     subgraphNodes: List[str],
-) -> DiGraph:
-    subgraph: DiGraph = DiGraph()
-
+) -> None:
     node: str
     for node in subgraphNodes:
         subgraph.add_node(node, **headGraphNodes[node])
@@ -18,7 +18,7 @@ def addNodesToSubgraph(
     return subgraph
 
 
-def addEdgesToSubgraph(
+def _addEdgesToSubgraph(
     subgraph: DiGraph,
     edgeData: OutEdgeView,
     subgraphNodes: List[str],
@@ -34,12 +34,35 @@ def addEdgesToSubgraph(
     return subgraph
 
 
+def createSubgraph(
+    headGraphNodes: NodeDataView | NodeView,
+    headGraphEdgeData: OutEdgeView,
+    subgraphNodes: List[str],
+) -> DiGraph:
+    subgraph: DiGraph = DiGraph()
+
+    _addNodesToSubgraph(
+        subgraph=subgraph,
+        headGraphNodes=headGraphNodes,
+        subgraphNodes=subgraphNodes,
+    )
+    _addEdgesToSubgraph(
+        subgraph=subgraph,
+        edgeData=headGraphEdgeData,
+        subgraphNodes=subgraphNodes,
+    )
+
+    return subgraph
+
+
 def main() -> None:
     subgraphList: List[DiGraph] = []
 
     graph: DiGraph = read_gexf("bert-base-cased.gexf")
 
     nodes: NodeDataView | NodeView = graph.nodes()
+    edgeData: OutEdgeView = graph.edges.data()
+
     nodeList: List = list(nodes)
 
     with Bar("Computing all possible subgraphs... ", max=len(nodes)) as progress:
