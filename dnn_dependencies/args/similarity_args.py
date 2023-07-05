@@ -8,6 +8,11 @@ PROGRAM_NAME: str = "GEXF XML Graph Metrics Computer"
 
 
 def getArgs() -> Namespace:
+    """
+    The function `getArgs()` is used to parse command line arguments and return them as a Namespace
+    object.
+    :return: an instance of the `Namespace` class, which contains the parsed command-line arguments.
+    """
     parser: ArgumentParser = ArgumentParser(
         prog=PROGRAM_NAME,
         description="A program to compute graph metrics and store them as JSON format",

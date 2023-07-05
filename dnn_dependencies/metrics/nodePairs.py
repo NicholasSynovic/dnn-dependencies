@@ -11,8 +11,16 @@ G: nx.DiGraph = nx.read_gexf(
 )
 
 
-# NX list of tuples with every node and its children
 def nxToTuples(G: nx.DiGraph) -> list:
+    """
+    The function `nxToTuples` takes a directed graph `G` as input and returns a list of tuples, where
+    each tuple contains a node from `G` and its corresponding children.
+
+    :param G: The parameter G is a directed graph represented using the NetworkX library's DiGraph class
+    :type G: nx.DiGraph
+    :return: The function `nxToTuples` returns a list of tuples. Each tuple contains a node from the
+    input graph `G` and a list of its children nodes.
+    """
     nodePairs: List = []
     for node in G.nodes:
         children = list(G.successors(node))
@@ -20,9 +28,19 @@ def nxToTuples(G: nx.DiGraph) -> list:
     return nodePairs
 
 
-# Takes list of nodes and their children and puts it into a default dict first pairing node to child and then converting into
-# its node operator labels. Puts into a default dict and counts how many times each pair occurs
 def tuplesToPairDict(nodePairs: list):
+    """
+    The function `tuplesToPairDict` takes a list of node pairs and returns a dictionary that counts how
+    many times each pair occurs, where each pair consists of a parent label and a child label.
+
+    :param nodePairs: The parameter `nodePairs` is a list of tuples. Each tuple represents a pair of
+    nodes, where the first element is the parent node ID and the second element is a list of children
+    node IDs
+    :type nodePairs: list
+    :return: The function `tuplesToPairDict` returns a dictionary `data` that contains the count of how
+    many times each pair occurs in the `nodePairs` list. The keys of the dictionary are tuples
+    representing the parent-child pairs, and the values are the counts.
+    """
     data = defaultdict(int)
 
     for pair in nodePairs:
@@ -47,8 +65,16 @@ def tuplesToPairDict(nodePairs: list):
     return data
 
 
-# Plot data
 def plotDict(data: defaultdict) -> plt:
+    """
+    The function `plotDict` takes a dictionary as input and plots a horizontal bar chart to visualize
+    the distribution of key-value pairs in the dictionary.
+
+    :param data: The "data" parameter is a defaultdict object, which is a dictionary-like object that
+    provides a default value for keys that do not exist in the dictionary. In this case, the keys are
+    node-pairs and the values are the counts of those node-pairs
+    :type data: defaultdict
+    """
     pairs = list(data.keys())
     counts = list(data.values())
     plt.barh(
