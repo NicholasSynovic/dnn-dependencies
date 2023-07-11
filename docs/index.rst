@@ -3,13 +3,14 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Identifying Deep Neural Network (DNN) Dependencies Within Pre-Trained Models (PTMs)'s documentation!
-===============================================================================================================
+DNN Dependencies Within PTMs
+============================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
 
+    args
+    converters
+    metrics
 
 
 Indices and tables

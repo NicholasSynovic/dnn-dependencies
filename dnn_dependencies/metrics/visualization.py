@@ -3,11 +3,11 @@ import re
 
 import matplotlib.pyplot as plt
 
-with open("gpt2.json") as file:
-    model1 = json.load(file)
+# with open("gpt2.json") as file:
+#     model1 = json.load(file)
 
-with open("bert-base-cased.json") as file:
-    model2 = json.load(file)
+# with open("bert-base-cased.json") as file:
+#     model2 = json.load(file)
 
 
 def count(model1: json, model2: json, metricLabel: str) -> plt:
@@ -75,6 +75,6 @@ def distribution(model1: json, model2: json, metricLabel: str, scale: str) -> pl
     plt.show()
 
 
-count(model1, model2, "Edge Count")
+# count(model1, model2, "Edge Count")
 
-distribution(model1, model2, "Out Degree Distribution", "log")
+# distribution(model1, model2, "Out Degree Distribution", "log")

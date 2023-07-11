@@ -1,9 +1,10 @@
 from argparse import Namespace
 from collections import defaultdict
+from itertools import product
 from json import dump
-from typing import Any, List, Set
+from typing import Any, Generator, List, Set
 
-from networkx import DiGraph, clustering, density, read_gexf
+from networkx import DiGraph, clustering, density, node_attribute_xy, read_gexf
 from networkx.algorithms.community import louvain_communities
 from networkx.classes.reportviews import NodeView
 from progress.bar import Bar
@@ -167,7 +168,7 @@ def computeClusteringCoefficientDistribution(graph: DiGraph) -> dict[int, int]:
     ) as progress:
         node: str
         for node in nodes:
-            coefficient: int = clustering(G=graph, nodes=node)
+            coefficient: int | float = clustering(G=graph, nodes=node)
             data[coefficient] += 1
             progress.next()
 
@@ -189,7 +190,7 @@ def computeNodeTypeDistribution(graph: DiGraph) -> dict[str, int]:
     """
     data: defaultdict = defaultdict(int)
 
-    nodes: NodeView = graph.nodes(data="Operation Type")
+    nodes: NodeView = graph.nodes(data="Operation_Type")
 
     with Bar(
         "Computing the distribution of node operations types... ", max=len(nodes)
@@ -197,6 +198,26 @@ def computeNodeTypeDistribution(graph: DiGraph) -> dict[str, int]:
         opType: str
         for _, opType in nodes:
             data[opType] += 1
+            progress.next()
+
+    return _sortDict(d=data)
+
+
+def computeNodeTypePairingDistribution(graph: DiGraph) -> dict[str, int]:
+    data: defaultdict = defaultdict(int)
+
+    nodeAttributePairs: List[tuple[str, str]] = list(
+        node_attribute_xy(G=graph, attribute="Operation_Type")
+    )
+
+    with Bar(
+        "Computing the distribution of node operations types... ",
+        max=len(nodeAttributePairs),
+    ) as progress:
+        pair: tuple[str, str]
+        for pair in nodeAttributePairs:
+            key: str = f"{pair[0]}, {pair[1]}"
+            data[key] += 1
             progress.next()
 
     return _sortDict(d=data)
@@ -238,10 +259,15 @@ def createJSON(graph: DiGraph) -> dict[str, Any]:
 
     nodeTypeDistribution: dict[str, int] = computeNodeTypeDistribution(graph=graph)
 
+    nodeTypePairingDistribution: dict[str, int] = computeNodeTypePairingDistribution(
+        graph=graph
+    )
+
     data["In Degree Distribution"] = inDegreeDistribution
     data["Out Degree Distribution"] = outDegreeDistribution
     data["Clustering Coefficient Distribution"] = clusteringCoefficientDistribution
     data["Node Distribution"] = nodeTypeDistribution
+    data["Node Pairing Distribution"] = nodeTypePairingDistribution
 
     return _sortDict(d=data)
 
@@ -254,6 +280,8 @@ def main() -> None:
     args: Namespace = getArgs()
 
     graph: DiGraph = read_gexf(args.input[0])
+
+    computeNodeTypePairingDistribution(graph=graph)
 
     json: dict[str, Any] = createJSON(graph=graph)
 

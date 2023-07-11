@@ -3,7 +3,8 @@ from itertools import pairwise
 from typing import List
 
 from bs4 import BeautifulSoup, ResultSet, Tag
-from networkx import DiGraph, write_gexf
+from networkx import DiGraph
+from networkx.drawing.nx_pydot import write_dot
 from progress.bar import Bar
 
 from dnn_dependencies.args.gexfNodeLabels2graph_args import getArgs
@@ -95,7 +96,7 @@ def main() -> None:
     nodeLabels: List[str] = extractNodeLabels(dom=xmlDOM)
     edgeList: List[tuple[str, str]] = buildEdgeList(labels=nodeLabels)
     graph: DiGraph = buildDiGraph(edgeList=edgeList)
-    write_gexf(graph, args.output[0])
+    write_dot(graph, args.output[0])
 
 
 if __name__ == "__main__":

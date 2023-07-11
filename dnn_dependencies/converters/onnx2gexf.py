@@ -153,7 +153,7 @@ def buildXML(
 
     inputAttributeNode: Element = etree.SubElement(attributesNode, "attribute")
     inputAttributeNode.set("id", "type")
-    inputAttributeNode.set("title", "Operation Type")
+    inputAttributeNode.set("title", "Operation_Type")
     inputAttributeNode.set("type", "string")
 
     inputAttributeNode: Element = etree.SubElement(attributesNode, "attribute")

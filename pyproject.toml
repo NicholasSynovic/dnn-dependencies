@@ -21,6 +21,7 @@ numpy = "^1.24.3"
 pydot = "^1.4.2"
 torchviz = "^0.0.2"
 torchinfo = "^1.8.0"
+sphinx = "^7.0.1"
 
 [tool.poetry.group.dev.dependencies]
 netron = "^6.9.7"

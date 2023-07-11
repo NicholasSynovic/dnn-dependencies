@@ -6,9 +6,9 @@ from typing import List
 import matplotlib.pyplot as plt
 import networkx as nx
 
-G: nx.DiGraph = nx.read_gexf(
-    "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/onnxArchitecture/gpt2.gexf"
-)
+# G: nx.DiGraph = nx.read_gexf(
+#     "pt2.gexf"
+# )
 
 
 def nxToTuples(G: nx.DiGraph) -> list:
@@ -88,4 +88,4 @@ def plotDict(data: defaultdict) -> plt:
     plt.show()
 
 
-plotDict(tuplesToPairDict(nxToTuples(G)))
+# plotDict(tuplesToPairDict(nxToTuples(G)))
