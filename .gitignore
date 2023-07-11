@@ -172,3 +172,4 @@ cython_debug/
 *.pdf
 .DS_Store
 *.svg
+!requirements.txt
