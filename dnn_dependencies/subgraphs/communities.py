@@ -24,6 +24,20 @@ def createSubgraphs(graph: DiGraph, communities: List[set[int]]):
         nx.write_gexf(community, filePath)
 
 
+def getOperators(folderPath: str) -> List[str]:
+    for communitySubgraph in os.listdir(folderPath):
+        filePath = os.path.join(folderPath, communitySubgraph)
+        subgraph: DiGraph = read_gexf(filePath)
+        nodeOperations: List[str] = subgraph.nodes(data="type")
+
+    return nodeOperations
+
+
+# creating a list of subgraph.gexf files
+# reading .gexf files into digraphs
+# creating dictionary from subgraph
+
+
 def getDictionaries() -> dict:
     folderPath1 = "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/subgraphs/bert-base-cased"
     folderPath2 = "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/subgraphs/gpt2"
@@ -34,10 +48,7 @@ def getDictionaries() -> dict:
     for communitySubgraph in os.listdir(folderPath1):
         filePath = os.path.join(folderPath1, communitySubgraph)
         subgraph: DiGraph = read_gexf(filePath)
-        nodeOperations = [
-            data["label"].split("/")[-1].split("_")[0]
-            for _, data in subgraph.nodes(data=True)
-        ]
+        nodeOperations: List[str] = subgraph.nodes(data="type")
         key = communitySubgraph.replace(".gexf", "")
         model1Subgraphs[key] = nodeOperations
     print(model1Subgraphs)
@@ -45,10 +56,7 @@ def getDictionaries() -> dict:
     for communitySubgraph in os.listdir(folderPath2):
         filePath = os.path.join(folderPath2, communitySubgraph)
         subgraph: DiGraph = read_gexf(filePath)
-        nodeOperations = [
-            data["label"].split("/")[-1].split("_")[0]
-            for _, data in subgraph.nodes(data=True)
-        ]
+        nodeOperations: List[str] = subgraph.nodes(data="type")
         key = communitySubgraph.replace(".gexf", "")
         model2Subgraphs[key] = nodeOperations
     print(model2Subgraphs)
@@ -68,12 +76,12 @@ def compareDicts(model1Subgraphs: dict, model2Subgraphs: dict):
 
 
 def main() -> None:
-    graph: DiGraph = read_gexf("gpt2.gexf")
-    communities = getCommunities(graph)
-    createSubgraphs(graph, communities)
-    # model1Subgraphs, model2Subgraphs = getDictionaries()
-    # matches = compareDicts(**model1Subgraphs, **model2Subgraphs)
-    # print("keys with matching values: ", matches)
+    # graph: DiGraph = read_gexf("gpt2.gexf")
+    # communities = getCommunities(graph)
+    # createSubgraphs(graph, communities)
+    model1Subgraphs, model2Subgraphs = getDictionaries()
+    matches = compareDicts(**model1Subgraphs, **model2Subgraphs)
+    print("keys with matching values: ", matches)
 
 
 main()
