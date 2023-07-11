@@ -12,6 +12,7 @@ pydot
 pydot
 requests
 sphinx
+sphinx-rtd-theme
 torch
 torchaudio
 torchinfo
