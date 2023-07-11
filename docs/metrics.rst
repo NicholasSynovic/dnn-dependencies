@@ -1,4 +1,4 @@
-dnn\_dependencies.metrics package
+Metrics package
 =================================
 
 Submodules

@@ -1,4 +1,4 @@
-dnn\_dependencies.converters package
+Converters package
 ====================================
 
 Submodules
