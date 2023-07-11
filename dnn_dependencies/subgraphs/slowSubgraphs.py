@@ -64,40 +64,38 @@ def main() -> None:
     edgeData: OutEdgeView = graph.edges.data()
 
     with Bar("Computing all possible subgraphs... ", max=len(nodes)) as progress:
+        subgraph: DiGraph = DiGraph()
 
-        def _run(headGraphNodes: NodeDataView | NodeView) -> None:
-            subgraph: DiGraph = DiGraph()
+        nodeList: List = list(nodes)
 
-            nodeList: List = list(headGraphNodes)
+        tortiseNode: str
+        hareNode: str
 
-            tortiseNode: str
-            hareNode: str
+        for tortiseNode in nodes:
+            foo: int = int(tortiseNode)
 
-            for tortiseNode in headGraphNodes:
-                foo: int = int(tortiseNode)
+            for hareNode in nodes:
+                bar: int = int(hareNode)
 
-                for hareNode in headGraphNodes:
-                    bar: int = int(hareNode)
+                if foo > bar:
+                    continue
 
-                    if foo > bar:
-                        continue
+                subgraph: DiGraph = DiGraph()
+                subgraphNodes: List[str] = nodeList[foo:bar]
 
-                    subgraph: DiGraph = DiGraph()
-                    subgraphNodes: List[str] = nodeList[foo:bar]
+                _addNodesToSubgraph(
+                    subgraph=subgraph,
+                    headGraphNodes=nodes,
+                    subgraphNodes=subgraphNodes,
+                )
+                _addEdgesToSubgraph(
+                    subgraph=subgraph,
+                    edgeData=edgeData,
+                    subgraphNodes=subgraphNodes,
+                )
 
-                    _addNodesToSubgraph(
-                        subgraph=subgraph,
-                        headGraphNodes=headGraphNodes,
-                        subgraphNodes=subgraphNodes,
-                    )
-
-                    subgraphList.append(subgraph)
+                subgraphList.append(subgraph)
             progress.next()
-
-        with ThreadPoolExecutor(max_workers=4) as executor:
-            executor.map(_run, nodes)
-
-        print(len(subgraphList))
 
 
 if __name__ == "__main__":
