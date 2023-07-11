@@ -21,6 +21,14 @@ OUTPUT_DF_LIST: List[DataFrame] = []
 
 
 def extractLayer(nodeName: str) -> str:
+    """
+    The function `extractLayer` takes a `nodeName` as input and returns the layer number extracted from
+    the node name using a regular expression pattern.
+
+    :param nodeName: The `nodeName` parameter is a string that represents the name of a node
+    :type nodeName: str
+    :return: a string that represents the layer extracted from the given `nodeName`.
+    """
     pattern: str = r"layer\.(\d+)"
 
     layer: str
@@ -41,6 +49,32 @@ def buildDF(
     outputs: List[str],
     color: List[str],
 ) -> DataFrame:
+    """
+    The function `buildDF` takes in various parameters and returns a DataFrame object with the provided
+    data.
+
+    :param nodeID: The `nodeID` parameter is an integer that represents the ID of the node. It is used
+    to uniquely identify a node in a graph or network
+    :type nodeID: int
+    :param name: The `name` parameter is a string that represents the name of the node
+    :type name: str
+    :param opType: The `opType` parameter represents the operation type of the node. It can be a string
+    that describes the type of operation being performed by the node, such as "add", "multiply",
+    "convolution", etc
+    :type opType: str
+    :param layer: The "layer" parameter represents the layer in which the node is located. It is a
+    string that specifies the layer name or number
+    :type layer: str
+    :param inputs: A list of strings representing the input nodes to the current node
+    :type inputs: List[str]
+    :param outputs: The "outputs" parameter is a list of strings that represents the output nodes of the
+    current node. Each string in the list represents the ID of an output node
+    :type outputs: List[str]
+    :param color: The "color" parameter is a list of strings that represents the color of the node. Each
+    string in the list corresponds to a specific color
+    :type color: List[str]
+    :return: a DataFrame object.
+    """
     data: dict[str, List[int | str | List[str]]] = {
         "ID": [nodeID],
         "Name": [name],
@@ -54,6 +88,20 @@ def buildDF(
 
 
 def dfIDQuery(df: DataFrame, query: str) -> tuple[str, str] | None:
+    """
+    The `dfIDQuery` function takes a DataFrame and a query string as input, and returns a tuple
+    containing the name and ID of the first row that matches the query in the "Outputs" column, or None
+    if no match is found.
+
+    :param df: DataFrame - The input DataFrame containing the data
+    :type df: DataFrame
+    :param query: The `query` parameter is a string that represents the search query. It is used to
+    search for a specific value in the "Outputs" column of the DataFrame
+    :type query: str
+    :return: The function `dfIDQuery` returns a tuple containing the name and ID of the first row in the
+    DataFrame `df` that matches the given query. The name is returned as a string and the ID is returned
+    as a string. If no matching row is found, the function returns `None`.
+    """
     mask = df["Outputs"].apply(lambda x: query in x)
     tempDF: DataFrame = df[mask]
 
@@ -67,6 +115,20 @@ def buildXML(
     df: DataFrame,
     mode: str = "production",
 ) -> str:
+    """
+    The `buildXML` function takes a DataFrame as input and generates an XML string in GEXF format based
+    on the data in the DataFrame.
+
+    :param df: The `df` parameter is a DataFrame object that contains the data to be used for building
+    the XML. It is expected to have the following columns: `ID`, `NAME`, `OPTYPE`, `LAYER`, `INPUTS`,
+    `OUTPUTS`, and `COLOR`
+    :type df: DataFrame
+    :param mode: The `mode` parameter in the `buildXML` function is used to specify the mode in which
+    the XML is being built. It has a default value of "production", but can be overridden by passing a
+    different value, defaults to production
+    :type mode: str (optional)
+    :return: The function `buildXML` returns a string representation of an XML document.
+    """
     edgeList: List[tuple[tuple[str, str], str]] = []
 
     version: str
@@ -173,6 +235,10 @@ def buildXML(
 
 
 def main() -> None:
+    """
+    The main function extracts information from an ONNX computational graph, builds a DataFrame, and
+    writes the data to an XML file.
+    """
     args: Namespace = getArgs()
     colors: List[str] = list(XKCD_COLORS.values())
 
