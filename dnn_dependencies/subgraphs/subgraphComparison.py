@@ -60,7 +60,7 @@ def digraphsToTuples(subgraphs: List[DiGraph]) -> List[tuple]:
     return data
 
 
-def comparison(model1Data, model2Data) -> List[bool]:
+def comparison(model1Data: List[tuple], model2Data: List[tuple]) -> List[bool]:
     result = difflib.SequenceMatcher(None, model1Data, model2Data)
     percent = result.ratio()
     print(percent)

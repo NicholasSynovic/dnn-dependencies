@@ -1,66 +1,31 @@
+# from pprint import pprint as print
 import difflib
-import os
-from pprint import pprint as print
+import time
 from typing import List
 
 import networkx as nx
 from networkx import DiGraph, read_gexf
 from networkx.classes.reportviews import NodeDataView
+from progress.bar import Bar
 
 
-def listDirectory(folderPath: str):
-    return os.listdir(path=folderPath)
-
-
-def subgraphtoTuple(subgraph: DiGraph) -> tuple:
-    data: List[str] = []
-    nodeOperations: NodeDataView = subgraph.nodes(data="Operation_Type")
-    nodeOperationsList: List[tuple[str, str]] = list(nodeOperations)
-
-    pair: tuple[str, str]
-    for pair in nodeOperationsList:
-        data.append(pair[1])
-
-    data: tuple = tuple(data)
-    return data
-
-
-#
-def folderToSubgraph(folderPath: str) -> List[str]:
-    subgraphPaths: List[str] = []
-
-    subgraphFiles: list = listDirectory(folderPath=folderPath)
-
-    file: str
-    for file in subgraphFiles:
-        subgraphPaths.append(folderPath + file)
-
-    return subgraphPaths
-
-
-#
-def pathsToDiGraphs(subgraphPaths: List[str]) -> List[DiGraph]:
-    subgraphs: List[DiGraph] = []
-
-    path: str
-    for path in subgraphPaths:
-        subgraph: DiGraph = read_gexf(path=path)
-        subgraphs.append(subgraph)
-    return subgraphs
-
-
-#
-def digraphsToTuples(subgraphs: List[DiGraph]) -> List[tuple]:
+def graphToTuples(graph: DiGraph) -> list[tuple]:
+    nodeOps: List[tuple] = list(graph.nodes(data="Operation_Type"))
+    graphOps: List[str] = [pair[1] for pair in nodeOps]
     data: List[tuple] = []
-
-    subgraph: DiGraph
-    for subgraph in subgraphs:
-        dataTuple: tuple = subgraphtoTuple(subgraph=subgraph)
-        data.append(dataTuple)
+    idx: int
+    step: int = 2
+    with Bar("iterating", max=len(graphOps)) as bar:
+        while step < len(graphOps):
+            for idx in range(len(graphOps)):
+                pair: list[str] = graphOps[idx : idx + step]
+                data.append(tuple(pair))
+            step += 1
+            bar.next()
     return data
 
 
-def comparison(model1Data, model2Data) -> List[bool]:
+def comparison(model1Data: List[tuple], model2Data: List[tuple]) -> List[bool]:
     result = difflib.SequenceMatcher(None, model1Data, model2Data)
     percent = result.ratio()
     print(percent)
@@ -68,34 +33,14 @@ def comparison(model1Data, model2Data) -> List[bool]:
 
 
 def main() -> None:
-    # model 1
-    folderPath1: str = "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/subgraphs/bert-base-uncased/"
-    subgraphPaths1: List[str] = folderToSubgraph(folderPath=folderPath1)
-    subgraphs1 = pathsToDiGraphs(subgraphPaths1)
-    data1: List[tuple] = digraphsToTuples(subgraphs1)
-
-    # model 2
-    folderPath2: str = "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/subgraphs/felflare-bert-restore-punctuation/"
-    subgraphPaths2: List[str] = folderToSubgraph(folderPath=folderPath2)
-    subgraphs2 = pathsToDiGraphs(subgraphPaths2)
-    data2: List[tuple] = digraphsToTuples(subgraphs2)
-
-    comparison(data1, data2)
+    tic = time.perf_counter
+    graph1: nx.DiGraph = read_gexf("bert-base-cased.gexf")
+    graph2: nx.DiGraph = read_gexf("gpt2.gexf")
+    list1: list[tuple] = graphToTuples(graph1)
+    list2: list[tuple] = graphToTuples(graph2)
+    comparison(list1, list2)
+    toc = time.perf_counter
+    print(tic - toc)
 
 
 main()
-
-
-# results: List[bool] = []
-# trueResult: List[tuple, tuple] = []
-# pairings = product(model1Data, model2Data)
-# i: tuple
-# for i in pairings:
-#     results.append(i[0] == i[1])
-#     if (i[0]==i[1]):
-#         countTrue += 1
-#         trueResult.append(i)
-#     countTotal += 1
-# print(countTrue)
-# print(countTotal)
-# print(f"{(countTrue / countTotal) * 100}%")
