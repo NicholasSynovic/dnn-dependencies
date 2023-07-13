@@ -17,7 +17,7 @@ def main() -> None:
     df = convertJson(
         "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/metrics/example.json"
     )
-    convertDf("", "", df)
+    print(convertDf("example.db", "example", df))
 
 
 main()
