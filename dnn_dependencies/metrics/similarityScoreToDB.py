@@ -259,7 +259,7 @@ def computeNumberOfAttracingComponents(graph: DiGraph, bar: Bar) -> int:
     return value
 
 
-def createJSON(graph: DiGraph, modelName, modelFilepath) -> dict[str, Any]:
+def createDict(graph: DiGraph, modelName, modelFilepath) -> dict[str, Any]:
     """
     The function `createJSON` takes a directed graph as input and returns a dictionary containing
     various statistics and distributions computed from the graph.
@@ -274,9 +274,9 @@ def createJSON(graph: DiGraph, modelName, modelFilepath) -> dict[str, Any]:
     """
     data: dict[str, Any] = {}
 
-    with Bar("JSON file... ", max=30) as bar:
-        data["Model name"] = modelName
-        data["Model filepath"] = modelFilepath
+    with Bar("Computing metrics ", max=30) as bar:
+        data["Model Name"] = modelName
+        data["Model Filepath"] = modelFilepath
         data["Is Semiconnected"] = checkIsSemiconnected(graph=graph, bar=bar)
         data["Is Attracting Component"] = checkIsAttractingComponent(
             graph=graph, bar=bar
@@ -339,58 +339,49 @@ def convertDf(databaseFile: str, tableName: str, df: pd.DataFrame) -> int:
     return rows
 
 
+def dictToDF(dict1: dict, dict2: dict, dict3: dict) -> pd.DataFrame:
+    df1 = pd.DataFrame([dict1]).set_index("Model Name")
+    df2 = pd.DataFrame([dict2]).set_index("Model Name")
+    df3 = pd.DataFrame([dict3]).set_index("Model Name")
+    finalDF = pd.concat([df1, df2, df3])
+    return finalDF
+
+
+def convertDf(databaseFile: str, tableName: str, df: pd.DataFrame) -> int:
+    sqlite = sqlite3.connect(databaseFile)
+
+    rows: int = df.to_sql(tableName, sqlite, if_exists="append")
+
+    return rows
+
+
 def main() -> None:
-    graph: DiGraph = read_gexf("gpt2.gexf")
-    modelName = "gpt2"
-    modelFilepath = "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/metrics/gpt2.gexf"
+    graph1: DiGraph = read_gexf("gpt2.gexf")
+    modelName1 = "gpt2"
+    modelFilepath1 = "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/metrics/gpt2.gexf"
 
-    with Bar("Computing metrics ({})... ", max=30) as bar:
-        checkIsSemiconnected(graph=graph, bar=bar)
-        checkIsAttractingComponent(graph=graph, bar=bar)
-        sc: int = checkIsStronglyConnected(graph=graph, bar=bar)
-        checkIsWeaklyConnected(graph=graph, bar=bar)
-        checkIsTriad(graph=graph, bar=bar)
-        checkIsRegular(graph=graph, bar=bar)
-        checkIsPlanar(graph=graph, bar=bar)
-        checkIsDistanceRegular(graph=graph, bar=bar)
-        checkIsStronglyRegular(graph=graph, bar=bar)
-        checkIsBipartite(graph=graph, bar=bar)
-        checkIsAperiodic(graph=graph, bar=bar)
-        checkIsDirectedAcyclicGraph(graph=graph, bar=bar)
-        computeRadius(graph=graph, bar=bar)
-        computeDAGLongestPathLength(graph=graph, bar=bar)
-        computeNumberOfIsolates(graph=graph, bar=bar)
-        computeRobinsAlexanderClustering(graph=graph, bar=bar)
-        computeTransitivity(graph=graph, bar=bar)
-        computeNumberOfNodes(graph=graph, bar=bar)
-        computeDensity(graph=graph, bar=bar)
-        computeNumberOfEdges(graph=graph, bar=bar)
-        computeNumberOfCommunities(graph=graph, bar=bar)
-        computeDegreeAssortativityCoefficient(graph=graph, bar=bar)
-        computeAttributeAssortativityCoefficient(graph=graph, bar=bar)
-        computeNumberOfWeaklyConnectedComponents(graph=graph, bar=bar)
-        computeNumberOfStronglyConnectedComponents(graph=graph, bar=bar)
-        computeNumberOfAttracingComponents(graph=graph, bar=bar)
-        computeBarycenter(graph=graph, bar=bar)
-        computeDegreePearsonCorrelationCoefficient(graph=graph, bar=bar)
-        if sc == 1:
-            computeAverageShortestPathLength(graph=graph, bar=bar)
-            computeDiameter(graph=graph, bar=bar)
-        else:
-            bar.next(n=2)
+    graph2: DiGraph = read_gexf("bert-base-cased.gexf")
+    modelName2 = "bert-base-cased"
+    modelFilepath2 = "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/metrics/bert-base-cased.gexf"
 
-    json: dict[str, Any] = createJSON(
-        graph=graph, modelName=modelName, modelFilepath=modelFilepath
+    graph3: DiGraph = read_gexf("bert-base-uncased.gexf")
+    modelName3 = "bert-base-uncased"
+    modelFilepath3 = "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/metrics/bert-base-uncased.gexf"
+
+    dict1: dict[str, Any] = createDict(
+        graph=graph1, modelName=modelName1, modelFilepath=modelFilepath1
+    )
+    dict2: dict[str, Any] = createDict(
+        graph=graph2, modelName=modelName2, modelFilepath=modelFilepath2
+    )
+    dict3: dict[str, Any] = createDict(
+        graph=graph3, modelName=modelName3, modelFilepath=modelFilepath3
     )
 
-    with open("gpt2.json", "w") as jsonFile:
-        dump(obj=json, fp=jsonFile, indent=4)
-        jsonFile.close()
+    finalDF = dictToDF(dict1=dict1, dict2=dict2, dict3=dict3)
 
-    # df = convertJson("/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/metrics/bert-base-cased.json")
-    # df.set_index("id", inplace=True)
-
-    # print(convertDf("example.db", "scores", df))
+    print(convertDf(databaseFile="models.db", tableName="scores", df=finalDF))
+    print(finalDF)
 
 
 if __name__ == "__main__":
