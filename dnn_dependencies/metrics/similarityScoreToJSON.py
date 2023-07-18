@@ -1,5 +1,7 @@
 import random
-from typing import List, Literal, Set
+from collections import defaultdict
+from json import dump
+from typing import Any, List, Literal, Set
 
 import numpy
 from networkx import *
@@ -254,8 +256,74 @@ def computeNumberOfAttracingComponents(graph: DiGraph, bar: Bar) -> int:
     return value
 
 
+def createJSON(graph: DiGraph, modelName, modelFilepath) -> dict[str, Any]:
+    """
+    The function `createJSON` takes a directed graph as input and returns a dictionary containing
+    various statistics and distributions computed from the graph.
+
+    :param graph: The `graph` parameter is of type `DiGraph`, which represents a directed graph. It is
+    used as input to compute various properties of the graph, such as density, node count, edge count,
+    community count, degree distribution, clustering coefficient distribution, and node type
+    distribution
+    :type graph: DiGraph
+    :return: The function `createJSON` returns a dictionary containing various metrics and distributions
+    computed from the input graph.
+    """
+    data: dict[str, Any] = {}
+
+    with Bar("JSON file... ", max=30) as bar:
+        data[modelName] = modelFilepath
+        data["Is Semiconnected"] = checkIsSemiconnected(graph=graph, bar=bar)
+        data["Is attracting component"] = checkIsAttractingComponent(
+            graph=graph, bar=bar
+        )
+        data["Is strongly connected"] = checkIsStronglyConnected(graph=graph, bar=bar)
+        data["Is weakly connected"] = checkIsWeaklyConnected(graph=graph, bar=bar)
+        data["Is Triad"] = checkIsTriad(graph=graph, bar=bar)
+        data["Is regular"] = checkIsRegular(graph=graph, bar=bar)
+        data["Is planar"] = checkIsPlanar(graph=graph, bar=bar)
+        data["Is distance regular"] = checkIsDistanceRegular(graph=graph, bar=bar)
+        data["Is strongly regular"] = checkIsStronglyRegular(graph=graph, bar=bar)
+        data["Is bipartite"] = checkIsBipartite(graph=graph, bar=bar)
+        data["Is aperiodic"] = checkIsAperiodic(graph=graph, bar=bar)
+        data["Is directed acyclic"] = checkIsDirectedAcyclicGraph(graph=graph, bar=bar)
+        data["Radius"] = computeRadius(graph=graph, bar=bar)
+        data["DAG longest path length"] = computeDAGLongestPathLength(
+            graph=graph, bar=bar
+        )
+        data["Number of isolates"] = computeNumberOfIsolates(graph=graph, bar=bar)
+        data["Robins Alexaner Clustering"] = computeRobinsAlexanderClustering(
+            graph=graph, bar=bar
+        )
+        data["Transitivity"] = computeTransitivity(graph=graph, bar=bar)
+        data["Number of Nodes"] = computeNumberOfNodes(graph=graph, bar=bar)
+        data["Density"] = computeDensity(graph=graph, bar=bar)
+        data["Number of edges"] = computeNumberOfEdges(graph=graph, bar=bar)
+        data["Number of communities"] = computeNumberOfCommunities(graph=graph, bar=bar)
+        data["Degree assortivity coefficient"] = computeDegreeAssortativityCoefficient(
+            graph=graph, bar=bar
+        )
+        data[
+            "Attribute assortivity coefficient"
+        ] = computeAttributeAssortativityCoefficient(graph=graph, bar=bar)
+        data[
+            "Number of weakly connected components"
+        ] = computeNumberOfWeaklyConnectedComponents(graph=graph, bar=bar)
+        data[
+            "Number of strongly computed components"
+        ] = computeNumberOfStronglyConnectedComponents(graph=graph, bar=bar)
+        data["Number of attracting components"] = computeNumberOfAttracingComponents(
+            graph=graph, bar=bar
+        )
+        data["Barycenter"] = computeBarycenter(graph=graph, bar=bar)
+
+    return data
+
+
 def main() -> None:
     graph: DiGraph = read_gexf("bert-base-cased.gexf")
+    modelName = "bert-base-cased"
+    modelFilepath = "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/metrics/bert-base-cased.gexf"
 
     with Bar("Computing metrics ({})... ", max=30) as bar:
         checkIsSemiconnected(graph=graph, bar=bar)
@@ -291,6 +359,14 @@ def main() -> None:
             computeDiameter(graph=graph, bar=bar)
         else:
             bar.next(n=2)
+
+    json: dict[str, Any] = createJSON(
+        graph=graph, modelName=modelName, modelFilepath=modelFilepath
+    )
+
+    with open("bert-base-cased.json", "w") as jsonFile:
+        dump(obj=json, fp=jsonFile, indent=4)
+        jsonFile.close()
 
         # computeDegreePearsonCorrelationCoefficient(graph=graph, bar=bar)
 
