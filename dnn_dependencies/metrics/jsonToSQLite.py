@@ -18,12 +18,12 @@ def convertDf(databaseFile: str, tableName: str, df: pd.DataFrame) -> int:
 
 def main() -> None:
     df = convertJson(
-        "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/metrics/example.json"
+        "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/metrics/modelData.json"
     )
-    df.set_index("id", inplace=True)
+    df.set_index("Model name", inplace=True)
 
-    # print(df)
-    print(convertDf("example.db", "scores", df))
+    print(df)
+    print(convertDf("models.db", "scores", df))
 
 
 main()
