@@ -6,24 +6,6 @@ authors = ["Nicholas M. Synovic <nicholas.synovic@gmail.com>"]
 readme = "README.md"
 packages = [{include = "dnn_dependencies"}]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<3.12"
-matplotlib = "^3.7.1"
-lxml = "^4.9.2"
-pandas = "^2.0.2"
-progress = "^1.6"
-requests = "^2.31.0"
-beautifulsoup4 = "^4.12.2"
-treelib = "^1.6.4"
-optimum = {version = "^1.8.7", extras = ["exporters"]}
-numpy = "^1.24.3"
-pydot = "^1.4.2"
-torchviz = "^0.0.2"
-torchinfo = "^1.8.0"
-sphinx = "^7.0.1"
-networkx = "^3.1"
-scipy = "^1.11.1"
-
 [tool.poetry.group.dev.dependencies]
 netron = "^6.9.7"
 pydot = "^1.4.2"

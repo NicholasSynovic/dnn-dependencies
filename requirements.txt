@@ -9,8 +9,8 @@ pandas
 poetry
 progress
 pydot
-pydot
 requests
+scipy
 sphinx
 sphinx-rtd-theme
 torch
