@@ -16,7 +16,7 @@ if [ ! -d "$output"]; then
 fi
 
 #path to program that is being wrapped
-program="/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/converters/onnx2gexf.py"
+program="poetry run python onnx2gexf.py"
 
 #Iterate through each onnx file
 for onnxFile in "$input"/*.onnx; do
