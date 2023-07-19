@@ -100,6 +100,24 @@ def createDF(txtData: dict[str, Path], jsonData: DataFrame) -> DataFrame:
     return df
 
 
+def createCommands(df: DataFrame) -> None:
+    dfSize: int = df.shape[0]
+    cmdList: List[str] = []
+
+    with Bar("Creating a list of commands and saving to file... ", max=dfSize) as bar:
+        row: Tuple[str, str, str, str]
+        for row in df.itertuples(index=False):
+            output: str = row[0].replace("/", "_") + ".onnx"
+            # optimum-cli export onnx --model $model --framework pt --atol 1 --monolith $outputDirectory
+            cmd: str = f"optimum-cli export --monolith --atol 1 --model {row[1]} --task {row[2]} --output {output}\n"
+            cmdList.append(cmd)
+            bar.next()
+
+    with open("commands.txt", "w") as cmdFile:
+        cmdFile.writelines(cmdList)
+        cmdFile.close()
+
+
 def main() -> None:
     DIRECTORY: Path = Path("HF_TextFiles")
 
@@ -113,7 +131,7 @@ def main() -> None:
 
     df: DataFrame = createDF(txtData=txtData, jsonData=jsonDF)
 
-    print(df)
+    createCommands(df=df)
 
 
 if __name__ == "__main__":
