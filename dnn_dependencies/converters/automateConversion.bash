@@ -7,23 +7,23 @@
 # fi
 
 #input output paths
-inputPath="$1"
-outputPath="$2"
-
+# inputPath="$1"
+# outputPath="$2"
 
 #Iterate through each onnx file in input folder
-for inputFile in $(ls $inputPath); do
-    echo $inputFile
-    if [ -f "$inputFile" ]; then
-        echo "file exists"
-        #get filename w/o extension and save as gexf
-        filename=$(basename "$inputFile")
-        echo "$inputFile"
-        outputFile="$outputPath/${filename%.*}.gexf"
-        echo "converted file name"
-        onnx2gexf -i "$inputFile" -o "$outputFile"
-        echo "called program"
-    else
-        echo "can't find file"
-    fi
+for f in $(ls $1/*.onnx);
+do
+    onnx2gexf --input $f --mode production --output "$f.gexf"
 done
+
+# #Iterate through each onnx file in input folder
+# for inputFile in $(ls $inputPath); do
+#     if [ -f "$inputFile" ]; then
+#         #get filename w/o extension and save as gexf
+#         filename=$(basename "$inputFile")
+#         outputFile="$outputPath/${filename%.*}.gexf"
+#         onnx2gexf -i "$inputFile" -o "$outputFile"
+#     else
+#         echo "can't find file"
+#     fi
+# done
