@@ -33,12 +33,4 @@ def getArgs() -> Namespace:
         required=True,
         help="Path to a GEXF XML file",
     )
-    parser.add_argument(
-        "-o",
-        "--output",
-        nargs=1,
-        type=Path,
-        required=True,
-        help="Path to store JSON output",
-    )
     return parser.parse_args()

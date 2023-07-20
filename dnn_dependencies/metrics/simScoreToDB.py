@@ -379,8 +379,9 @@ def main() -> None:
 
     df = dictToDF(dict=scoreDict)
 
-    print(convertDf(databaseFile=args.output[0], tableName="scores", df=df))
-    print(df)
+    print(convertDf(databaseFile="models.db", tableName="scores", df=df))
+    print("added to database")
+    # print(df)
 
 
 # databaseFile="models.db"
