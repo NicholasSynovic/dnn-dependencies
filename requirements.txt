@@ -4,6 +4,7 @@ matplotlib
 netron
 networkx
 numpy
+onnx
 optimum
 pandas
 poetry
