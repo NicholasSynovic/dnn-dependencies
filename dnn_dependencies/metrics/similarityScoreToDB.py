@@ -1,7 +1,12 @@
+import json
 import random
-from typing import List, Literal, Set
+import sqlite3
+from collections import defaultdict
+from json import dump
+from typing import Any, List, Literal, Set
 
 import numpy
+import pandas as pd
 from networkx import *
 from networkx.algorithms import *
 from networkx.algorithms.approximation import *
@@ -202,14 +207,14 @@ def computeAttributeAssortativityCoefficient(graph: DiGraph, bar: Bar) -> float:
     return value
 
 
-# def computeDegreePearsonCorrelationCoefficient(graph: DiGraph, bar: Bar) -> float:
-#     value: float = degree_pearson_correlation_coefficient(
-#         G=graph,
-#         x="out",
-#         y="in",
-#     )
-#     bar.next()
-#     return value
+def computeDegreePearsonCorrelationCoefficient(graph: DiGraph, bar: Bar) -> float:
+    value: float = degree_pearson_correlation_coefficient(
+        G=graph,
+        x="out",
+        y="in",
+    )
+    bar.next()
+    return value
 
 
 def checkIsSemiconnected(graph: DiGraph, bar: Bar) -> int:
@@ -254,45 +259,129 @@ def computeNumberOfAttracingComponents(graph: DiGraph, bar: Bar) -> int:
     return value
 
 
+def createDict(graph: DiGraph, modelName, modelFilepath) -> dict[str, Any]:
+    """
+    The function `createJSON` takes a directed graph as input and returns a dictionary containing
+    various statistics and distributions computed from the graph.
+
+    :param graph: The `graph` parameter is of type `DiGraph`, which represents a directed graph. It is
+    used as input to compute various properties of the graph, such as density, node count, edge count,
+    community count, degree distribution, clustering coefficient distribution, and node type
+    distribution
+    :type graph: DiGraph
+    :return: The function `createJSON` returns a dictionary containing various metrics and distributions
+    computed from the input graph.
+    """
+    data: dict[str, Any] = {}
+
+    with Bar("Computing metrics ", max=30) as bar:
+        data["Model Name"] = modelName
+        data["Model Filepath"] = modelFilepath
+        data["Is Semiconnected"] = checkIsSemiconnected(graph=graph, bar=bar)
+        data["Is Attracting Component"] = checkIsAttractingComponent(
+            graph=graph, bar=bar
+        )
+        data["Is Strongly Connected"] = checkIsStronglyConnected(graph=graph, bar=bar)
+        data["Is Weakly Connected"] = checkIsWeaklyConnected(graph=graph, bar=bar)
+        data["Is Triad"] = checkIsTriad(graph=graph, bar=bar)
+        data["Is Regular"] = checkIsRegular(graph=graph, bar=bar)
+        data["Is Planar"] = checkIsPlanar(graph=graph, bar=bar)
+        data["Is Distance Regular"] = checkIsDistanceRegular(graph=graph, bar=bar)
+        data["Is Strongly Regular"] = checkIsStronglyRegular(graph=graph, bar=bar)
+        data["Is Bipartite"] = checkIsBipartite(graph=graph, bar=bar)
+        data["Is Aperiodic"] = checkIsAperiodic(graph=graph, bar=bar)
+        data["Is Directed Acyclic"] = checkIsDirectedAcyclicGraph(graph=graph, bar=bar)
+        data["Radius"] = computeRadius(graph=graph, bar=bar)
+        data["DAG Longest Path Length"] = computeDAGLongestPathLength(
+            graph=graph, bar=bar
+        )
+        data["Number of Isolates"] = computeNumberOfIsolates(graph=graph, bar=bar)
+        data["Robins Alexander Clustering"] = computeRobinsAlexanderClustering(
+            graph=graph, bar=bar
+        )
+        data["Transitivity"] = computeTransitivity(graph=graph, bar=bar)
+        data["Number of Nodes"] = computeNumberOfNodes(graph=graph, bar=bar)
+        data["Density"] = computeDensity(graph=graph, bar=bar)
+        data["Number of Edges"] = computeNumberOfEdges(graph=graph, bar=bar)
+        data["Number of Communities"] = computeNumberOfCommunities(graph=graph, bar=bar)
+        data["Degree Assortivity Coefficient"] = computeDegreeAssortativityCoefficient(
+            graph=graph, bar=bar
+        )
+        data[
+            "Attribute Assortivity Coefficient"
+        ] = computeAttributeAssortativityCoefficient(graph=graph, bar=bar)
+        data[
+            "Number of Weakly Connected Components"
+        ] = computeNumberOfWeaklyConnectedComponents(graph=graph, bar=bar)
+        data[
+            "Number of Strongly Computed Components"
+        ] = computeNumberOfStronglyConnectedComponents(graph=graph, bar=bar)
+        data["Number of Attracting Components"] = computeNumberOfAttracingComponents(
+            graph=graph, bar=bar
+        )
+        data["Barycenter"] = computeBarycenter(graph=graph, bar=bar)
+        data[
+            "Degree Pearson Correlation Coefficient"
+        ] = computeDegreePearsonCorrelationCoefficient(graph=graph, bar=bar)
+
+    return data
+
+
+def convertJson(jsonFile: str) -> pd.DataFrame:
+    return pd.read_json(jsonFile)
+
+
+def convertDf(databaseFile: str, tableName: str, df: pd.DataFrame) -> int:
+    sqlite = sqlite3.connect(databaseFile)
+
+    rows: int = df.to_sql(tableName, sqlite, if_exists="append")
+
+    return rows
+
+
+def dictToDF(dict1: dict, dict2: dict, dict3: dict) -> pd.DataFrame:
+    df1 = pd.DataFrame([dict1]).set_index("Model Name")
+    df2 = pd.DataFrame([dict2]).set_index("Model Name")
+    df3 = pd.DataFrame([dict3]).set_index("Model Name")
+    finalDF = pd.concat([df1, df2, df3])
+    return finalDF
+
+
+def convertDf(databaseFile: str, tableName: str, df: pd.DataFrame) -> int:
+    sqlite = sqlite3.connect(databaseFile)
+
+    rows: int = df.to_sql(tableName, sqlite, if_exists="append")
+
+    return rows
+
+
 def main() -> None:
-    graph: DiGraph = read_gexf("bert-base-cased.gexf")
+    graph1: DiGraph = read_gexf("gpt2.gexf")
+    modelName1 = "gpt2"
+    modelFilepath1 = "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/metrics/gpt2.gexf"
 
-    with Bar("Computing metrics ({})... ", max=30) as bar:
-        checkIsSemiconnected(graph=graph, bar=bar)
-        checkIsAttractingComponent(graph=graph, bar=bar)
-        sc: int = checkIsStronglyConnected(graph=graph, bar=bar)
-        checkIsWeaklyConnected(graph=graph, bar=bar)
-        checkIsTriad(graph=graph, bar=bar)
-        checkIsRegular(graph=graph, bar=bar)
-        checkIsPlanar(graph=graph, bar=bar)
-        checkIsDistanceRegular(graph=graph, bar=bar)
-        checkIsStronglyRegular(graph=graph, bar=bar)
-        checkIsBipartite(graph=graph, bar=bar)
-        checkIsAperiodic(graph=graph, bar=bar)
-        checkIsDirectedAcyclicGraph(graph=graph, bar=bar)
-        computeRadius(graph=graph, bar=bar)
-        computeDAGLongestPathLength(graph=graph, bar=bar)
-        computeNumberOfIsolates(graph=graph, bar=bar)
-        computeRobinsAlexanderClustering(graph=graph, bar=bar)
-        computeTransitivity(graph=graph, bar=bar)
-        computeNumberOfNodes(graph=graph, bar=bar)
-        computeDensity(graph=graph, bar=bar)
-        computeNumberOfEdges(graph=graph, bar=bar)
-        computeNumberOfCommunities(graph=graph, bar=bar)
-        computeDegreeAssortativityCoefficient(graph=graph, bar=bar)
-        computeAttributeAssortativityCoefficient(graph=graph, bar=bar)
-        computeNumberOfWeaklyConnectedComponents(graph=graph, bar=bar)
-        computeNumberOfStronglyConnectedComponents(graph=graph, bar=bar)
-        computeNumberOfAttracingComponents(graph=graph, bar=bar)
-        computeBarycenter(graph=graph, bar=bar)
+    graph2: DiGraph = read_gexf("bert-base-cased.gexf")
+    modelName2 = "bert-base-cased"
+    modelFilepath2 = "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/metrics/bert-base-cased.gexf"
 
-        if sc == 1:
-            computeAverageShortestPathLength(graph=graph, bar=bar)
-            computeDiameter(graph=graph, bar=bar)
-        else:
-            bar.next(n=2)
+    graph3: DiGraph = read_gexf("bert-base-uncased.gexf")
+    modelName3 = "bert-base-uncased"
+    modelFilepath3 = "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/metrics/bert-base-uncased.gexf"
 
-        # computeDegreePearsonCorrelationCoefficient(graph=graph, bar=bar)
+    dict1: dict[str, Any] = createDict(
+        graph=graph1, modelName=modelName1, modelFilepath=modelFilepath1
+    )
+    dict2: dict[str, Any] = createDict(
+        graph=graph2, modelName=modelName2, modelFilepath=modelFilepath2
+    )
+    dict3: dict[str, Any] = createDict(
+        graph=graph3, modelName=modelName3, modelFilepath=modelFilepath3
+    )
+
+    finalDF = dictToDF(dict1=dict1, dict2=dict2, dict3=dict3)
+
+    print(convertDf(databaseFile="models.db", tableName="scores", df=finalDF))
+    print(finalDF)
 
 
 if __name__ == "__main__":

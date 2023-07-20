@@ -30,5 +30,4 @@ then
     exit 1
 fi
 
-
 optimum-cli export onnx --model $model --framework pt --atol 1 --monolith $outputDirectory

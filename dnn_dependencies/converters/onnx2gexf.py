@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from argparse import Namespace
 from itertools import count
 from pathlib import Path, PosixPath
