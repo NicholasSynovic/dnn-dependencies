@@ -4,18 +4,18 @@ from pathlib import Path
 
 from dnn_dependencies import args as argVars
 
-PROGRAM_NAME: str = "GEXF XML to Graphviz Dot Converter"
+PROGRAM_NAME: str = "GEXF XML Graph Metrics to Database"
 
 
 def getArgs() -> Namespace:
     """
-    The function `getArgs()` is used to parse command line arguments for a program that converts a graph
-    in GEXF file format to a Graphviz Dot file.
+    The function `getArgs()` is used to parse command line arguments and return them as a Namespace
+    object.
     :return: an instance of the `Namespace` class, which contains the parsed command-line arguments.
     """
     parser: ArgumentParser = ArgumentParser(
         prog=PROGRAM_NAME,
-        description="A program to convert a graph in GEXF file format to a Graphviz Dot file",
+        description="A program to compute graph metrics and store them in a database",
         epilog=f"Created by: {', '.join(argVars.authorsList)}",
         formatter_class=argVars.AlphabeticalOrderHelpFormatter,
     )
@@ -31,14 +31,6 @@ def getArgs() -> Namespace:
         nargs=1,
         type=Path,
         required=True,
-        help="Path to a GEXF file",
-    )
-    parser.add_argument(
-        "-o",
-        "--output",
-        nargs=1,
-        type=Path,
-        required=True,
-        help="Path to store data in database",
+        help="Path to a GEXF XML file",
     )
     return parser.parse_args()

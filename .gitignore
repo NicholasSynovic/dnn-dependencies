@@ -173,5 +173,3 @@ cython_debug/
 .DS_Store
 *.svg
 !requirements.txt
-*.csv
-*.errors

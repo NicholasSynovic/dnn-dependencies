@@ -4,7 +4,6 @@ matplotlib
 netron
 networkx
 numpy
-onnx
 optimum
 pandas
 poetry
@@ -14,8 +13,6 @@ requests
 scipy
 sphinx
 sphinx-rtd-theme
-tensorflow
-threadpoolctl
 torch
 torchaudio
 torchinfo
