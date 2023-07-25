@@ -1,13 +1,12 @@
-import os
 import sqlite3
 from argparse import Namespace
 from pathlib import Path
+from sqlite3 import Connection
 from typing import Any
 
-import pandas
 from pandas import DataFrame
 
-from dnn_dependencies.args.simScoreToDB_args import getArgs
+from dnn_dependencies.args.computeMetrics_args import getArgs
 from dnn_dependencies.metrics.metrics import *
 
 RANDOM_SEED: int = 42
@@ -16,7 +15,11 @@ random.seed(a=RANDOM_SEED, version=2)
 numpy.random.seed(seed=RANDOM_SEED)
 
 
-def createDict(graph: DiGraph, modelName, modelFilepath) -> dict[str, Any]:
+def getModelName(path: Path) -> str:
+    return str(path.parent)
+
+
+def createDict(graph: DiGraph, modelName: str, modelFilepath: Path) -> dict[str, Any]:
     """
     The function `createJSON` takes a directed graph as input and returns a dictionary containing
     various statistics and distributions computed from the graph.
@@ -31,9 +34,9 @@ def createDict(graph: DiGraph, modelName, modelFilepath) -> dict[str, Any]:
     """
     data: dict[str, Any] = {}
 
-    with Bar("Computing metrics ", max=30) as bar:
+    with Bar("Computing metrics ", max=28) as bar:
         data["Model Name"] = modelName
-        data["Model Filepath"] = modelFilepath
+        data["Model Filepath"] = modelFilepath.__str__()
         data["Is Semiconnected"] = checkIsSemiconnected(graph=graph, bar=bar)
         data["Is Attracting Component"] = checkIsAttractingComponent(
             graph=graph, bar=bar
@@ -84,48 +87,36 @@ def createDict(graph: DiGraph, modelName, modelFilepath) -> dict[str, Any]:
     return data
 
 
-def convertDf(databaseFile: str, tableName: str, df: DataFrame) -> int:
-    sqlite = sqlite3.connect(databaseFile)
+def dfToDB(df: DataFrame, dbPath: Path, table: str) -> None:
+    conn: Connection = sqlite3.connect(database=dbPath)
 
-    rows: int = df.to_sql(tableName, sqlite, if_exists="append")
+    df.to_sql(
+        name=table,
+        con=conn,
+        if_exists="replace",
+        index=True,
+        index_label="ID",
+    )
 
-    return rows
-
-
-def dictToDF(dict: dict) -> DataFrame:
-    df = DataFrame([dict]).set_index("Model Name")
-    return df
-
-
-def splitInput(inputFile) -> tuple:
-    file = Path(inputFile)
-    name = file.stem
-    return name
+    conn.close()
 
 
 def main() -> None:
     args: Namespace = getArgs()
+    modelFilePath: Path = args.input[0]
 
-    graph: DiGraph = read_gexf(args.input[0])
+    graph: DiGraph = read_gexf(path=modelFilePath)
 
-    input = args.input[0]
+    modelName: str = getModelName(path=modelFilePath)
 
-    modelName = splitInput(input)
-
-    modelFilepath = os.path.abspath(args.input[0])
-
-    scoreDict: dict[str, Any] = createDict(
-        graph=graph, modelName=modelName, modelFilepath=modelFilepath
+    data: dict[str, Any] = createDict(
+        graph=graph,
+        modelName=modelName,
+        modelFilepath=modelFilePath,
     )
 
-    df = dictToDF(dict=scoreDict)
-
-    print(convertDf(databaseFile="models.db", tableName="scores", df=df))
-    print("added to database")
-    # print(df)
-
-
-# databaseFile="models.db"
+    df: DataFrame = DataFrame([data])
+    dfToDB(df=df, dbPath=args.output[0], table="Model Stats")
 
 
 if __name__ == "__main__":

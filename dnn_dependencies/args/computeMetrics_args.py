@@ -15,7 +15,7 @@ def getArgs() -> Namespace:
     """
     parser: ArgumentParser = ArgumentParser(
         prog=PROGRAM_NAME,
-        description="A program to compute graph metrics and store them in a database",
+        description="A program to compute metrics and store them in a database",
         epilog=f"Created by: {', '.join(argVars.authorsList)}",
         formatter_class=argVars.AlphabeticalOrderHelpFormatter,
     )
@@ -32,5 +32,13 @@ def getArgs() -> Namespace:
         type=Path,
         required=True,
         help="Path to a GEXF XML file",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        nargs=1,
+        type=Path,
+        required=True,
+        help="Path to output SQLite3 DB",
     )
     return parser.parse_args()
