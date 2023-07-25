@@ -202,14 +202,14 @@ def computeAttributeAssortativityCoefficient(graph: DiGraph, bar: Bar) -> float:
     return value
 
 
-# def computeDegreePearsonCorrelationCoefficient(graph: DiGraph, bar: Bar) -> float:
-#     value: float = degree_pearson_correlation_coefficient(
-#         G=graph,
-#         x="out",
-#         y="in",
-#     )
-#     bar.next()
-#     return value
+def computeDegreePearsonCorrelationCoefficient(graph: DiGraph, bar: Bar) -> float:
+    value: float = degree_pearson_correlation_coefficient(
+        G=graph,
+        x="out",
+        y="in",
+    )
+    bar.next()
+    return value
 
 
 def checkIsSemiconnected(graph: DiGraph, bar: Bar) -> int:
