@@ -5,6 +5,7 @@ import sqlite3
 from argparse import Namespace
 from collections import defaultdict
 from json import dump
+from pathlib import Path
 from typing import Any, List, Literal, Set
 
 import numpy
@@ -357,9 +358,9 @@ def convertDf(databaseFile: str, tableName: str, df: pd.DataFrame) -> int:
 
 
 def splitInput(inputFile) -> tuple:
-    fileString = str(inputFile)
-    split = fileString.split(".")
-    return tuple(split)
+    file = Path(inputFile)
+    name = file.stem
+    return name
 
 
 def main() -> None:
@@ -369,7 +370,7 @@ def main() -> None:
 
     input = args.input[0]
 
-    modelName, extension = splitInput(input)
+    modelName = splitInput(input)
 
     modelFilepath = os.path.abspath(args.input[0])
 
