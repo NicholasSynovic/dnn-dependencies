@@ -15,7 +15,21 @@ def _addNodesToSubgraph(
 ) -> None:
     """
 
-
+    :param subgraph: DiGraph:
+    :param headGraphNodes: NodeDataView | NodeView:
+    :param subgraphNodes: List[str]:
+    :param subgraph: DiGraph:
+    :param headGraphNodes: NodeDataView | NodeView:
+    :param subgraphNodes: List[str]:
+    :param subgraph: DiGraph:
+    :param headGraphNodes: NodeDataView | NodeView:
+    :param subgraphNodes: List[str]:
+    :param subgraph: DiGraph:
+    :param headGraphNodes: NodeDataView | NodeView:
+    :param subgraphNodes: List[str]:
+    :param subgraph: DiGraph:
+    :param headGraphNodes: NodeDataView | NodeView:
+    :param subgraphNodes: List[str]:
     :param subgraph: DiGraph:
     :param headGraphNodes: NodeDataView | NodeView:
     :param subgraphNodes: List[str]:
@@ -38,7 +52,21 @@ def _addEdgesToSubgraph(
 ) -> DiGraph:
     """
 
-
+    :param subgraph: DiGraph:
+    :param edgeData: OutEdgeView:
+    :param subgraphNodes: List[str]:
+    :param subgraph: DiGraph:
+    :param edgeData: OutEdgeView:
+    :param subgraphNodes: List[str]:
+    :param subgraph: DiGraph:
+    :param edgeData: OutEdgeView:
+    :param subgraphNodes: List[str]:
+    :param subgraph: DiGraph:
+    :param edgeData: OutEdgeView:
+    :param subgraphNodes: List[str]:
+    :param subgraph: DiGraph:
+    :param edgeData: OutEdgeView:
+    :param subgraphNodes: List[str]:
     :param subgraph: DiGraph:
     :param edgeData: OutEdgeView:
     :param subgraphNodes: List[str]:
@@ -65,7 +93,21 @@ def createSubgraph(
 ) -> DiGraph:
     """
 
-
+    :param headGraphNodes: NodeDataView | NodeView:
+    :param headGraphEdgeData: OutEdgeView:
+    :param subgraphNodes: List[str]:
+    :param headGraphNodes: NodeDataView | NodeView:
+    :param headGraphEdgeData: OutEdgeView:
+    :param subgraphNodes: List[str]:
+    :param headGraphNodes: NodeDataView | NodeView:
+    :param headGraphEdgeData: OutEdgeView:
+    :param subgraphNodes: List[str]:
+    :param headGraphNodes: NodeDataView | NodeView:
+    :param headGraphEdgeData: OutEdgeView:
+    :param subgraphNodes: List[str]:
+    :param headGraphNodes: NodeDataView | NodeView:
+    :param headGraphEdgeData: OutEdgeView:
+    :param subgraphNodes: List[str]:
     :param headGraphNodes: NodeDataView | NodeView:
     :param headGraphEdgeData: OutEdgeView:
     :param subgraphNodes: List[str]:

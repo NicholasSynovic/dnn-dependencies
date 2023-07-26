@@ -9,7 +9,11 @@ from progress.bar import Bar
 def graphToSet(graph: DiGraph) -> set[str]:
     """
 
-
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
     :param graph: DiGraph:
     :param graph: DiGraph:
 
@@ -24,7 +28,16 @@ def graphToSet(graph: DiGraph) -> set[str]:
 def jaccardIndex(model1Data: set[str], model2Data: set[str]) -> float:
     """
 
-
+    :param model1Data: set[str]:
+    :param model2Data: set[str]:
+    :param model1Data: set[str]:
+    :param model2Data: set[str]:
+    :param model1Data: set[str]:
+    :param model2Data: set[str]:
+    :param model1Data: set[str]:
+    :param model2Data: set[str]:
+    :param model1Data: set[str]:
+    :param model2Data: set[str]:
     :param model1Data: set[str]:
     :param model2Data: set[str]:
     :param model1Data: set[str]:

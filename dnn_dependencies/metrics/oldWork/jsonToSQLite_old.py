@@ -7,7 +7,11 @@ import pandas as pd
 def convertJson(jsonFile: str) -> pd.DataFrame:
     """
 
-
+    :param jsonFile: str:
+    :param jsonFile: str:
+    :param jsonFile: str:
+    :param jsonFile: str:
+    :param jsonFile: str:
     :param jsonFile: str:
     :param jsonFile: str:
 
@@ -18,7 +22,21 @@ def convertJson(jsonFile: str) -> pd.DataFrame:
 def convertDf(databaseFile: str, tableName: str, df: pd.DataFrame) -> int:
     """
 
-
+    :param databaseFile: str:
+    :param tableName: str:
+    :param df: pd.DataFrame:
+    :param databaseFile: str:
+    :param tableName: str:
+    :param df: pd.DataFrame:
+    :param databaseFile: str:
+    :param tableName: str:
+    :param df: pd.DataFrame:
+    :param databaseFile: str:
+    :param tableName: str:
+    :param df: pd.DataFrame:
+    :param databaseFile: str:
+    :param tableName: str:
+    :param df: pd.DataFrame:
     :param databaseFile: str:
     :param tableName: str:
     :param df: pd.DataFrame:

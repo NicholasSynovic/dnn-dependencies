@@ -12,13 +12,22 @@ from dnn_dependencies.args.similarity_args import getArgs
 
 
 def _sortDict(d: defaultdict | dict[Any, Any]) -> dict[Any, Any]:
-    """
-    The function `_sortDict` takes a dictionary or defaultdict as input, creates a copy of it, sorts the
+    """The function `_sortDict` takes a dictionary or defaultdict as input, creates a copy of it, sorts the
     copy by keys, and returns the sorted dictionary.
 
     :param d: The parameter `d` is expected to be either a `defaultdict` or a regular `dict` with keys
     and values of any type
     :type d: defaultdict | dict[Any, Any]
+    :param d: defaultdict | dict[Any:
+    :param Any: returns: The function `_sortDict` returns a sorted dictionary.
+    :param d: defaultdict | dict[Any:
+    :param Any: returns: The function `_sortDict` returns a sorted dictionary.
+    :param d: defaultdict | dict[Any:
+    :param Any: returns: The function `_sortDict` returns a sorted dictionary.
+    :param d: defaultdict | dict[Any:
+    :param Any: returns: The function `_sortDict` returns a sorted dictionary.
+    :param d: defaultdict | dict[Any:
+    :param Any: returns: The function `_sortDict` returns a sorted dictionary.
     :param d: defaultdict | dict[Any:
     :param Any: returns: The function `_sortDict` returns a sorted dictionary.
     :param d: defaultdict | dict[Any:
@@ -33,11 +42,15 @@ def _sortDict(d: defaultdict | dict[Any, Any]) -> dict[Any, Any]:
 
 
 def computeDensity(graph: DiGraph) -> float:
-    """
-    The function `computeDensity` calculates the density of a directed graph.
+    """The function `computeDensity` calculates the density of a directed graph.
 
     :param graph: The parameter `graph` is expected to be a directed graph (DiGraph) object
     :type graph: DiGraph
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
     :param graph: DiGraph:
     :param graph: DiGraph:
     :returns: a float value, which represents the density of the given directed graph.
@@ -47,12 +60,16 @@ def computeDensity(graph: DiGraph) -> float:
 
 
 def countNodes(graph: DiGraph) -> int:
-    """
-    The function countNodes takes a directed graph as input and returns the number of nodes in the
+    """The function countNodes takes a directed graph as input and returns the number of nodes in the
     graph.
 
     :param graph: The parameter `graph` is of type `DiGraph`, which suggests that it is a directed graph
     :type graph: DiGraph
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
     :param graph: DiGraph:
     :param graph: DiGraph:
     :returns: the number of nodes in the given graph.
@@ -62,12 +79,16 @@ def countNodes(graph: DiGraph) -> int:
 
 
 def countEdges(graph: DiGraph) -> int:
-    """
-    The function countEdges takes a directed graph as input and returns the number of edges in the
+    """The function countEdges takes a directed graph as input and returns the number of edges in the
     graph.
 
     :param graph: The parameter `graph` is expected to be an instance of a directed graph (DiGraph)
     :type graph: DiGraph
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
     :param graph: DiGraph:
     :param graph: DiGraph:
     :returns: the number of edges in the given directed graph.
@@ -77,14 +98,18 @@ def countEdges(graph: DiGraph) -> int:
 
 
 def countCommunities(graph: DiGraph) -> int:
-    """
-    The function `countCommunities` takes a directed graph as input and returns the number of
+    """The function `countCommunities` takes a directed graph as input and returns the number of
     communities detected using the Louvain algorithm.
 
     :param graph: The `graph` parameter is a directed graph object. It represents a network or a set of
     connections between nodes. The graph can be represented using a data structure such as an adjacency
     matrix or an adjacency list
     :type graph: DiGraph
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
     :param graph: DiGraph:
     :param graph: DiGraph:
     :returns: the number of communities detected in the given graph.
@@ -95,8 +120,7 @@ def countCommunities(graph: DiGraph) -> int:
 
 
 def computeDegreeDistribution(graph: DiGraph, inDegree: bool = True) -> dict[int, int]:
-    """
-    The `computeDegreeDistribution` function computes the degree distribution of nodes in a directed
+    """The `computeDegreeDistribution` function computes the degree distribution of nodes in a directed
     graph, either in-degree or out-degree, and returns the result as a dictionary.
 
     :param graph: The `graph` parameter is a directed graph object of type `DiGraph`. It represents a
@@ -111,6 +135,16 @@ def computeDegreeDistribution(graph: DiGraph, inDegree: bool = True) -> dict[int
     :param inDegree: bool:  (Default value = True)
     :param graph: DiGraph:
     :param inDegree: bool:  (Default value = True)
+    :param graph: DiGraph:
+    :param inDegree: bool:  (Default value = True)
+    :param graph: DiGraph:
+    :param inDegree: bool:  (Default value = True)
+    :param graph: DiGraph:
+    :param inDegree: bool:  (Default value = True)
+    :param graph: DiGraph:
+    :param inDegree: bool:  (Default value = True)
+    :param graph: DiGraph:
+    :param inDegree: bool:  (Default value = True)
     :returns: a dictionary that represents the degree distribution of nodes in the graph. The keys of the
     dictionary are the degrees of the nodes, and the values are the number of nodes with that degree.
 
@@ -118,8 +152,7 @@ def computeDegreeDistribution(graph: DiGraph, inDegree: bool = True) -> dict[int
     data: defaultdict = defaultdict(int)
 
     def _iterateInDegree(nodes: NodeView, bar: Bar) -> None:
-        """
-        The function `_iterateInDegree` iterates over nodes in a graph, calculates the in-degree of each
+        """The function `_iterateInDegree` iterates over nodes in a graph, calculates the in-degree of each
         node, and updates a dictionary with the count of each in-degree value.
 
         :param nodes: The `nodes` parameter is a `NodeView` object, which represents a view of the nodes
@@ -128,6 +161,16 @@ def computeDegreeDistribution(graph: DiGraph, inDegree: bool = True) -> dict[int
         :param bar: The parameter "bar" is of type "Bar". It is likely used to track the progress of the
         iteration
         :type bar: Bar
+        :param nodes: NodeView:
+        :param bar: Bar:
+        :param nodes: NodeView:
+        :param bar: Bar:
+        :param nodes: NodeView:
+        :param bar: Bar:
+        :param nodes: NodeView:
+        :param bar: Bar:
+        :param nodes: NodeView:
+        :param bar: Bar:
         :param nodes: NodeView:
         :param bar: Bar:
         :param nodes: NodeView:
@@ -141,8 +184,7 @@ def computeDegreeDistribution(graph: DiGraph, inDegree: bool = True) -> dict[int
             bar.next()
 
     def _iterateOutDegree(nodes: NodeView, bar: Bar) -> None:
-        """
-        The function `_iterateOutDegree` iterates over a collection of nodes, calculates the out-degree
+        """The function `_iterateOutDegree` iterates over a collection of nodes, calculates the out-degree
         of each node in a graph, and updates a dictionary with the count of each out-degree.
 
         :param nodes: The `nodes` parameter is a `NodeView` object, which represents a view of the nodes
@@ -151,6 +193,16 @@ def computeDegreeDistribution(graph: DiGraph, inDegree: bool = True) -> dict[int
         :param bar: The "bar" parameter is an instance of the "Bar" class. It is used to track the
         progress of the iteration
         :type bar: Bar
+        :param nodes: NodeView:
+        :param bar: Bar:
+        :param nodes: NodeView:
+        :param bar: Bar:
+        :param nodes: NodeView:
+        :param bar: Bar:
+        :param nodes: NodeView:
+        :param bar: Bar:
+        :param nodes: NodeView:
+        :param bar: Bar:
         :param nodes: NodeView:
         :param bar: Bar:
         :param nodes: NodeView:
@@ -178,13 +230,17 @@ def computeDegreeDistribution(graph: DiGraph, inDegree: bool = True) -> dict[int
 
 
 def computeClusteringCoefficientDistribution(graph: DiGraph) -> dict[int, int]:
-    """
-    The function `computeClusteringCoefficientDistribution` computes the clustering coefficient
+    """The function `computeClusteringCoefficientDistribution` computes the clustering coefficient
     distribution of nodes in a directed graph.
 
     :param graph: The parameter `graph` is a directed graph (DiGraph) object. It represents a network or
     a graph where the nodes are connected by directed edges
     :type graph: DiGraph
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
     :param graph: DiGraph:
     :param graph: DiGraph:
     :returns: a dictionary that represents the clustering coefficient distribution of nodes in the given
@@ -210,14 +266,18 @@ def computeClusteringCoefficientDistribution(graph: DiGraph) -> dict[int, int]:
 
 
 def computeNodeTypeDistribution(graph: DiGraph) -> dict[str, int]:
-    """
-    The function `computeNodeTypeDistribution` takes a directed graph as input and computes the
+    """The function `computeNodeTypeDistribution` takes a directed graph as input and computes the
     distribution of node operation types, returning a dictionary with the count of each operation type.
 
     :param graph: A directed graph (DiGraph) representing a network or system. Each node in the graph
     has an associated "Operation Type" attribute, which indicates the type of operation performed by
     that node
     :type graph: DiGraph
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
     :param graph: DiGraph:
     :param graph: DiGraph:
     :returns: a dictionary that represents the distribution of node operation types in the given graph.
@@ -243,7 +303,11 @@ def computeNodeTypeDistribution(graph: DiGraph) -> dict[str, int]:
 def computeNodeTypePairingDistribution(graph: DiGraph) -> dict[str, int]:
     """
 
-
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
     :param graph: DiGraph:
     :param graph: DiGraph:
 
@@ -268,8 +332,7 @@ def computeNodeTypePairingDistribution(graph: DiGraph) -> dict[str, int]:
 
 
 def createJSON(graph: DiGraph) -> dict[str, Any]:
-    """
-    The function `createJSON` takes a directed graph as input and returns a dictionary containing
+    """The function `createJSON` takes a directed graph as input and returns a dictionary containing
     various statistics and distributions computed from the graph.
 
     :param graph: The `graph` parameter is of type `DiGraph`, which represents a directed graph. It is
@@ -277,6 +340,11 @@ def createJSON(graph: DiGraph) -> dict[str, Any]:
     community count, degree distribution, clustering coefficient distribution, and node type
     distribution
     :type graph: DiGraph
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
     :param graph: DiGraph:
     :param graph: DiGraph:
     :returns: The function `createJSON` returns a dictionary containing various metrics and distributions
@@ -320,8 +388,7 @@ def createJSON(graph: DiGraph) -> dict[str, Any]:
 
 
 def main() -> None:
-    """
-    The main function reads a graph from a GEXF file, creates a JSON representation of the graph, and
+    """The main function reads a graph from a GEXF file, creates a JSON representation of the graph, and
     writes it to an output file.
 
 

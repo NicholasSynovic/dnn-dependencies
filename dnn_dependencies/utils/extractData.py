@@ -10,7 +10,11 @@ from progress.bar import Bar
 def listFiles(directory: Path) -> Tuple[List[Path], List[Path]]:
     """
 
-
+    :param directory: Path:
+    :param directory: Path:
+    :param directory: Path:
+    :param directory: Path:
+    :param directory: Path:
     :param directory: Path:
     :param directory: Path:
 
@@ -34,7 +38,11 @@ def listFiles(directory: Path) -> Tuple[List[Path], List[Path]]:
 def extractDataFromDF(df: DataFrame) -> DataFrame:
     """
 
-
+    :param df: DataFrame:
+    :param df: DataFrame:
+    :param df: DataFrame:
+    :param df: DataFrame:
+    :param df: DataFrame:
     :param df: DataFrame:
     :param df: DataFrame:
 
@@ -49,7 +57,11 @@ def extractDataFromDF(df: DataFrame) -> DataFrame:
 def extractDataFromTXTs(filepaths: List[Path]) -> dict[str, Path]:
     """
 
-
+    :param filepaths: List[Path]:
+    :param filepaths: List[Path]:
+    :param filepaths: List[Path]:
+    :param filepaths: List[Path]:
+    :param filepaths: List[Path]:
     :param filepaths: List[Path]:
     :param filepaths: List[Path]:
 
@@ -91,7 +103,16 @@ def extractDataFromTXTs(filepaths: List[Path]) -> dict[str, Path]:
 def createDF(txtData: dict[str, Path], jsonData: DataFrame) -> DataFrame:
     """
 
-
+    :param txtData: dict[str:
+    :param Path: param jsonData: DataFrame:
+    :param txtData: dict[str:
+    :param Path: param jsonData: DataFrame:
+    :param txtData: dict[str:
+    :param Path: param jsonData: DataFrame:
+    :param txtData: dict[str:
+    :param Path: param jsonData: DataFrame:
+    :param txtData: dict[str:
+    :param Path: param jsonData: DataFrame:
     :param txtData: dict[str:
     :param Path: param jsonData: DataFrame:
     :param txtData: dict[str:
@@ -134,7 +155,11 @@ def createDF(txtData: dict[str, Path], jsonData: DataFrame) -> DataFrame:
 def createCommands(df: DataFrame) -> None:
     """
 
-
+    :param df: DataFrame:
+    :param df: DataFrame:
+    :param df: DataFrame:
+    :param df: DataFrame:
+    :param df: DataFrame:
     :param df: DataFrame:
     :param df: DataFrame:
 

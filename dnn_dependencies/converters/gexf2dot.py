@@ -25,8 +25,18 @@ from networkx.drawing.nx_pydot import write_dot
     help="Path to store DOT file",
 )
 def main(gexfFile: Path, dotFile: Path) -> None:
-    """
-    Read in a GEXF file and output the DOT representation of it to the computer
+    """Read in a GEXF file and output the DOT representation of it to the computer
+
+    :param gexfFile: Path:
+    :param dotFile: Path:
+    :param gexfFile: Path:
+    :param dotFile: Path:
+    :param gexfFile: Path:
+    :param dotFile: Path:
+    :param gexfFile: Path:
+    :param dotFile: Path:
+    :param gexfFile: Path:
+    :param dotFile: Path:
 
     """
     graph: Graph = read_gexf(gexfFile)

@@ -15,14 +15,23 @@ from progress.spinner import Spinner
 def createGraphStack(
     graphList1: List[DiGraph], graphList2: List[DiGraph]
 ) -> List[tuple[DiGraph, DiGraph]]:
-    """
-    The function `createGraphStack` takes two lists of directed graphs and returns a list of tuples,
+    """The function `createGraphStack` takes two lists of directed graphs and returns a list of tuples,
     where each tuple contains one graph from the first list and one graph from the second list.
 
     :param graphList1: A list of DiGraph objects
-    :type graphList1: List1: List1: List[DiGraph]
+    :type graphList1: List1: List1: List1: List1: List1: List1: List1: List[DiGraph]
     :param graphList2: graphList2 is a list of DiGraph objects
-    :type graphList2: List2: List2: List[DiGraph]
+    :type graphList2: List2: List2: List2: List2: List2: List2: List2: List[DiGraph]
+    :param graphList1: List[DiGraph]:
+    :param graphList2: List[DiGraph]:
+    :param graphList1: List[DiGraph]:
+    :param graphList2: List[DiGraph]:
+    :param graphList1: List[DiGraph]:
+    :param graphList2: List[DiGraph]:
+    :param graphList1: List[DiGraph]:
+    :param graphList2: List[DiGraph]:
+    :param graphList1: List[DiGraph]:
+    :param graphList2: List[DiGraph]:
     :param graphList1: List[DiGraph]:
     :param graphList2: List[DiGraph]:
     :param graphList1: List[DiGraph]:
@@ -35,8 +44,7 @@ def createGraphStack(
 
 
 def compareCommunities(graph1: DiGraph, graph2: DiGraph) -> List[bool]:
-    """
-    The function `compareCommunities` compares the communities of two directed graphs using the Louvain
+    """The function `compareCommunities` compares the communities of two directed graphs using the Louvain
     algorithm and checks if the subgraphs within each community are isomorphic.
 
     :param graph1: The parameter `graph1` is a directed graph (DiGraph) representing the first graph
@@ -44,6 +52,16 @@ def compareCommunities(graph1: DiGraph, graph2: DiGraph) -> List[bool]:
     :param graph2: The `graph2` parameter is a directed graph (`DiGraph`) that represents a community
     structure. It is used to compare the community structure of `graph1` with `graph2`
     :type graph2: DiGraph
+    :param graph1: DiGraph:
+    :param graph2: DiGraph:
+    :param graph1: DiGraph:
+    :param graph2: DiGraph:
+    :param graph1: DiGraph:
+    :param graph2: DiGraph:
+    :param graph1: DiGraph:
+    :param graph2: DiGraph:
+    :param graph1: DiGraph:
+    :param graph2: DiGraph:
     :param graph1: DiGraph:
     :param graph2: DiGraph:
     :param graph1: DiGraph:
@@ -81,8 +99,7 @@ def compareCommunities(graph1: DiGraph, graph2: DiGraph) -> List[bool]:
 
 
 def compareGraphs(graph1: DiGraph, graph2: DiGraph) -> bool:
-    """
-    The function `compareGraphs` takes two directed graphs as input and returns a boolean value
+    """The function `compareGraphs` takes two directed graphs as input and returns a boolean value
     indicating whether the graphs are isomorphic.
 
     :param graph1: The parameter `graph1` is a directed graph (DiGraph) that represents the first graph
@@ -91,6 +108,16 @@ def compareGraphs(graph1: DiGraph, graph2: DiGraph) -> bool:
     :param graph2: The parameter `graph2` is a directed graph (DiGraph) that you want to compare with
     `graph1`
     :type graph2: DiGraph
+    :param graph1: DiGraph:
+    :param graph2: DiGraph:
+    :param graph1: DiGraph:
+    :param graph2: DiGraph:
+    :param graph1: DiGraph:
+    :param graph2: DiGraph:
+    :param graph1: DiGraph:
+    :param graph2: DiGraph:
+    :param graph1: DiGraph:
+    :param graph2: DiGraph:
     :param graph1: DiGraph:
     :param graph2: DiGraph:
     :param graph1: DiGraph:

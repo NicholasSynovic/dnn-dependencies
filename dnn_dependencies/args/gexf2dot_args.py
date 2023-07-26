@@ -8,8 +8,7 @@ PROGRAM_NAME: str = "GEXF XML to Graphviz Dot Converter"
 
 
 def getArgs() -> Namespace:
-    """
-    The function `getArgs()` is used to parse command line arguments for a program that converts a graph
+    """The function `getArgs()` is used to parse command line arguments for a program that converts a graph
     in GEXF file format to a Graphviz Dot file.
     :return: an instance of the `Namespace` class, which contains the parsed command-line arguments.
 

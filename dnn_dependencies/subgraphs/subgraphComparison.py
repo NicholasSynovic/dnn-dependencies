@@ -11,7 +11,11 @@ from networkx.classes.reportviews import NodeDataView
 def listDirectory(folderPath: str):
     """
 
-
+    :param folderPath: str:
+    :param folderPath: str:
+    :param folderPath: str:
+    :param folderPath: str:
+    :param folderPath: str:
     :param folderPath: str:
     :param folderPath: str:
 
@@ -22,7 +26,11 @@ def listDirectory(folderPath: str):
 def subgraphtoTuple(subgraph: DiGraph) -> tuple:
     """
 
-
+    :param subgraph: DiGraph:
+    :param subgraph: DiGraph:
+    :param subgraph: DiGraph:
+    :param subgraph: DiGraph:
+    :param subgraph: DiGraph:
     :param subgraph: DiGraph:
     :param subgraph: DiGraph:
 
@@ -43,7 +51,11 @@ def subgraphtoTuple(subgraph: DiGraph) -> tuple:
 def folderToSubgraph(folderPath: str) -> List[str]:
     """
 
-
+    :param folderPath: str:
+    :param folderPath: str:
+    :param folderPath: str:
+    :param folderPath: str:
+    :param folderPath: str:
     :param folderPath: str:
     :param folderPath: str:
 
@@ -63,7 +75,11 @@ def folderToSubgraph(folderPath: str) -> List[str]:
 def pathsToDiGraphs(subgraphPaths: List[str]) -> List[DiGraph]:
     """
 
-
+    :param subgraphPaths: List[str]:
+    :param subgraphPaths: List[str]:
+    :param subgraphPaths: List[str]:
+    :param subgraphPaths: List[str]:
+    :param subgraphPaths: List[str]:
     :param subgraphPaths: List[str]:
     :param subgraphPaths: List[str]:
 
@@ -81,7 +97,11 @@ def pathsToDiGraphs(subgraphPaths: List[str]) -> List[DiGraph]:
 def digraphsToTuples(subgraphs: List[DiGraph]) -> List[tuple]:
     """
 
-
+    :param subgraphs: List[DiGraph]:
+    :param subgraphs: List[DiGraph]:
+    :param subgraphs: List[DiGraph]:
+    :param subgraphs: List[DiGraph]:
+    :param subgraphs: List[DiGraph]:
     :param subgraphs: List[DiGraph]:
     :param subgraphs: List[DiGraph]:
 
@@ -98,7 +118,16 @@ def digraphsToTuples(subgraphs: List[DiGraph]) -> List[tuple]:
 def comparison(model1Data: List[tuple], model2Data: List[tuple]) -> List[bool]:
     """
 
-
+    :param model1Data: List[tuple]:
+    :param model2Data: List[tuple]:
+    :param model1Data: List[tuple]:
+    :param model2Data: List[tuple]:
+    :param model1Data: List[tuple]:
+    :param model2Data: List[tuple]:
+    :param model1Data: List[tuple]:
+    :param model2Data: List[tuple]:
+    :param model1Data: List[tuple]:
+    :param model2Data: List[tuple]:
     :param model1Data: List[tuple]:
     :param model2Data: List[tuple]:
     :param model1Data: List[tuple]:

@@ -9,7 +9,11 @@ from networkx.algorithms.community import louvain_communities
 def getCommunities(graph: DiGraph) -> List[set[int]]:
     """
 
-
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
     :param graph: DiGraph:
     :param graph: DiGraph:
 
@@ -27,7 +31,16 @@ def getCommunities(graph: DiGraph) -> List[set[int]]:
 def createSubgraphs(graph: DiGraph, communities: List[set[int]]):
     """
 
-
+    :param graph: DiGraph:
+    :param communities: List[set[int]]:
+    :param graph: DiGraph:
+    :param communities: List[set[int]]:
+    :param graph: DiGraph:
+    :param communities: List[set[int]]:
+    :param graph: DiGraph:
+    :param communities: List[set[int]]:
+    :param graph: DiGraph:
+    :param communities: List[set[int]]:
     :param graph: DiGraph:
     :param communities: List[set[int]]:
     :param graph: DiGraph:

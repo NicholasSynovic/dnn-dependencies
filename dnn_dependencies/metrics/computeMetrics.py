@@ -20,7 +20,11 @@ numpy.random.seed(seed=RANDOM_SEED)
 def readFiles(directory: Path) -> List[DiGraph]:
     """
 
-
+    :param directory: Path:
+    :param directory: Path:
+    :param directory: Path:
+    :param directory: Path:
+    :param directory: Path:
     :param directory: Path:
     :param directory: Path:
 
@@ -41,7 +45,11 @@ def readFiles(directory: Path) -> List[DiGraph]:
 def getModelName(path: Path) -> str:
     """
 
-
+    :param path: Path:
+    :param path: Path:
+    :param path: Path:
+    :param path: Path:
+    :param path: Path:
     :param path: Path:
     :param path: Path:
 
@@ -50,8 +58,7 @@ def getModelName(path: Path) -> str:
 
 
 def createDict(graph: DiGraph, modelName: str, modelFilepath: Path) -> dict[str, Any]:
-    """
-    The function `createJSON` takes a directed graph as input and returns a dictionary containing
+    """The function `createJSON` takes a directed graph as input and returns a dictionary containing
     various statistics and distributions computed from the graph.
 
     :param graph: The `graph` parameter is of type `DiGraph`, which represents a directed graph. It is
@@ -59,6 +66,21 @@ def createDict(graph: DiGraph, modelName: str, modelFilepath: Path) -> dict[str,
     community count, degree distribution, clustering coefficient distribution, and node type
     distribution
     :type graph: DiGraph
+    :param graph: DiGraph:
+    :param modelName: str:
+    :param modelFilepath: Path:
+    :param graph: DiGraph:
+    :param modelName: str:
+    :param modelFilepath: Path:
+    :param graph: DiGraph:
+    :param modelName: str:
+    :param modelFilepath: Path:
+    :param graph: DiGraph:
+    :param modelName: str:
+    :param modelFilepath: Path:
+    :param graph: DiGraph:
+    :param modelName: str:
+    :param modelFilepath: Path:
     :param graph: DiGraph:
     :param modelName: str:
     :param modelFilepath: Path:
@@ -127,7 +149,21 @@ def createDict(graph: DiGraph, modelName: str, modelFilepath: Path) -> dict[str,
 def dfToDB(df: DataFrame, dbPath: Path, table: str) -> None:
     """
 
-
+    :param df: DataFrame:
+    :param dbPath: Path:
+    :param table: str:
+    :param df: DataFrame:
+    :param dbPath: Path:
+    :param table: str:
+    :param df: DataFrame:
+    :param dbPath: Path:
+    :param table: str:
+    :param df: DataFrame:
+    :param dbPath: Path:
+    :param table: str:
+    :param df: DataFrame:
+    :param dbPath: Path:
+    :param table: str:
     :param df: DataFrame:
     :param dbPath: Path:
     :param table: str:
@@ -152,7 +188,16 @@ def dfToDB(df: DataFrame, dbPath: Path, table: str) -> None:
 def dfToCSV(df: DataFrame, output: Path) -> None:
     """
 
-
+    :param df: DataFrame:
+    :param output: Path:
+    :param df: DataFrame:
+    :param output: Path:
+    :param df: DataFrame:
+    :param output: Path:
+    :param df: DataFrame:
+    :param output: Path:
+    :param df: DataFrame:
+    :param output: Path:
     :param df: DataFrame:
     :param output: Path:
     :param df: DataFrame:

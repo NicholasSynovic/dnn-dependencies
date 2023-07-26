@@ -22,7 +22,16 @@ numpy.random.seed(seed=RANDOM_SEED)
 def computeBarycenter(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -40,7 +49,16 @@ def computeBarycenter(graph: DiGraph, bar: Bar) -> int:
 def computeRadius(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -58,7 +76,16 @@ def computeRadius(graph: DiGraph, bar: Bar) -> int:
 def computeDAGLongestPathLength(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -73,7 +100,16 @@ def computeDAGLongestPathLength(graph: DiGraph, bar: Bar) -> int:
 def computeAverageShortestPathLength(graph: DiGraph, bar: Bar) -> float:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -88,7 +124,16 @@ def computeAverageShortestPathLength(graph: DiGraph, bar: Bar) -> float:
 def computeNumberOfIsolates(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -103,7 +148,16 @@ def computeNumberOfIsolates(graph: DiGraph, bar: Bar) -> int:
 def checkIsTriad(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -118,7 +172,16 @@ def checkIsTriad(graph: DiGraph, bar: Bar) -> int:
 def checkIsThresholdGraph(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -133,7 +196,16 @@ def checkIsThresholdGraph(graph: DiGraph, bar: Bar) -> int:
 def checkIsRegular(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -148,7 +220,16 @@ def checkIsRegular(graph: DiGraph, bar: Bar) -> int:
 def checkIsPlanar(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -163,7 +244,16 @@ def checkIsPlanar(graph: DiGraph, bar: Bar) -> int:
 def checkIsDistanceRegular(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -178,7 +268,16 @@ def checkIsDistanceRegular(graph: DiGraph, bar: Bar) -> int:
 def checkIsStronglyRegular(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -193,7 +292,16 @@ def checkIsStronglyRegular(graph: DiGraph, bar: Bar) -> int:
 def checkIsBipartite(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -208,7 +316,16 @@ def checkIsBipartite(graph: DiGraph, bar: Bar) -> int:
 def computeRobinsAlexanderClustering(graph: DiGraph, bar: Bar) -> float | Literal[0]:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -223,7 +340,16 @@ def computeRobinsAlexanderClustering(graph: DiGraph, bar: Bar) -> float | Litera
 def computeTransitivity(graph: DiGraph, bar: Bar) -> float | Literal[0]:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -238,7 +364,16 @@ def computeTransitivity(graph: DiGraph, bar: Bar) -> float | Literal[0]:
 def checkIsAperiodic(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -253,7 +388,16 @@ def checkIsAperiodic(graph: DiGraph, bar: Bar) -> int:
 def checkIsDirectedAcyclicGraph(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -266,12 +410,21 @@ def checkIsDirectedAcyclicGraph(graph: DiGraph, bar: Bar) -> int:
 
 
 def computeNumberOfNodes(graph: DiGraph, bar: Bar) -> int:
-    """
-    The function countNodes takes a directed graph as input and returns the number of nodes in the
+    """The function countNodes takes a directed graph as input and returns the number of nodes in the
     graph.
 
     :param graph: The parameter `graph` is of type `DiGraph`, which suggests that it is a directed graph
     :type graph: DiGraph
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -285,11 +438,20 @@ def computeNumberOfNodes(graph: DiGraph, bar: Bar) -> int:
 
 
 def computeDensity(graph: DiGraph, bar: Bar) -> float:
-    """
-    The function `computeDensity` calculates the density of a directed graph.
+    """The function `computeDensity` calculates the density of a directed graph.
 
     :param graph: The parameter `graph` is expected to be a directed graph (DiGraph) object
     :type graph: DiGraph
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -303,12 +465,21 @@ def computeDensity(graph: DiGraph, bar: Bar) -> float:
 
 
 def computeNumberOfEdges(graph: DiGraph, bar: Bar) -> int:
-    """
-    The function countEdges takes a directed graph as input and returns the number of edges in the
+    """The function countEdges takes a directed graph as input and returns the number of edges in the
     graph.
 
     :param graph: The parameter `graph` is expected to be an instance of a directed graph (DiGraph)
     :type graph: DiGraph
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -322,8 +493,7 @@ def computeNumberOfEdges(graph: DiGraph, bar: Bar) -> int:
 
 
 def computeNumberOfCommunities(graph: DiGraph, bar: Bar) -> int:
-    """
-    The function `computeNumberOfCommunities` takes a directed graph as input and returns the number of
+    """The function `computeNumberOfCommunities` takes a directed graph as input and returns the number of
     communities detected using the Louvain algorithm.
 
     :param graph: The `graph` parameter is a directed graph object. It represents a network or a set of
@@ -332,6 +502,16 @@ def computeNumberOfCommunities(graph: DiGraph, bar: Bar) -> int:
     :type graph: DiGraph
     :param bar: A `progess.bar.Bar` object
     :type bar: Bar
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -348,7 +528,16 @@ def computeNumberOfCommunities(graph: DiGraph, bar: Bar) -> int:
 def computeDiameter(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -363,7 +552,16 @@ def computeDiameter(graph: DiGraph, bar: Bar) -> int:
 def computeDegreeAssortativityCoefficient(graph: DiGraph, bar: Bar) -> float:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -378,7 +576,16 @@ def computeDegreeAssortativityCoefficient(graph: DiGraph, bar: Bar) -> float:
 def computeAttributeAssortativityCoefficient(graph: DiGraph, bar: Bar) -> float:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -396,7 +603,16 @@ def computeAttributeAssortativityCoefficient(graph: DiGraph, bar: Bar) -> float:
 def computeDegreePearsonCorrelationCoefficient(graph: DiGraph, bar: Bar) -> float:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -415,7 +631,16 @@ def computeDegreePearsonCorrelationCoefficient(graph: DiGraph, bar: Bar) -> floa
 def checkIsSemiconnected(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -430,7 +655,16 @@ def checkIsSemiconnected(graph: DiGraph, bar: Bar) -> int:
 def checkIsAttractingComponent(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -445,7 +679,16 @@ def checkIsAttractingComponent(graph: DiGraph, bar: Bar) -> int:
 def checkIsStronglyConnected(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -460,7 +703,16 @@ def checkIsStronglyConnected(graph: DiGraph, bar: Bar) -> int:
 def checkIsWeaklyConnected(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -475,7 +727,16 @@ def checkIsWeaklyConnected(graph: DiGraph, bar: Bar) -> int:
 def computeNumberOfWeaklyConnectedComponents(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -490,7 +751,16 @@ def computeNumberOfWeaklyConnectedComponents(graph: DiGraph, bar: Bar) -> int:
 def computeNumberOfStronglyConnectedComponents(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:
@@ -505,7 +775,16 @@ def computeNumberOfStronglyConnectedComponents(graph: DiGraph, bar: Bar) -> int:
 def computeNumberOfAttracingComponents(graph: DiGraph, bar: Bar) -> int:
     """
 
-
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
+    :param graph: DiGraph:
+    :param bar: Bar:
     :param graph: DiGraph:
     :param bar: Bar:
     :param graph: DiGraph:

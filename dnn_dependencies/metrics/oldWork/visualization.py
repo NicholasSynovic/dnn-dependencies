@@ -11,8 +11,7 @@ import matplotlib.pyplot as plt
 
 
 def count(model1: json, model2: json, metricLabel: str) -> plt:
-    """
-    The function `count` takes in two JSON objects representing models, a metric label, and plots a bar
+    """The function `count` takes in two JSON objects representing models, a metric label, and plots a bar
     chart comparing the count of the specified metric for each model.
 
     :param model1: The `model1` parameter is a JSON object representing the first DL model. It contains
@@ -24,6 +23,21 @@ def count(model1: json, model2: json, metricLabel: str) -> plt:
     you want to count. It is used to access the corresponding metric values from the `model1` and
     `model2` dictionaries
     :type metricLabel: str
+    :param model1: json:
+    :param model2: json:
+    :param metricLabel: str:
+    :param model1: json:
+    :param model2: json:
+    :param metricLabel: str:
+    :param model1: json:
+    :param model2: json:
+    :param metricLabel: str:
+    :param model1: json:
+    :param model2: json:
+    :param metricLabel: str:
+    :param model1: json:
+    :param model2: json:
+    :param metricLabel: str:
     :param model1: json:
     :param model2: json:
     :param metricLabel: str:
@@ -45,8 +59,7 @@ def count(model1: json, model2: json, metricLabel: str) -> plt:
 
 
 def distribution(model1: json, model2: json, metricLabel: str, scale: str) -> plt:
-    """
-    The function `distribution` takes in two models, a metric label, and a scale, and plots a
+    """The function `distribution` takes in two models, a metric label, and a scale, and plots a
     distribution of the specified metric for each model.
 
     :param model1: The `model1` parameter is a JSON object representing the first model. It should have
@@ -60,6 +73,26 @@ def distribution(model1: json, model2: json, metricLabel: str, scale: str) -> pl
     :param scale: The "scale" parameter determines the scale of the y-axis in the plot. It can take the
     following values:
     :type scale: str
+    :param model1: json:
+    :param model2: json:
+    :param metricLabel: str:
+    :param scale: str:
+    :param model1: json:
+    :param model2: json:
+    :param metricLabel: str:
+    :param scale: str:
+    :param model1: json:
+    :param model2: json:
+    :param metricLabel: str:
+    :param scale: str:
+    :param model1: json:
+    :param model2: json:
+    :param metricLabel: str:
+    :param scale: str:
+    :param model1: json:
+    :param model2: json:
+    :param metricLabel: str:
+    :param scale: str:
     :param model1: json:
     :param model2: json:
     :param metricLabel: str:

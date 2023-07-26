@@ -8,8 +8,7 @@ PROGRAM_NAME: str = "ONNX Computational Graph to GEXF XML Converter"
 
 
 def getArgs() -> Namespace:
-    """
-    The function `getArgs()` is used to parse command line arguments for a program that converts an ONNX
+    """The function `getArgs()` is used to parse command line arguments for a program that converts an ONNX
     model's computational graph from a Protobuf format to a GEXF XML format.
     :return: an instance of the `Namespace` class, which contains the parsed command-line arguments.
 

@@ -12,7 +12,11 @@ from progress.bar import Bar
 def graphToTuples(graph: DiGraph) -> list[tuple]:
     """
 
-
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+    :param graph: DiGraph:
     :param graph: DiGraph:
     :param graph: DiGraph:
 
@@ -35,7 +39,16 @@ def graphToTuples(graph: DiGraph) -> list[tuple]:
 def comparison(model1Data: List[tuple], model2Data: List[tuple]) -> List[bool]:
     """
 
-
+    :param model1Data: List[tuple]:
+    :param model2Data: List[tuple]:
+    :param model1Data: List[tuple]:
+    :param model2Data: List[tuple]:
+    :param model1Data: List[tuple]:
+    :param model2Data: List[tuple]:
+    :param model1Data: List[tuple]:
+    :param model2Data: List[tuple]:
+    :param model1Data: List[tuple]:
+    :param model2Data: List[tuple]:
     :param model1Data: List[tuple]:
     :param model2Data: List[tuple]:
     :param model1Data: List[tuple]:

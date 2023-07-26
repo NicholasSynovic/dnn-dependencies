@@ -14,7 +14,6 @@ class AlphabeticalOrderHelpFormatter(ArgumentDefaultsHelpFormatter):
     def add_arguments(self, actions):
         """
 
-
         :param actions:
 
         """

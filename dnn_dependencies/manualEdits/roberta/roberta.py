@@ -13,7 +13,21 @@ def findRelevantNodes(
 ) -> defaultdict[str, List[str]]:
     """
 
-
+    :param graph: DiGraph:
+    :param pattern: str:
+    :param attribute: str:  (Default value = "label")
+    :param graph: DiGraph:
+    :param pattern: str:
+    :param attribute: str:  (Default value = "label")
+    :param graph: DiGraph:
+    :param pattern: str:
+    :param attribute: str:  (Default value = "label")
+    :param graph: DiGraph:
+    :param pattern: str:
+    :param attribute: str:  (Default value = "label")
+    :param graph: DiGraph:
+    :param pattern: str:
+    :param attribute: str:  (Default value = "label")
     :param graph: DiGraph:
     :param pattern: str:
     :param attribute: str:  (Default value = "label")
@@ -52,7 +66,21 @@ def findRelevantNodes(
 def condenseLayers(graph: DiGraph, layerNodes: defaultdict[str, List[str]]) -> DiGraph:
     """
 
-
+    :param graph: DiGraph:
+    :param layerNodes: defaultdict[str:
+    :param List: str]]:
+    :param graph: DiGraph:
+    :param layerNodes: defaultdict[str:
+    :param List: str]]:
+    :param graph: DiGraph:
+    :param layerNodes: defaultdict[str:
+    :param List: str]]:
+    :param graph: DiGraph:
+    :param layerNodes: defaultdict[str:
+    :param List: str]]:
+    :param graph: DiGraph:
+    :param layerNodes: defaultdict[str:
+    :param List: str]]:
     :param graph: DiGraph:
     :param layerNodes: defaultdict[str:
     :param List: str]]:
@@ -96,7 +124,21 @@ def deleteRelevantNodes(
 ) -> DiGraph:
     """
 
-
+    :param graph: DiGraph:
+    :param pattern: str:
+    :param attribute: str:  (Default value = "label")
+    :param graph: DiGraph:
+    :param pattern: str:
+    :param attribute: str:  (Default value = "label")
+    :param graph: DiGraph:
+    :param pattern: str:
+    :param attribute: str:  (Default value = "label")
+    :param graph: DiGraph:
+    :param pattern: str:
+    :param attribute: str:  (Default value = "label")
+    :param graph: DiGraph:
+    :param pattern: str:
+    :param attribute: str:  (Default value = "label")
     :param graph: DiGraph:
     :param pattern: str:
     :param attribute: str:  (Default value = "label")
