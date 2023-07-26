@@ -9,6 +9,12 @@ from pandas import DataFrame
 
 
 def extractNodeChildren(graph: DiGraph) -> List[Tuple[str, Generator]]:
+    """
+
+
+    :param graph: DiGraph:
+
+    """
     nodePairs: List[Tuple[str, Generator]] = []
     nodes: NodeView = graph.nodes
 
@@ -22,6 +28,14 @@ def extractNodeChildren(graph: DiGraph) -> List[Tuple[str, Generator]]:
 def generateHistogramOfNodePairs(
     graph: DiGraph, pairs: List[Tuple[str, Generator]]
 ) -> defaultdict[Tuple[str, str], int]:
+    """
+
+
+    :param graph: DiGraph:
+    :param pairs: List[Tuple[str:
+    :param Generator]]:
+
+    """
     data: defaultdict[Tuple[str, str], int] = defaultdict(int)
 
     nodes: NodeView = graph.nodes
@@ -67,6 +81,14 @@ def generateHistogramOfNodePairs(
     help="Path to store JSON file",
 )
 def main(gexfFile: Path, jsonFile: Path) -> None:
+    """
+    Count the number of operation type pairings in a GEXF file
+    \f
+
+    :param gexfFile: Path:
+    :param jsonFile: Path:
+
+    """
     graph: DiGraph = read_gexf(gexfFile)
     nodeChildren: List[Tuple[str, Generator]] = extractNodeChildren(graph=graph)
 
