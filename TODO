@@ -46,3 +46,8 @@ completeness
 - No code to improve upon similarity of models
 
 - Very sequential model similarity measurements
+
+- Repetitive usage of command line args
+    - Move from argparse to click
+        - Move getArgs() functions to their respective files
+        - Replace getArgs() with click
