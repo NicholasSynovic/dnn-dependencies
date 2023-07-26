@@ -1,22 +1,39 @@
-from argparse import Namespace
+from pathlib import Path
 
+import click
 from networkx import Graph, read_gexf
 from networkx.drawing.nx_pydot import write_dot
 
-from dnn_dependencies.args.gexf2dot_args import getArgs
 
-
-def main() -> None:
+@click.command()
+@click.option(
+    "gexfFile",
+    "-i",
+    "--input",
+    type=Path,
+    required=True,
+    nargs=1,
+    help="Path to GEXF file",
+)
+@click.option(
+    "dotFile",
+    "-o",
+    "--output",
+    type=Path,
+    required=True,
+    nargs=1,
+    help="Path to store DOT file",
+)
+def main(
+    gexfFile,
+    dotFile,
+) -> None:
     """
-    The main function reads a GEXF file, converts it to a graph object, and then writes it to a DOT
-    file.
-
+    Read in a GEXF file and output the DOT representation of it to the computer
 
     """
-    args: Namespace = getArgs()
-
-    graph: Graph = read_gexf(args.input[0])
-    write_dot(graph, args.output[0])
+    graph: Graph = read_gexf(gexfFile)
+    write_dot(graph, dotFile)
 
 
 if __name__ == "__main__":
