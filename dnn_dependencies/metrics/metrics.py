@@ -11,7 +11,6 @@ from networkx.algorithms.community import louvain_communities
 from networkx.algorithms.components import *
 from networkx.algorithms.threshold import is_threshold_graph
 from networkx.exception import NetworkXNoPath
-from progress.bar import Bar
 
 RANDOM_SEED: int = 42
 
@@ -19,7 +18,7 @@ random.seed(a=RANDOM_SEED, version=2)
 numpy.random.seed(seed=RANDOM_SEED)
 
 
-def computeBarycenter(graph: DiGraph, bar: Bar) -> int:
+def computeBarycenter(graph: DiGraph) -> int:
     """
 
 
@@ -31,11 +30,10 @@ def computeBarycenter(graph: DiGraph, bar: Bar) -> int:
         value: int = len(barycenter(G=graph))
     except NetworkXNoPath:
         value: int = -1
-    bar.next()
     return value
 
 
-def computeRadius(graph: DiGraph, bar: Bar) -> int:
+def computeRadius(graph: DiGraph) -> int:
     """
 
 
@@ -47,11 +45,10 @@ def computeRadius(graph: DiGraph, bar: Bar) -> int:
         value: int = radius(G=graph)
     except NetworkXError:
         value: int = -1
-    bar.next()
     return value
 
 
-def computeDAGLongestPathLength(graph: DiGraph, bar: Bar) -> int:
+def computeDAGLongestPathLength(graph: DiGraph) -> int:
     """
 
 
@@ -60,11 +57,10 @@ def computeDAGLongestPathLength(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = dag_longest_path_length(G=graph)
-    bar.next()
     return value
 
 
-def computeAverageShortestPathLength(graph: DiGraph, bar: Bar) -> float:
+def computeAverageShortestPathLength(graph: DiGraph) -> float:
     """
 
 
@@ -73,11 +69,10 @@ def computeAverageShortestPathLength(graph: DiGraph, bar: Bar) -> float:
 
     """
     value: float = average_shortest_path_length(G=graph)
-    bar.next()
     return value
 
 
-def computeNumberOfIsolates(graph: DiGraph, bar: Bar) -> int:
+def computeNumberOfIsolates(graph: DiGraph) -> int:
     """
 
 
@@ -86,11 +81,10 @@ def computeNumberOfIsolates(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = number_of_isolates(G=graph)
-    bar.next()
     return value
 
 
-def checkIsTriad(graph: DiGraph, bar: Bar) -> int:
+def checkIsTriad(graph: DiGraph) -> int:
     """
 
 
@@ -99,11 +93,10 @@ def checkIsTriad(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = int(is_triad(G=graph))
-    bar.next()
     return value
 
 
-def checkIsThresholdGraph(graph: DiGraph, bar: Bar) -> int:
+def checkIsThresholdGraph(graph: DiGraph) -> int:
     """
 
 
@@ -112,11 +105,10 @@ def checkIsThresholdGraph(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = int(is_threshold_graph(G=graph))
-    bar.next()
     return value
 
 
-def checkIsRegular(graph: DiGraph, bar: Bar) -> int:
+def checkIsRegular(graph: DiGraph) -> int:
     """
 
 
@@ -125,11 +117,10 @@ def checkIsRegular(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = int(is_regular(G=graph))
-    bar.next()
     return value
 
 
-def checkIsPlanar(graph: DiGraph, bar: Bar) -> int:
+def checkIsPlanar(graph: DiGraph) -> int:
     """
 
 
@@ -138,11 +129,10 @@ def checkIsPlanar(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = int(is_planar(G=graph))
-    bar.next()
     return value
 
 
-def checkIsDistanceRegular(graph: DiGraph, bar: Bar) -> int:
+def checkIsDistanceRegular(graph: DiGraph) -> int:
     """
 
 
@@ -151,11 +141,10 @@ def checkIsDistanceRegular(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = int(is_distance_regular(G=graph))
-    bar.next()
     return value
 
 
-def checkIsStronglyRegular(graph: DiGraph, bar: Bar) -> int:
+def checkIsStronglyRegular(graph: DiGraph) -> int:
     """
 
 
@@ -164,11 +153,10 @@ def checkIsStronglyRegular(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = int(is_strongly_regular(G=graph))
-    bar.next()
     return value
 
 
-def checkIsBipartite(graph: DiGraph, bar: Bar) -> int:
+def checkIsBipartite(graph: DiGraph) -> int:
     """
 
 
@@ -177,11 +165,10 @@ def checkIsBipartite(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = int(is_bipartite(G=graph))
-    bar.next()
     return value
 
 
-def computeRobinsAlexanderClustering(graph: DiGraph, bar: Bar) -> float | Literal[0]:
+def computeRobinsAlexanderClustering(graph: DiGraph) -> float | Literal[0]:
     """
 
 
@@ -190,11 +177,10 @@ def computeRobinsAlexanderClustering(graph: DiGraph, bar: Bar) -> float | Litera
 
     """
     value: float | Literal[0] = robins_alexander_clustering(G=graph)
-    bar.next()
     return value
 
 
-def computeTransitivity(graph: DiGraph, bar: Bar) -> float | Literal[0]:
+def computeTransitivity(graph: DiGraph) -> float | Literal[0]:
     """
 
 
@@ -203,11 +189,10 @@ def computeTransitivity(graph: DiGraph, bar: Bar) -> float | Literal[0]:
 
     """
     value: float | Literal[0] = transitivity(G=graph)
-    bar.next()
     return value
 
 
-def checkIsAperiodic(graph: DiGraph, bar: Bar) -> int:
+def checkIsAperiodic(graph: DiGraph) -> int:
     """
 
 
@@ -216,11 +201,10 @@ def checkIsAperiodic(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = int(is_aperiodic(G=graph))
-    bar.next()
     return value
 
 
-def checkIsDirectedAcyclicGraph(graph: DiGraph, bar: Bar) -> int:
+def checkIsDirectedAcyclicGraph(graph: DiGraph) -> int:
     """
 
 
@@ -229,11 +213,10 @@ def checkIsDirectedAcyclicGraph(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = int(is_directed_acyclic_graph(G=graph))
-    bar.next()
     return value
 
 
-def computeNumberOfNodes(graph: DiGraph, bar: Bar) -> int:
+def computeNumberOfNodes(graph: DiGraph) -> int:
     """
 
 
@@ -242,11 +225,10 @@ def computeNumberOfNodes(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = graph.number_of_nodes()
-    bar.next()
     return value
 
 
-def computeDensity(graph: DiGraph, bar: Bar) -> float:
+def computeDensity(graph: DiGraph) -> float:
     """
 
 
@@ -255,11 +237,10 @@ def computeDensity(graph: DiGraph, bar: Bar) -> float:
 
     """
     value: int = density(G=graph)
-    bar.next()
     return value
 
 
-def computeNumberOfEdges(graph: DiGraph, bar: Bar) -> int:
+def computeNumberOfEdges(graph: DiGraph) -> int:
     """
 
 
@@ -268,11 +249,10 @@ def computeNumberOfEdges(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = graph.number_of_edges()
-    bar.next()
     return value
 
 
-def computeNumberOfCommunities(graph: DiGraph, bar: Bar) -> int:
+def computeNumberOfCommunities(graph: DiGraph) -> int:
     """
 
 
@@ -282,11 +262,10 @@ def computeNumberOfCommunities(graph: DiGraph, bar: Bar) -> int:
     """
     communities: List[Set[str]] = louvain_communities(graph, seed=42)
     value: int = len(communities)
-    bar.next()
     return value
 
 
-def computeDiameter(graph: DiGraph, bar: Bar) -> int:
+def computeDiameter(graph: DiGraph) -> int:
     """
 
 
@@ -295,11 +274,10 @@ def computeDiameter(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = diameter(G=graph)
-    bar.next()
     return value
 
 
-def computeDegreeAssortativityCoefficient(graph: DiGraph, bar: Bar) -> float:
+def computeDegreeAssortativityCoefficient(graph: DiGraph) -> float:
     """
 
 
@@ -308,11 +286,10 @@ def computeDegreeAssortativityCoefficient(graph: DiGraph, bar: Bar) -> float:
 
     """
     value: float = degree_assortativity_coefficient(G=graph, x="out", y="in")
-    bar.next()
     return value
 
 
-def computeAttributeAssortativityCoefficient(graph: DiGraph, bar: Bar) -> float:
+def computeAttributeAssortativityCoefficient(graph: DiGraph) -> float:
     """
 
 
@@ -324,11 +301,10 @@ def computeAttributeAssortativityCoefficient(graph: DiGraph, bar: Bar) -> float:
         G=graph,
         attribute="Operation_Type",
     )
-    bar.next()
     return value
 
 
-def computeDegreePearsonCorrelationCoefficient(graph: DiGraph, bar: Bar) -> float:
+def computeDegreePearsonCorrelationCoefficient(graph: DiGraph) -> float:
     """
 
 
@@ -341,11 +317,10 @@ def computeDegreePearsonCorrelationCoefficient(graph: DiGraph, bar: Bar) -> floa
         x="out",
         y="in",
     )
-    bar.next()
     return value
 
 
-def checkIsSemiconnected(graph: DiGraph, bar: Bar) -> int:
+def checkIsSemiconnected(graph: DiGraph) -> int:
     """
 
 
@@ -354,11 +329,10 @@ def checkIsSemiconnected(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = int(is_semiconnected(G=graph))
-    bar.next()
     return value
 
 
-def checkIsAttractingComponent(graph: DiGraph, bar: Bar) -> int:
+def checkIsAttractingComponent(graph: DiGraph) -> int:
     """
 
 
@@ -367,11 +341,10 @@ def checkIsAttractingComponent(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = int(is_attracting_component(G=graph))
-    bar.next()
     return value
 
 
-def checkIsStronglyConnected(graph: DiGraph, bar: Bar) -> int:
+def checkIsStronglyConnected(graph: DiGraph) -> int:
     """
 
 
@@ -380,11 +353,10 @@ def checkIsStronglyConnected(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = int(is_strongly_connected(G=graph))
-    bar.next()
     return value
 
 
-def checkIsWeaklyConnected(graph: DiGraph, bar: Bar) -> int:
+def checkIsWeaklyConnected(graph: DiGraph) -> int:
     """
 
 
@@ -393,11 +365,10 @@ def checkIsWeaklyConnected(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = int(is_weakly_connected(G=graph))
-    bar.next()
     return value
 
 
-def computeNumberOfWeaklyConnectedComponents(graph: DiGraph, bar: Bar) -> int:
+def computeNumberOfWeaklyConnectedComponents(graph: DiGraph) -> int:
     """
 
 
@@ -406,11 +377,10 @@ def computeNumberOfWeaklyConnectedComponents(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = number_weakly_connected_components(G=graph)
-    bar.next()
     return value
 
 
-def computeNumberOfStronglyConnectedComponents(graph: DiGraph, bar: Bar) -> int:
+def computeNumberOfStronglyConnectedComponents(graph: DiGraph) -> int:
     """
 
 
@@ -419,11 +389,10 @@ def computeNumberOfStronglyConnectedComponents(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = number_strongly_connected_components(G=graph)
-    bar.next()
     return value
 
 
-def computeNumberOfAttracingComponents(graph: DiGraph, bar: Bar) -> int:
+def computeNumberOfAttracingComponents(graph: DiGraph) -> int:
     """
 
 
@@ -432,5 +401,4 @@ def computeNumberOfAttracingComponents(graph: DiGraph, bar: Bar) -> int:
 
     """
     value: int = number_attracting_components(G=graph)
-    bar.next()
     return value
