@@ -1,19 +1,17 @@
-from argparse import Namespace
 from itertools import count
-from pathlib import Path, PosixPath
-from re import Match, search
+from pathlib import Path
+from re import search
 from typing import List
 from xml.etree.ElementTree import Element, ElementTree
 
+import click
 import pandas
 from lxml import etree
 from matplotlib.colors import XKCD_COLORS
 from onnx import load
 from onnx.onnx_pb import GraphProto, ModelProto, NodeProto
-from pandas import DataFrame, Series
+from pandas import DataFrame
 from progress.bar import Bar
-
-from dnn_dependencies.args.onnx2gexf_args import getArgs
 
 NODE_ID_COUNTER: count = count()
 EDGE_ID_COUNTER: count = count()
@@ -262,17 +260,44 @@ def buildXML(
     return xmlStr
 
 
-def main() -> None:
+@click.command()
+@click.option(
+    "onnxFile",
+    "-i",
+    "--input",
+    nargs=1,
+    type=Path,
+    required=True,
+    help="Path to ONNX file",
+)
+@click.option(
+    "gexfFile",
+    "-o",
+    "--output",
+    nargs=1,
+    type=Path,
+    required=True,
+    help="Path to store GEXF file",
+)
+@click.option(
+    "mode",
+    "-m",
+    "--mode",
+    nargs=1,
+    type=click.Choice(choices=["production", "validation"]),
+    default="production",
+    help="Save the GEXF for production usage or for validation usage",
+)
+def main(onnxFile: Path, gexfFile: Path, mode: str) -> None:
     """
     The main function extracts information from an ONNX computational graph, builds a DataFrame, and
     writes the data to an XML file.
 
 
     """
-    args: Namespace = getArgs()
     colors: List[str] = list(XKCD_COLORS.values())
 
-    model: ModelProto = load(f=args.input[0])
+    model: ModelProto = load(f=onnxFile.__str__())
     graph: GraphProto = model.graph
 
     with Bar(
@@ -307,9 +332,9 @@ def main() -> None:
             OUTPUT_DF_LIST.append(df)
             bar.next()
     df: DataFrame = pandas.concat(OUTPUT_DF_LIST)
-    xmlStr = buildXML(df=df, mode=args.mode)
+    xmlStr = buildXML(df=df, mode=mode)
 
-    with open(file=args.output[0], mode="w") as xmlFile:
+    with open(file=gexfFile, mode="w") as xmlFile:
         xmlFile.write(xmlStr)
         xmlFile.close()
 
