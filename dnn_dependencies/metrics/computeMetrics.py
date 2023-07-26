@@ -93,7 +93,7 @@ def dfToDB(df: DataFrame, dbPath: Path, table: str) -> None:
     df.to_sql(
         name=table,
         con=conn,
-        if_exists="replace",
+        if_exists="append",
         index=True,
         index_label="ID",
     )
