@@ -20,22 +20,9 @@ OUTPUT_DF_LIST: List[DataFrame] = []
 
 def extractLayer(nodeName: str) -> str:
     """
-    
 
-    :param nodeName: The `nodeName` parameter is a string that represents the name of a node
-    :type nodeName: str
+
     :param nodeName: str:
-    :param nodeName: str:
-    :param nodeName: str:
-    :param nodeName: str:
-    :param nodeName: str:
-    :param nodeName: str:
-    :param nodeName: str:
-    :param nodeName: str:
-    :param nodeName: str:
-    :param nodeName: str:
-    :param nodeName: str: 
-    :returns: a string that represents the layer extracted from the given `nodeName`.
 
     """
     pattern: str = r"layer\.(\d+)"
@@ -59,28 +46,8 @@ def buildDF(
     color: List[str],
 ) -> DataFrame:
     """
-    
 
-    :param nodeID: The `nodeID` parameter is an integer that represents the ID of the node. It is used
-    to uniquely identify a node in a graph or network
-    :type nodeID: int
-    :param name: The `name` parameter is a string that represents the name of the node
-    :type name: str
-    :param opType: The `opType` parameter represents the operation type of the node. It can be a string
-    that describes the type of operation being performed by the node, such as "add", "multiply",
-    "convolution", etc
-    :type opType: str
-    :param layer: The "layer" parameter represents the layer in which the node is located. It is a
-    string that specifies the layer name or number
-    :type layer: str
-    :param inputs: A list of strings representing the input nodes to the current node
-    :type inputs: List[str]
-    :param outputs: The "outputs" parameter is a list of strings that represents the output nodes of the
-    current node. Each string in the list represents the ID of an output node
-    :type outputs: List[str]
-    :param color: The "color" parameter is a list of strings that represents the color of the node. Each
-    string in the list corresponds to a specific color
-    :type color: List[str]
+
     :param nodeID: int:
     :param name: str:
     :param opType: str:
@@ -88,77 +55,6 @@ def buildDF(
     :param inputs: List[str]:
     :param outputs: List[str]:
     :param color: List[str]:
-    :param nodeID: int:
-    :param name: str:
-    :param opType: str:
-    :param layer: str:
-    :param inputs: List[str]:
-    :param outputs: List[str]:
-    :param color: List[str]:
-    :param nodeID: int:
-    :param name: str:
-    :param opType: str:
-    :param layer: str:
-    :param inputs: List[str]:
-    :param outputs: List[str]:
-    :param color: List[str]:
-    :param nodeID: int:
-    :param name: str:
-    :param opType: str:
-    :param layer: str:
-    :param inputs: List[str]:
-    :param outputs: List[str]:
-    :param color: List[str]:
-    :param nodeID: int:
-    :param name: str:
-    :param opType: str:
-    :param layer: str:
-    :param inputs: List[str]:
-    :param outputs: List[str]:
-    :param color: List[str]:
-    :param nodeID: int:
-    :param name: str:
-    :param opType: str:
-    :param layer: str:
-    :param inputs: List[str]:
-    :param outputs: List[str]:
-    :param color: List[str]:
-    :param nodeID: int:
-    :param name: str:
-    :param opType: str:
-    :param layer: str:
-    :param inputs: List[str]:
-    :param outputs: List[str]:
-    :param color: List[str]:
-    :param nodeID: int:
-    :param name: str:
-    :param opType: str:
-    :param layer: str:
-    :param inputs: List[str]:
-    :param outputs: List[str]:
-    :param color: List[str]:
-    :param nodeID: int:
-    :param name: str:
-    :param opType: str:
-    :param layer: str:
-    :param inputs: List[str]:
-    :param outputs: List[str]:
-    :param color: List[str]:
-    :param nodeID: int:
-    :param name: str:
-    :param opType: str:
-    :param layer: str:
-    :param inputs: List[str]:
-    :param outputs: List[str]:
-    :param color: List[str]:
-    :param nodeID: int: 
-    :param name: str: 
-    :param opType: str: 
-    :param layer: str: 
-    :param inputs: List[str]: 
-    :param outputs: List[str]: 
-    :param color: List[str]: 
-    :returns: a DataFrame object.
 
     """
     data: dict[str, List[int | str | List[str]]] = {
@@ -175,38 +71,10 @@ def buildDF(
 
 def dfIDQuery(df: DataFrame, query: str) -> tuple[str, str] | None:
     """
-    
 
-    :param df: DataFrame - The input DataFrame containing the data
-    :type df: DataFrame
-    :param query: The `query` parameter is a string that represents the search query. It is used to
-    search for a specific value in the "Outputs" column of the DataFrame
-    :type query: str
+
     :param df: DataFrame:
     :param query: str:
-    :param df: DataFrame:
-    :param query: str:
-    :param df: DataFrame:
-    :param query: str:
-    :param df: DataFrame:
-    :param query: str:
-    :param df: DataFrame:
-    :param query: str:
-    :param df: DataFrame:
-    :param query: str:
-    :param df: DataFrame:
-    :param query: str:
-    :param df: DataFrame:
-    :param query: str:
-    :param df: DataFrame:
-    :param query: str:
-    :param df: DataFrame:
-    :param query: str:
-    :param df: DataFrame: 
-    :param query: str: 
-    :returns: The function `dfIDQuery` returns a tuple containing the name and ID of the first row in the
-    DataFrame `df` that matches the given query. The name is returned as a string and the ID is returned
-    as a string. If no matching row is found, the function returns `None`.
 
     """
     mask = df["Outputs"].apply(lambda x: query in x)
@@ -223,39 +91,10 @@ def buildXML(
     mode: str = "production",
 ) -> str:
     """
-    
 
-    :param df: The `df` parameter is a DataFrame object that contains the data to be used for building
-    the XML. It is expected to have the following columns: `ID`, `NAME`, `OPTYPE`, `LAYER`, `INPUTS`,
-    `OUTPUTS`, and `COLOR`
-    :type df: DataFrame
-    :param mode: The `mode` parameter in the `buildXML` function is used to specify the mode in which
-    the XML is being built. It has a default value of "production", but can be overridden by passing a
-    different value, defaults to production
-    :type mode: str (optional)
+
     :param df: DataFrame:
     :param mode: str:  (Default value = "production")
-    :param df: DataFrame:
-    :param mode: str:  (Default value = "production")
-    :param df: DataFrame:
-    :param mode: str:  (Default value = "production")
-    :param df: DataFrame:
-    :param mode: str:  (Default value = "production")
-    :param df: DataFrame:
-    :param mode: str:  (Default value = "production")
-    :param df: DataFrame:
-    :param mode: str:  (Default value = "production")
-    :param df: DataFrame:
-    :param mode: str:  (Default value = "production")
-    :param df: DataFrame:
-    :param mode: str:  (Default value = "production")
-    :param df: DataFrame:
-    :param mode: str:  (Default value = "production")
-    :param df: DataFrame:
-    :param mode: str:  (Default value = "production")
-    :param df: DataFrame: 
-    :param mode: str:  (Default value = "production")
-    :returns: The function `buildXML` returns a string representation of an XML document.
 
     """
     edgeList: List[tuple[tuple[str, str], str]] = []
@@ -389,39 +228,17 @@ def buildXML(
     nargs=1,
     type=click.Choice(choices=["production", "validation"]),
     default="production",
+    show_default=True,
     help="Save the GEXF for production usage or for validation usage",
 )
 def main(onnxFile: Path, gexfFile: Path, mode: str) -> None:
     """
-    
+    Convert an ONNX computational graph into a GEXF formatted file
+    \f
 
     :param onnxFile: Path:
     :param gexfFile: Path:
     :param mode: str:
-    :param onnxFile: Path:
-    :param gexfFile: Path:
-    :param mode: str:
-    :param onnxFile: Path:
-    :param gexfFile: Path:
-    :param mode: str:
-    :param onnxFile: Path:
-    :param gexfFile: Path:
-    :param mode: str:
-    :param onnxFile: Path:
-    :param gexfFile: Path:
-    :param mode: str:
-    :param onnxFile: Path:
-    :param gexfFile: Path:
-    :param mode: str:
-    :param onnxFile: Path:
-    :param gexfFile: Path:
-    :param mode: str:
-    :param onnxFile: Path:
-    :param gexfFile: Path:
-    :param mode: str:
-    :param onnxFile: Path: 
-    :param gexfFile: Path: 
-    :param mode: str: 
 
     """
     colors: List[str] = list(XKCD_COLORS.values())
