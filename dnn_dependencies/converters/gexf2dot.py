@@ -24,10 +24,7 @@ from networkx.drawing.nx_pydot import write_dot
     nargs=1,
     help="Path to store DOT file",
 )
-def main(
-    gexfFile,
-    dotFile,
-) -> None:
+def main(gexfFile: Path, dotFile: Path) -> None:
     """
     Read in a GEXF file and output the DOT representation of it to the computer
 
