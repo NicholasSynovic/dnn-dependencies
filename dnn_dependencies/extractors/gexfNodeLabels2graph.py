@@ -10,20 +10,10 @@ from progress.bar import Bar
 
 
 def extractNodeLabels(dom: str) -> List[str]:
-    """The function `extractNodeLabels` takes a string representation of an XML document and returns a list
-    of labels extracted from the `<node>` tags in the document.
+    """
 
-    :param dom: The `dom` parameter is a string that represents the HTML or XML document. It is the
-    input from which we want to extract node labels
-    :type dom: str
+
     :param dom: str:
-    :param dom: str:
-    :param dom: str:
-    :param dom: str:
-    :param dom: str:
-    :param dom: str:
-    :param dom: str:
-    :returns: a list of strings, which are the labels of the nodes extracted from the given DOM.
 
     """
     data: List[str] = []
@@ -41,21 +31,10 @@ def extractNodeLabels(dom: str) -> List[str]:
 
 
 def buildEdgeList(labels: List[str]) -> List[tuple[str, str]]:
-    """The function `buildEdgeList` takes a list of labels and creates an edge list by splitting the labels
-    and pairing the nodes together.
+    """
 
-    :param labels: The `labels` parameter is a list of strings. Each string represents a label or a path
-    to a node in a computational graph
-    :type labels: List[str]
+
     :param labels: List[str]:
-    :param labels: List[str]:
-    :param labels: List[str]:
-    :param labels: List[str]:
-    :param labels: List[str]:
-    :param labels: List[str]:
-    :param labels: List[str]:
-    :returns: The function `buildEdgeList` returns a list of tuples, where each tuple represents an edge
-    in a graph. Each tuple contains two strings, representing the source and target nodes of the edge.
 
     """
     data: List[tuple[str, str]] = []
@@ -82,26 +61,11 @@ def buildEdgeList(labels: List[str]) -> List[tuple[str, str]]:
 
 
 def buildDiGraph(edgeList: List[tuple[str, str]]) -> DiGraph:
-    """The function `buildDiGraph` takes a list of tuples representing edges and returns a directed graph.
+    """
 
-    :param edgeList: The `edgeList` parameter is a list of tuples representing the edges of a directed
-    graph. Each tuple contains two elements: the source node and the target node of the edge
-    :type edgeList: List: List: List: List: List: List: List: List[tuple[str, str]]
-    :param edgeList: List[tuple[str:
-    :param str: returns: a directed graph (DiGraph) object.
-    :param edgeList: List[tuple[str:
-    :param str: returns: a directed graph (DiGraph) object.
-    :param edgeList: List[tuple[str:
-    :param str: returns: a directed graph (DiGraph) object.
-    :param edgeList: List[tuple[str:
-    :param str: returns: a directed graph (DiGraph) object.
-    :param edgeList: List[tuple[str:
-    :param str: returns: a directed graph (DiGraph) object.
-    :param edgeList: List[tuple[str:
-    :param str: returns: a directed graph (DiGraph) object.
+
     :param edgeList: List[tuple[str:
     :param str]]:
-    :returns: a directed graph (DiGraph) object.
 
     """
     graph: DiGraph = DiGraph()
@@ -129,17 +93,10 @@ def buildDiGraph(edgeList: List[tuple[str, str]]) -> DiGraph:
     help="Path to store DOT file",
 )
 def main(gexfFile: Path, dotFile: Path) -> None:
-    """The main function reads an XML file, extracts node labels, builds an edge list, constructs a
-    directed graph, and writes the graph to a GEXF file.
+    """
+    Visualize node labels and their edges
+    \f
 
-    :param gexfFile: Path:
-    :param dotFile: Path:
-    :param gexfFile: Path:
-    :param dotFile: Path:
-    :param gexfFile: Path:
-    :param dotFile: Path:
-    :param gexfFile: Path:
-    :param dotFile: Path:
     :param gexfFile: Path:
     :param dotFile: Path:
 
