@@ -1,13 +1,12 @@
-from argparse import Namespace
 from itertools import pairwise
+from pathlib import Path
 from typing import List
 
+import click
 from bs4 import BeautifulSoup, ResultSet, Tag
 from networkx import DiGraph
 from networkx.drawing.nx_pydot import write_dot
 from progress.bar import Bar
-
-from dnn_dependencies.args.gexfNodeLabels2graph_args import getArgs
 
 
 def extractNodeLabels(dom: str) -> List[str]:
@@ -93,23 +92,40 @@ def buildDiGraph(edgeList: List[tuple[str, str]]) -> DiGraph:
     return graph
 
 
-def main() -> None:
+@click.command()
+@click.option(
+    "gexfFile",
+    "-i",
+    "--input",
+    type=Path,
+    required=True,
+    nargs=1,
+    help="Path to GEXF file",
+)
+@click.option(
+    "dotFile",
+    "-o",
+    "--output",
+    type=Path,
+    required=True,
+    nargs=1,
+    help="Path to store DOT file",
+)
+def main(gexfFile: Path, dotFile: Path) -> None:
     """
     The main function reads an XML file, extracts node labels, builds an edge list, constructs a
     directed graph, and writes the graph to a GEXF file.
 
 
     """
-    args: Namespace = getArgs()
-
-    with open(file=args.input[0], mode="r") as xmlDoc:
+    with open(file=gexfFile, mode="r") as xmlDoc:
         xmlDOM: str = xmlDoc.read()
         xmlDoc.close()
 
     nodeLabels: List[str] = extractNodeLabels(dom=xmlDOM)
     edgeList: List[tuple[str, str]] = buildEdgeList(labels=nodeLabels)
     graph: DiGraph = buildDiGraph(edgeList=edgeList)
-    write_dot(graph, args.output[0])
+    write_dot(graph, dotFile)
 
 
 if __name__ == "__main__":
