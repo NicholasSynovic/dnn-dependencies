@@ -31,7 +31,7 @@ def getArgs() -> Namespace:
         nargs=1,
         type=Path,
         required=True,
-        help="Path to a GEXF XML file",
+        help="Path to a directory containing GEXF XML files",
     )
     parser.add_argument(
         "-o",

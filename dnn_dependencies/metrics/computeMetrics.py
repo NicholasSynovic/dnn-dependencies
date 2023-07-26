@@ -1,9 +1,11 @@
 import sqlite3
 from argparse import Namespace
+from os import listdir
 from pathlib import Path
 from sqlite3 import Connection
-from typing import Any
+from typing import Any, List
 
+import pandas
 from pandas import DataFrame
 
 from dnn_dependencies.args.computeMetrics_args import getArgs
@@ -15,8 +17,22 @@ random.seed(a=RANDOM_SEED, version=2)
 numpy.random.seed(seed=RANDOM_SEED)
 
 
+def readFiles(directory: Path) -> List[DiGraph]:
+    data: List[DiGraph] = []
+
+    files: List[Path] = [Path(directory, f) for f in listdir(path=directory)]
+
+    with Bar("Reading files to create DiGraphs... ", max=len(files)) as bar:
+        file: Path
+        for file in files:
+            data.append(read_gexf(file))
+            bar.next()
+
+    return data
+
+
 def getModelName(path: Path) -> str:
-    return str(path.parent)
+    return "fred"
 
 
 def createDict(graph: DiGraph, modelName: str, modelFilepath: Path) -> dict[str, Any]:
@@ -74,7 +90,7 @@ def createDict(graph: DiGraph, modelName: str, modelFilepath: Path) -> dict[str,
             "Number of Weakly Connected Components"
         ] = computeNumberOfWeaklyConnectedComponents(graph=graph, bar=bar)
         data[
-            "Number of Strongly Computed Components"
+            "Number of Strongly Connected Components"
         ] = computeNumberOfStronglyConnectedComponents(graph=graph, bar=bar)
         data["Number of Attracting Components"] = computeNumberOfAttracingComponents(
             graph=graph, bar=bar
@@ -101,22 +117,34 @@ def dfToDB(df: DataFrame, dbPath: Path, table: str) -> None:
     conn.close()
 
 
+def dfToCSV(df: DataFrame, output: Path) -> None:
+    df.to_csv(path_or_buf=output, index=True, index_label="ID")
+
+
 def main() -> None:
     args: Namespace = getArgs()
-    modelFilePath: Path = args.input[0]
 
-    graph: DiGraph = read_gexf(path=modelFilePath)
+    dfList: List[DataFrame] = []
+    gexfDirectory: Path = args.input[0]
 
-    modelName: str = getModelName(path=modelFilePath)
+    graphs: List[DiGraph] = readFiles(directory=gexfDirectory)
 
-    data: dict[str, Any] = createDict(
-        graph=graph,
-        modelName=modelName,
-        modelFilepath=modelFilePath,
-    )
+    graph: DiGraph
+    for graph in graphs:
+        modelName: str = getModelName(path=gexfDirectory)  # TODO: Fix this
 
-    df: DataFrame = DataFrame([data])
-    dfToDB(df=df, dbPath=args.output[0], table="Model Stats")
+        data: dict[str, Any] = createDict(
+            graph=graph,
+            modelName=modelName,
+            modelFilepath=gexfDirectory,
+        )
+
+        df: DataFrame = DataFrame([data])
+        dfList.append(df)
+
+    df: DataFrame = pandas.concat(objs=dfList)
+    # dfToDB(df=df, dbPath=args.output[0], table="Model Stats")
+    dfToCSV(df=df, output=args.output[0])
 
 
 if __name__ == "__main__":
