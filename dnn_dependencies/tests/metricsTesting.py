@@ -5,7 +5,10 @@ import similarity
 
 
 class metricsTesting(unittest.TestCase):
+    """ """
+
     def testComputeDensity(self):
+        """ """
         G: nx.DiGraph = nx.read_gexf(
             "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/onnxArchitecture/gpt2.gexf"
         )
@@ -16,6 +19,7 @@ class metricsTesting(unittest.TestCase):
         self.assertEqual(actual, 0.00036878179081766563)
 
     def testCountNodes(self):
+        """ """
         G: nx.DiGraph = nx.read_gexf(
             "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/onnxArchitecture/gpt2.gexf"
         )
@@ -26,6 +30,7 @@ class metricsTesting(unittest.TestCase):
         self.assertNotEqual(actual, (-1 * actual))
 
     def testCountEdges(self):
+        """ """
         G: nx.DiGraph = nx.read_gexf(
             "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/onnxArchitecture/gpt2.gexf"
         )
@@ -36,6 +41,7 @@ class metricsTesting(unittest.TestCase):
         self.assertEqual(actual, 3552)
 
     def testCountCommunities(self):
+        """ """
         G: nx.DiGraph = nx.read_gexf(
             "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/onnxArchitecture/gpt2.gexf"
         )
@@ -46,6 +52,7 @@ class metricsTesting(unittest.TestCase):
         self.assertEqual(actual, 1170)
 
     def testComputeDegreeDistribution(self):
+        """ """
         G: nx.DiGraph = nx.read_gexf(
             "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/onnxArchitecture/gpt2.gexf"
         )
@@ -56,6 +63,7 @@ class metricsTesting(unittest.TestCase):
         self.assertEqual(actual, {0: 1227, 1: 589, 2: 1069, 3: 74, 4: 122, 5: 23})
 
     def testComputeClusteringCoefficient(self):
+        """ """
         G: nx.DiGraph = nx.read_gexf(
             "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/onnxArchitecture/gpt2.gexf"
         )

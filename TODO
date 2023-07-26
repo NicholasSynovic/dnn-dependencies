@@ -1,0 +1,48 @@
+# Nicholas Synovic's TODO List
+
+Information:
+
+TODOs are structued as:
+
+- Problem
+    - Solution
+        - Steps
+
+And SHOULD NOT be deleted once complete. Please use an emoji to mark
+completeness
+
+===
+
+- Loss of 4 TB of data on /eagle
+    - Restore lost data from Globus
+        - Download lost archives from Globus
+        - Decompress data using `tar -xzvf ARCHIVE.tar.gz`
+        - Delete .tar.gz file
+        - Move output to main PTMTorrent
+
+- No local backup of PTMTorrent on /eagle
+    - Download archives from Globus
+        - Download the entire PTMTorrent dataset to a directory
+
+- George has an incomplete copy of PTMTorrent on /eagle
+    - Have George delete his incomplete copy
+        - Ask George
+        - Ask George again
+        - Watch George do it
+
+- Figure out an embedded database to use for storing Metrics
+    - Have Karolina figure it out and implement it
+        - Send her links to the SQLAlchemy supported dialects
+        - Send her links to the Wikipedia page on embedded databases
+
+- Unclear as to what each directory contains
+
+- Fix documentation
+
+- No end to end solution for a single HF model to metrics
+
+- No useful visualization of similarity
+
+- No code to improve upon similarity of models
+
+- Very sequential model similarity measurements

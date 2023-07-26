@@ -24,6 +24,13 @@ def count(model1: json, model2: json, metricLabel: str) -> plt:
     you want to count. It is used to access the corresponding metric values from the `model1` and
     `model2` dictionaries
     :type metricLabel: str
+    :param model1: json:
+    :param model2: json:
+    :param metricLabel: str:
+    :param model1: json:
+    :param model2: json:
+    :param metricLabel: str:
+
     """
     metric1 = model1[metricLabel]
     metric2 = model2[metricLabel]
@@ -53,6 +60,15 @@ def distribution(model1: json, model2: json, metricLabel: str, scale: str) -> pl
     :param scale: The "scale" parameter determines the scale of the y-axis in the plot. It can take the
     following values:
     :type scale: str
+    :param model1: json:
+    :param model2: json:
+    :param metricLabel: str:
+    :param scale: str:
+    :param model1: json:
+    :param model2: json:
+    :param metricLabel: str:
+    :param scale: str:
+
     """
     metric1 = model1[metricLabel]
     values1 = [float(key) for key in metric1.keys()]

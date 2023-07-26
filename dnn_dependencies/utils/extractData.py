@@ -8,6 +8,13 @@ from progress.bar import Bar
 
 
 def listFiles(directory: Path) -> Tuple[List[Path], List[Path]]:
+    """
+
+
+    :param directory: Path:
+    :param directory: Path:
+
+    """
     files: List[Path] = [Path(directory, f) for f in listdir(path=directory)]
 
     txtFiles: List[Path] = []
@@ -25,6 +32,13 @@ def listFiles(directory: Path) -> Tuple[List[Path], List[Path]]:
 
 
 def extractDataFromDF(df: DataFrame) -> DataFrame:
+    """
+
+
+    :param df: DataFrame:
+    :param df: DataFrame:
+
+    """
     df.drop(
         columns=["id", "LatestGitCommitSHA", "ModelHub", "ModelPaperDOIs"], inplace=True
     )
@@ -33,6 +47,13 @@ def extractDataFromDF(df: DataFrame) -> DataFrame:
 
 
 def extractDataFromTXTs(filepaths: List[Path]) -> dict[str, Path]:
+    """
+
+
+    :param filepaths: List[Path]:
+    :param filepaths: List[Path]:
+
+    """
     REPLACEMENT_STR: str = (
         "./PTM-Torrent/ptm_torrent/huggingface/data/huggingface/repos/"
     )
@@ -68,6 +89,16 @@ def extractDataFromTXTs(filepaths: List[Path]) -> dict[str, Path]:
 
 
 def createDF(txtData: dict[str, Path], jsonData: DataFrame) -> DataFrame:
+    """
+
+
+    :param txtData: dict[str:
+    :param Path: param jsonData: DataFrame:
+    :param txtData: dict[str:
+    :param Path]:
+    :param jsonData: DataFrame:
+
+    """
     COLUMNS: List[str] = ["name", "path", "task", "arch"]
     df: DataFrame = DataFrame(columns=COLUMNS)
 
@@ -101,6 +132,13 @@ def createDF(txtData: dict[str, Path], jsonData: DataFrame) -> DataFrame:
 
 
 def createCommands(df: DataFrame) -> None:
+    """
+
+
+    :param df: DataFrame:
+    :param df: DataFrame:
+
+    """
     dfSize: int = df.shape[0]
     cmdList: List[str] = []
 
@@ -119,6 +157,7 @@ def createCommands(df: DataFrame) -> None:
 
 
 def main() -> None:
+    """ """
     DIRECTORY: Path = Path("HF_TextFiles")
 
     txtFiles, jsonFiles = listFiles(directory=DIRECTORY)

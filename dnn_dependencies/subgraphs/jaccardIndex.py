@@ -7,6 +7,13 @@ from progress.bar import Bar
 
 
 def graphToSet(graph: DiGraph) -> set[str]:
+    """
+
+
+    :param graph: DiGraph:
+    :param graph: DiGraph:
+
+    """
     nodeOps: List[tuple] = list(graph.nodes(data="Operation_Type"))
     graphOps: List[str] = [pair[1] for pair in nodeOps]
 
@@ -15,6 +22,15 @@ def graphToSet(graph: DiGraph) -> set[str]:
 
 
 def jaccardIndex(model1Data: set[str], model2Data: set[str]) -> float:
+    """
+
+
+    :param model1Data: set[str]:
+    :param model2Data: set[str]:
+    :param model1Data: set[str]:
+    :param model2Data: set[str]:
+
+    """
     intersection = model1Data.intersection(model2Data)
     jaccardIndex = len(intersection) / (
         len(model1Data) + len(model2Data) - len(intersection)
@@ -23,6 +39,7 @@ def jaccardIndex(model1Data: set[str], model2Data: set[str]) -> float:
 
 
 def main() -> None:
+    """ """
     graph1: nx.DiGraph = read_gexf("bert-base-cased.gexf")
     graph2: nx.DiGraph = read_gexf("bert-base-uncased.gexf")
     model1Data: List[str] = graphToSet(graph1)

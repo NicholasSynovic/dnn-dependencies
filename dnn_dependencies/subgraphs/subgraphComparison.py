@@ -9,10 +9,24 @@ from networkx.classes.reportviews import NodeDataView
 
 
 def listDirectory(folderPath: str):
+    """
+
+
+    :param folderPath: str:
+    :param folderPath: str:
+
+    """
     return os.listdir(path=folderPath)
 
 
 def subgraphtoTuple(subgraph: DiGraph) -> tuple:
+    """
+
+
+    :param subgraph: DiGraph:
+    :param subgraph: DiGraph:
+
+    """
     data: List[str] = []
     nodeOperations: NodeDataView = subgraph.nodes(data="Operation_Type")
     nodeOperationsList: List[tuple[str, str]] = list(nodeOperations)
@@ -27,6 +41,13 @@ def subgraphtoTuple(subgraph: DiGraph) -> tuple:
 
 #
 def folderToSubgraph(folderPath: str) -> List[str]:
+    """
+
+
+    :param folderPath: str:
+    :param folderPath: str:
+
+    """
     subgraphPaths: List[str] = []
 
     subgraphFiles: list = listDirectory(folderPath=folderPath)
@@ -40,6 +61,13 @@ def folderToSubgraph(folderPath: str) -> List[str]:
 
 #
 def pathsToDiGraphs(subgraphPaths: List[str]) -> List[DiGraph]:
+    """
+
+
+    :param subgraphPaths: List[str]:
+    :param subgraphPaths: List[str]:
+
+    """
     subgraphs: List[DiGraph] = []
 
     path: str
@@ -51,6 +79,13 @@ def pathsToDiGraphs(subgraphPaths: List[str]) -> List[DiGraph]:
 
 #
 def digraphsToTuples(subgraphs: List[DiGraph]) -> List[tuple]:
+    """
+
+
+    :param subgraphs: List[DiGraph]:
+    :param subgraphs: List[DiGraph]:
+
+    """
     data: List[tuple] = []
 
     subgraph: DiGraph
@@ -61,6 +96,15 @@ def digraphsToTuples(subgraphs: List[DiGraph]) -> List[tuple]:
 
 
 def comparison(model1Data: List[tuple], model2Data: List[tuple]) -> List[bool]:
+    """
+
+
+    :param model1Data: List[tuple]:
+    :param model2Data: List[tuple]:
+    :param model1Data: List[tuple]:
+    :param model2Data: List[tuple]:
+
+    """
     result = difflib.SequenceMatcher(None, model1Data, model2Data)
     percent = result.ratio()
     print(percent)
@@ -68,6 +112,7 @@ def comparison(model1Data: List[tuple], model2Data: List[tuple]) -> List[bool]:
 
 
 def main() -> None:
+    """ """
     # model 1
     folderPath1: str = "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/subgraphs/bert-base-uncased/"
     subgraphPaths1: List[str] = folderToSubgraph(folderPath=folderPath1)

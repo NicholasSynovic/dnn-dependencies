@@ -5,10 +5,28 @@ import pandas as pd
 
 
 def convertJson(jsonFile: str) -> pd.DataFrame:
+    """
+
+
+    :param jsonFile: str:
+    :param jsonFile: str:
+
+    """
     return pd.read_json(jsonFile)
 
 
 def convertDf(databaseFile: str, tableName: str, df: pd.DataFrame) -> int:
+    """
+
+
+    :param databaseFile: str:
+    :param tableName: str:
+    :param df: pd.DataFrame:
+    :param databaseFile: str:
+    :param tableName: str:
+    :param df: pd.DataFrame:
+
+    """
     sqlite = sqlite3.connect(databaseFile)
 
     rows: int = df.to_sql(tableName, sqlite, if_exists="append")
@@ -17,6 +35,7 @@ def convertDf(databaseFile: str, tableName: str, df: pd.DataFrame) -> int:
 
 
 def main() -> None:
+    """ """
     df = convertJson(
         "/Users/karolinaryzka/Documents/dnn-dependencies/dnn_dependencies/metrics/modelData.json"
     )

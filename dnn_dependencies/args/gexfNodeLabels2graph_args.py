@@ -12,6 +12,8 @@ def getArgs() -> Namespace:
     The function `getArgs()` is used to parse command line arguments for a program that extracts node
     labels from a GEXF XML file and stores them in a Graphviz Dot file.
     :return: an instance of the `Namespace` class, which contains the parsed command-line arguments.
+
+
     """
     parser: ArgumentParser = ArgumentParser(
         prog=PROGRAM_NAME,

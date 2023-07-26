@@ -13,6 +13,17 @@ def _addNodesToSubgraph(
     headGraphNodes: NodeDataView | NodeView,
     subgraphNodes: List[str],
 ) -> None:
+    """
+
+
+    :param subgraph: DiGraph:
+    :param headGraphNodes: NodeDataView | NodeView:
+    :param subgraphNodes: List[str]:
+    :param subgraph: DiGraph:
+    :param headGraphNodes: NodeDataView | NodeView:
+    :param subgraphNodes: List[str]:
+
+    """
     node: str
     for node in subgraphNodes:
         subgraph.add_node(node, **headGraphNodes[node])
@@ -25,6 +36,17 @@ def _addEdgesToSubgraph(
     edgeData: OutEdgeView,
     subgraphNodes: List[str],
 ) -> DiGraph:
+    """
+
+
+    :param subgraph: DiGraph:
+    :param edgeData: OutEdgeView:
+    :param subgraphNodes: List[str]:
+    :param subgraph: DiGraph:
+    :param edgeData: OutEdgeView:
+    :param subgraphNodes: List[str]:
+
+    """
     u: str
     v: str
     edgeAttributes: dict
@@ -41,6 +63,17 @@ def createSubgraph(
     headGraphEdgeData: OutEdgeView,
     subgraphNodes: List[str],
 ) -> DiGraph:
+    """
+
+
+    :param headGraphNodes: NodeDataView | NodeView:
+    :param headGraphEdgeData: OutEdgeView:
+    :param subgraphNodes: List[str]:
+    :param headGraphNodes: NodeDataView | NodeView:
+    :param headGraphEdgeData: OutEdgeView:
+    :param subgraphNodes: List[str]:
+
+    """
     subgraph: DiGraph = DiGraph()
 
     _addNodesToSubgraph(
@@ -58,6 +91,7 @@ def createSubgraph(
 
 
 def main() -> None:
+    """ """
     graph: DiGraph = read_gexf("bert-base-cased.gexf")
 
     nodes: NodeDataView | NodeView = graph.nodes()
@@ -66,6 +100,13 @@ def main() -> None:
     with Bar("Computing all possible subgraphs... ", max=len(nodes)) as progress:
 
         def _run(headGraphNodes: NodeDataView | NodeView) -> None:
+            """
+
+
+            :param headGraphNodes: NodeDataView | NodeView:
+            :param headGraphNodes: NodeDataView | NodeView:
+
+            """
             subgraph: DiGraph = DiGraph()
 
             nodeList: List = list(headGraphNodes)

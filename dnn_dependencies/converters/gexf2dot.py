@@ -10,6 +10,8 @@ def main() -> None:
     """
     The main function reads a GEXF file, converts it to a graph object, and then writes it to a DOT
     file.
+
+
     """
     args: Namespace = getArgs()
 

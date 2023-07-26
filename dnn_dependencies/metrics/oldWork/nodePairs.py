@@ -18,8 +18,11 @@ def nxToTuples(G: nx.DiGraph) -> list:
 
     :param G: The parameter G is a directed graph represented using the NetworkX library's DiGraph class
     :type G: nx.DiGraph
-    :return: The function `nxToTuples` returns a list of tuples. Each tuple contains a node from the
+    :param G: nx.DiGraph:
+    :param G: nx.DiGraph:
+    :returns: The function `nxToTuples` returns a list of tuples. Each tuple contains a node from the
     input graph `G` and a list of its children nodes.
+
     """
     nodePairs: List = []
     for node in G.nodes:
@@ -37,9 +40,12 @@ def tuplesToPairDict(nodePairs: list):
     nodes, where the first element is the parent node ID and the second element is a list of children
     node IDs
     :type nodePairs: list
-    :return: The function `tuplesToPairDict` returns a dictionary `data` that contains the count of how
+    :param nodePairs: list:
+    :param nodePairs: list:
+    :returns: The function `tuplesToPairDict` returns a dictionary `data` that contains the count of how
     many times each pair occurs in the `nodePairs` list. The keys of the dictionary are tuples
     representing the parent-child pairs, and the values are the counts.
+
     """
     data = defaultdict(int)
 
@@ -74,6 +80,9 @@ def plotDict(data: defaultdict) -> plt:
     provides a default value for keys that do not exist in the dictionary. In this case, the keys are
     node-pairs and the values are the counts of those node-pairs
     :type data: defaultdict
+    :param data: defaultdict:
+    :param data: defaultdict:
+
     """
     pairs = list(data.keys())
     counts = list(data.values())

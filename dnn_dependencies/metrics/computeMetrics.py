@@ -18,6 +18,13 @@ numpy.random.seed(seed=RANDOM_SEED)
 
 
 def readFiles(directory: Path) -> List[DiGraph]:
+    """
+
+
+    :param directory: Path:
+    :param directory: Path:
+
+    """
     data: List[DiGraph] = []
 
     files: List[Path] = [Path(directory, f) for f in listdir(path=directory)]
@@ -32,6 +39,13 @@ def readFiles(directory: Path) -> List[DiGraph]:
 
 
 def getModelName(path: Path) -> str:
+    """
+
+
+    :param path: Path:
+    :param path: Path:
+
+    """
     return "fred"
 
 
@@ -45,8 +59,15 @@ def createDict(graph: DiGraph, modelName: str, modelFilepath: Path) -> dict[str,
     community count, degree distribution, clustering coefficient distribution, and node type
     distribution
     :type graph: DiGraph
-    :return: The function `createJSON` returns a dictionary containing various metrics and distributions
+    :param graph: DiGraph:
+    :param modelName: str:
+    :param modelFilepath: Path:
+    :param graph: DiGraph:
+    :param modelName: str:
+    :param modelFilepath: Path:
+    :returns: The function `createJSON` returns a dictionary containing various metrics and distributions
     computed from the input graph.
+
     """
     data: dict[str, Any] = {}
 
@@ -104,6 +125,17 @@ def createDict(graph: DiGraph, modelName: str, modelFilepath: Path) -> dict[str,
 
 
 def dfToDB(df: DataFrame, dbPath: Path, table: str) -> None:
+    """
+
+
+    :param df: DataFrame:
+    :param dbPath: Path:
+    :param table: str:
+    :param df: DataFrame:
+    :param dbPath: Path:
+    :param table: str:
+
+    """
     conn: Connection = sqlite3.connect(database=dbPath)
 
     df.to_sql(
@@ -118,10 +150,20 @@ def dfToDB(df: DataFrame, dbPath: Path, table: str) -> None:
 
 
 def dfToCSV(df: DataFrame, output: Path) -> None:
+    """
+
+
+    :param df: DataFrame:
+    :param output: Path:
+    :param df: DataFrame:
+    :param output: Path:
+
+    """
     df.to_csv(path_or_buf=output, index=True, index_label="ID")
 
 
 def main() -> None:
+    """ """
     args: Namespace = getArgs()
 
     dfList: List[DataFrame] = []

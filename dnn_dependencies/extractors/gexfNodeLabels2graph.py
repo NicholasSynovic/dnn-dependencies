@@ -18,7 +18,10 @@ def extractNodeLabels(dom: str) -> List[str]:
     :param dom: The `dom` parameter is a string that represents the HTML or XML document. It is the
     input from which we want to extract node labels
     :type dom: str
-    :return: a list of strings, which are the labels of the nodes extracted from the given DOM.
+    :param dom: str:
+    :param dom: str:
+    :returns: a list of strings, which are the labels of the nodes extracted from the given DOM.
+
     """
     data: List[str] = []
 
@@ -42,8 +45,11 @@ def buildEdgeList(labels: List[str]) -> List[tuple[str, str]]:
     :param labels: The `labels` parameter is a list of strings. Each string represents a label or a path
     to a node in a computational graph
     :type labels: List[str]
-    :return: The function `buildEdgeList` returns a list of tuples, where each tuple represents an edge
+    :param labels: List[str]:
+    :param labels: List[str]:
+    :returns: The function `buildEdgeList` returns a list of tuples, where each tuple represents an edge
     in a graph. Each tuple contains two strings, representing the source and target nodes of the edge.
+
     """
     data: List[tuple[str, str]] = []
 
@@ -74,8 +80,13 @@ def buildDiGraph(edgeList: List[tuple[str, str]]) -> DiGraph:
 
     :param edgeList: The `edgeList` parameter is a list of tuples representing the edges of a directed
     graph. Each tuple contains two elements: the source node and the target node of the edge
-    :type edgeList: List[tuple[str, str]]
-    :return: a directed graph (DiGraph) object.
+    :type edgeList: List: List: List[tuple[str, str]]
+    :param edgeList: List[tuple[str:
+    :param str: returns: a directed graph (DiGraph) object.
+    :param edgeList: List[tuple[str:
+    :param str]]:
+    :returns: a directed graph (DiGraph) object.
+
     """
     graph: DiGraph = DiGraph()
     graph.add_edges_from(ebunch_to_add=edgeList)
@@ -86,6 +97,8 @@ def main() -> None:
     """
     The main function reads an XML file, extracts node labels, builds an edge list, constructs a
     directed graph, and writes the graph to a GEXF file.
+
+
     """
     args: Namespace = getArgs()
 

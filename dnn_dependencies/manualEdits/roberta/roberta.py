@@ -11,6 +11,17 @@ from progress.bar import Bar
 def findRelevantNodes(
     graph: DiGraph, pattern: str, attribute: str = "label"
 ) -> defaultdict[str, List[str]]:
+    """
+
+
+    :param graph: DiGraph:
+    :param pattern: str:
+    :param attribute: str:  (Default value = "label")
+    :param graph: DiGraph:
+    :param pattern: str:
+    :param attribute: str:  (Default value = "label")
+
+    """
     data: defaultdict = defaultdict(list)
 
     nodes: NodeView = graph.nodes(data=attribute)
@@ -39,6 +50,17 @@ def findRelevantNodes(
 
 
 def condenseLayers(graph: DiGraph, layerNodes: defaultdict[str, List[str]]) -> DiGraph:
+    """
+
+
+    :param graph: DiGraph:
+    :param layerNodes: defaultdict[str:
+    :param List: str]]:
+    :param graph: DiGraph:
+    :param layerNodes: defaultdict[str:
+    :param List[str]]:
+
+    """
     dataKeys: List[str] = list(layerNodes.keys())
 
     with Bar("Condensing layers... ", max=len(dataKeys)) as progress:
@@ -72,6 +94,17 @@ def condenseLayers(graph: DiGraph, layerNodes: defaultdict[str, List[str]]) -> D
 def deleteRelevantNodes(
     graph: DiGraph, pattern: str, attribute: str = "label"
 ) -> DiGraph:
+    """
+
+
+    :param graph: DiGraph:
+    :param pattern: str:
+    :param attribute: str:  (Default value = "label")
+    :param graph: DiGraph:
+    :param pattern: str:
+    :param attribute: str:  (Default value = "label")
+
+    """
     data: List[str] = []
 
     nodes: NodeView = graph.nodes(data=attribute)
@@ -104,6 +137,7 @@ def deleteRelevantNodes(
 
 
 def main() -> None:
+    """ """
     graph: DiGraph = read_gexf("roberta-base.gexf")
 
     layer_LayerNodes: defaultdict[str, List[str]] = findRelevantNodes(

@@ -27,7 +27,10 @@ def extractLayer(nodeName: str) -> str:
 
     :param nodeName: The `nodeName` parameter is a string that represents the name of a node
     :type nodeName: str
-    :return: a string that represents the layer extracted from the given `nodeName`.
+    :param nodeName: str:
+    :param nodeName: str:
+    :returns: a string that represents the layer extracted from the given `nodeName`.
+
     """
     pattern: str = r"layer\.(\d+)"
 
@@ -73,7 +76,22 @@ def buildDF(
     :param color: The "color" parameter is a list of strings that represents the color of the node. Each
     string in the list corresponds to a specific color
     :type color: List[str]
-    :return: a DataFrame object.
+    :param nodeID: int:
+    :param name: str:
+    :param opType: str:
+    :param layer: str:
+    :param inputs: List[str]:
+    :param outputs: List[str]:
+    :param color: List[str]:
+    :param nodeID: int:
+    :param name: str:
+    :param opType: str:
+    :param layer: str:
+    :param inputs: List[str]:
+    :param outputs: List[str]:
+    :param color: List[str]:
+    :returns: a DataFrame object.
+
     """
     data: dict[str, List[int | str | List[str]]] = {
         "ID": [nodeID],
@@ -98,9 +116,14 @@ def dfIDQuery(df: DataFrame, query: str) -> tuple[str, str] | None:
     :param query: The `query` parameter is a string that represents the search query. It is used to
     search for a specific value in the "Outputs" column of the DataFrame
     :type query: str
-    :return: The function `dfIDQuery` returns a tuple containing the name and ID of the first row in the
+    :param df: DataFrame:
+    :param query: str:
+    :param df: DataFrame:
+    :param query: str:
+    :returns: The function `dfIDQuery` returns a tuple containing the name and ID of the first row in the
     DataFrame `df` that matches the given query. The name is returned as a string and the ID is returned
     as a string. If no matching row is found, the function returns `None`.
+
     """
     mask = df["Outputs"].apply(lambda x: query in x)
     tempDF: DataFrame = df[mask]
@@ -127,7 +150,12 @@ def buildXML(
     the XML is being built. It has a default value of "production", but can be overridden by passing a
     different value, defaults to production
     :type mode: str (optional)
-    :return: The function `buildXML` returns a string representation of an XML document.
+    :param df: DataFrame:
+    :param mode: str:  (Default value = "production")
+    :param df: DataFrame:
+    :param mode: str:  (Default value = "production")
+    :returns: The function `buildXML` returns a string representation of an XML document.
+
     """
     edgeList: List[tuple[tuple[str, str], str]] = []
 
@@ -238,6 +266,8 @@ def main() -> None:
     """
     The main function extracts information from an ONNX computational graph, builds a DataFrame, and
     writes the data to an XML file.
+
+
     """
     args: Namespace = getArgs()
     colors: List[str] = list(XKCD_COLORS.values())
