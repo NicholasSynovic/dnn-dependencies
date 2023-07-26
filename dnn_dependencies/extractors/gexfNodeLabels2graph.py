@@ -24,7 +24,7 @@ def extractNodeLabels(dom: str) -> List[str]:
     """
     data: List[str] = []
 
-    soup: BeautifulSoup = BeautifulSoup(markup=dom, features="lxml")
+    soup: BeautifulSoup = BeautifulSoup(markup=dom, features="xml")
     nodeTags: ResultSet = soup.findAll(name="node")
 
     with Bar("Extacting node labels... ", max=len(nodeTags)) as bar:
