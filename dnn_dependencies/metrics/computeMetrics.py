@@ -1,15 +1,16 @@
-import sqlite3
-from argparse import Namespace
 from os import listdir
 from pathlib import Path
-from sqlite3 import Connection
 from typing import Any, List
 
+import click
 import pandas
+from networkx import DiGraph
 from pandas import DataFrame
+from progress.bar import Bar
+from sqlalchemy import Engine, MetaData, Table
 
-from dnn_dependencies.args.computeMetrics_args import getArgs
 from dnn_dependencies.metrics.metrics import *
+from dnn_dependencies.schemas import sql
 
 RANDOM_SEED: int = 42
 
@@ -18,6 +19,12 @@ numpy.random.seed(seed=RANDOM_SEED)
 
 
 def readFiles(directory: Path) -> List[DiGraph]:
+    """
+
+
+    :param directory: Path:
+
+    """
     data: List[DiGraph] = []
 
     files: List[Path] = [Path(directory, f) for f in listdir(path=directory)]
@@ -32,10 +39,24 @@ def readFiles(directory: Path) -> List[DiGraph]:
 
 
 def getModelName(path: Path) -> str:
+    """
+
+
+    :param path: Path:
+
+    """
     return "fred"
 
 
 def createDict(graph: DiGraph, modelName: str, modelFilepath: Path) -> dict[str, Any]:
+    """
+
+
+    :param graph: DiGraph:
+    :param modelName: str:
+    :param modelFilepath: Path:
+
+    """
     data: dict[str, Any] = {}
 
     with Bar("Computing metrics ", max=28) as bar:
@@ -87,9 +108,15 @@ def createDict(graph: DiGraph, modelName: str, modelFilepath: Path) -> dict[str,
     return data
 
 
-def dfToDB(df: DataFrame, dbPath: Path, table: str) -> None:
-    conn: Connection = sqlite3.connect(database=dbPath)
+def dfToDB(df: DataFrame, conn: Engine, table: str) -> None:
+    """
 
+
+    :param df: DataFrame:
+    :param conn: Engine:
+    :param table: str:
+
+    """
     df.to_sql(
         name=table,
         con=conn,
@@ -98,18 +125,42 @@ def dfToDB(df: DataFrame, dbPath: Path, table: str) -> None:
         index_label="ID",
     )
 
-    conn.close()
 
+@click.command()
+@click.option(
+    "gexfDirectory",
+    "-i",
+    "--input",
+    type=Path,
+    required=True,
+    nargs=1,
+    help="Path to a directory containing at least one (1) GEXF file",
+)
+@click.option(
+    "dbFile",
+    "-o",
+    "--output",
+    type=Path,
+    required=True,
+    nargs=1,
+    help="Path to SQLite3 database to store data",
+)
+def main(gexfDirectory: Path, dbFile: Path) -> None:
+    """
+    Compute graph metrics for GEXF files stored in a directory
+    \f
 
-def dfToCSV(df: DataFrame, output: Path) -> None:
-    df.to_csv(path_or_buf=output, index=True, index_label="ID")
+    :param gexfDirectory: Path:
+    :param dbFile: Path:
 
-
-def main() -> None:
-    args: Namespace = getArgs()
-
+    """
     dfList: List[DataFrame] = []
-    gexfDirectory: Path = args.input[0]
+
+    dbConn: Engine = sql.createEngine(path=dbFile.__str__())
+    dbMetadata: MetaData = MetaData()
+
+    sql.schema_ModelStats(metadata=dbMetadata)
+    sql.createTables(metadata=dbMetadata, engine=dbConn)
 
     graphs: List[DiGraph] = readFiles(directory=gexfDirectory)
 
@@ -127,8 +178,8 @@ def main() -> None:
         dfList.append(df)
 
     df: DataFrame = pandas.concat(objs=dfList)
-    # dfToDB(df=df, dbPath=args.output[0], table="Model Stats")
-    dfToCSV(df=df, output=args.output[0])
+
+    dfToDB(df=df, conn=dbConn, table="Model Stats")
 
 
 if __name__ == "__main__":
