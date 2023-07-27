@@ -23,7 +23,13 @@ def schema_ModelStats(metadata: MetaData) -> Table:
     table: Table = Table(
         "ModelStats",
         metadata,
-        Column("ID", Integer, primary_key=True),
+        Column(
+            "ID",
+            Integer,
+            primary_key=True,
+            unique=True,
+            autoincrement=True,
+        ),
         Column("Model Name", String),
         Column("Model Filepath", String),
         Column("Is Semiconnected", String),
@@ -68,8 +74,8 @@ def schema_BaseModels(metadata: MetaData) -> Table:
     table: Table = Table(
         "baseModels",
         metadata,
-        Column("ID", Integer, primary_key=True),
-        Column("Model ID", Integer, ForeignKey("ModelStats.ID")),
+        Column("ID", Integer, primary_key=True, unique=True, autoincrement=True),
+        Column("Model ID", Integer, ForeignKey("ModelStats.ID"), unique=True),
     )
     return table
 
