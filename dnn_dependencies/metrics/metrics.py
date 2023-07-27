@@ -155,7 +155,10 @@ def checkIsStronglyRegular(graph: DiGraph) -> int:
     :param bar: Bar:
 
     """
-    value: int = int(is_strongly_regular(G=graph))
+    try:
+        value: int = int(is_strongly_regular(G=graph))
+    except NetworkXNotImplemented:
+        value: int = -1
     return value
 
 
@@ -191,7 +194,10 @@ def computeTransitivity(graph: DiGraph) -> float | Literal[0]:
     :param bar: Bar:
 
     """
-    value: float | Literal[0] = transitivity(G=graph)
+    try:
+        value: float | Literal[0] = transitivity(G=graph)
+    except NetworkXNotImplemented:
+        value: float = -1.0
     return value
 
 

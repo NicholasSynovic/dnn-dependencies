@@ -1,5 +1,5 @@
-from concurrent.futures import ThreadPoolExecutor
 from os import listdir
+from os.path import isfile
 from pathlib import Path
 from typing import Any, List
 
@@ -119,7 +119,7 @@ def dfToDB(df: DataFrame, conn: Engine, table: str) -> None:
     df.to_sql(
         name=table,
         con=conn,
-        if_exists="fail",
+        if_exists="replace",
         index=False,
     )
 
@@ -152,6 +152,10 @@ def main(gexfDirectory: Path, dbFile: Path) -> None:
     :param dbFile: Path:
 
     """
+    if isfile(path=dbFile):
+        print("Output database already exists. Exiting program")
+        quit(1)
+
     dfList: List[DataFrame] = []
 
     dbConn: Engine = sql.createEngine(path=dbFile.__str__())
