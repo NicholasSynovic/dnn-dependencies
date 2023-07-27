@@ -1,7 +1,6 @@
 from os import listdir
-from os.path import isfile
 from pathlib import Path
-from typing import Any, List
+from typing import Any, List, Tuple
 
 import click
 import pandas
@@ -19,7 +18,7 @@ random.seed(a=RANDOM_SEED, version=2)
 numpy.random.seed(seed=RANDOM_SEED)
 
 
-def readFiles(directory: Path) -> List[DiGraph]:
+def readFiles(directory: Path) -> List[Tuple[Path, DiGraph]]:
     """
 
 
@@ -30,6 +29,7 @@ def readFiles(directory: Path) -> List[DiGraph]:
     data: List[DiGraph] = []
 
     files: List[Path] = [Path(directory, f) for f in listdir(path=directory)]
+    files = files[0:10]
 
     with Bar("Reading files to create DiGraphs... ", max=len(files)) as bar:
         file: Path
@@ -37,7 +37,7 @@ def readFiles(directory: Path) -> List[DiGraph]:
             data.append(read_gexf(file))
             bar.next()
 
-    return data
+    return list(zip(files, data))
 
 
 def getModelName(path: Path) -> str:
@@ -47,7 +47,11 @@ def getModelName(path: Path) -> str:
     :param path: Path:
 
     """
-    return "fred"
+    name: str = path.stem
+    splitName: List[str] = name.split("_")
+    modelName: str = f"{splitName[0]}/{'_'.join(splitName[1::])}".replace(".onnx", "")
+
+    return modelName
 
 
 def createDict(graph: DiGraph, modelName: str, modelFilepath: Path) -> dict[str, Any]:
@@ -152,7 +156,7 @@ def main(gexfDirectory: Path, dbFile: Path) -> None:
     :param dbFile: Path:
 
     """
-    if isfile(path=dbFile):
+    if dbFile.is_file():
         print("Output database already exists. Exiting program")
         quit(1)
 
@@ -164,17 +168,17 @@ def main(gexfDirectory: Path, dbFile: Path) -> None:
     sql.schema_ModelStats(metadata=dbMetadata)
     sql.createTables(metadata=dbMetadata, engine=dbConn)
 
-    graphs: List[DiGraph] = readFiles(directory=gexfDirectory)
+    graphs: List[Tuple[Path, DiGraph]] = readFiles(directory=gexfDirectory)
 
     with Bar("Computing metrics... ", max=len(graphs)) as bar:
-        graph: DiGraph
-        for graph in graphs:
-            modelName: str = getModelName(path=gexfDirectory)  # TODO: Fix this
+        pair: Tuple[Path, DiGraph]
+        for pair in graphs:
+            modelName: str = getModelName(path=pair[0])
 
             data: dict[str, Any] = createDict(
-                graph=graph,
+                graph=pair[1],
                 modelName=modelName,
-                modelFilepath=gexfDirectory,
+                modelFilepath=pair[0],
             )
 
             df: DataFrame = DataFrame([data])
