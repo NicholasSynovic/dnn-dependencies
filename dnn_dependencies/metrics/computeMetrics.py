@@ -120,8 +120,7 @@ def dfToDB(df: DataFrame, conn: Engine, table: str) -> None:
         name=table,
         con=conn,
         if_exists="fail",
-        index=True,
-        index_label="ID",
+        index=False,
     )
 
 
