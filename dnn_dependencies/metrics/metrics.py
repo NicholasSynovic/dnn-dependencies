@@ -10,7 +10,7 @@ from networkx.algorithms.bipartite import robins_alexander_clustering
 from networkx.algorithms.community import louvain_communities
 from networkx.algorithms.components import *
 from networkx.algorithms.threshold import is_threshold_graph
-from networkx.exception import NetworkXNoPath
+from networkx.exception import NetworkXNoPath, NetworkXNotImplemented
 
 RANDOM_SEED: int = 42
 
@@ -140,7 +140,10 @@ def checkIsDistanceRegular(graph: DiGraph) -> int:
     :param bar: Bar:
 
     """
-    value: int = int(is_distance_regular(G=graph))
+    try:
+        value: int = int(is_distance_regular(G=graph))
+    except NetworkXNotImplemented:
+        value: int = -1
     return value
 
 
