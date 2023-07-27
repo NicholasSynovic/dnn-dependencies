@@ -15,6 +15,8 @@ author = "Nicholas Synovic, Karolina Ryzka, and George K. Thiruvathukal"
 
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.duration",
     "sphinx_rtd_theme",
 ]
 
