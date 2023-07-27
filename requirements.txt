@@ -15,6 +15,7 @@ requests
 scipy
 sphinx
 sphinx-rtd-theme
+SQLAlchemy
 torch
 torchaudio
 torchinfo
