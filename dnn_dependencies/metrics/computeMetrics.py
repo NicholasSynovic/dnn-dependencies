@@ -119,7 +119,7 @@ def dfToDB(df: DataFrame, conn: Engine, table: str) -> None:
     df.to_sql(
         name=table,
         con=conn,
-        if_exists="append",
+        if_exists="fail",
         index=True,
         index_label="ID",
     )
