@@ -23,8 +23,6 @@ df.to_sql(
 conn2.execute("ALTER TABLE Model Stats ADD PRIMARY KEY (ID);")
 conn2.close()
 
-quit()
-
 df2: DataFrame = pd.read_sql("SELECT * FROM example", conn)
 
 

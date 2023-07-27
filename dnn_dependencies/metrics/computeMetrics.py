@@ -29,7 +29,6 @@ def readFiles(directory: Path) -> List[Tuple[Path, DiGraph]]:
     data: List[DiGraph] = []
 
     files: List[Path] = [Path(directory, f) for f in listdir(path=directory)]
-    files = files[0:10]
 
     with Bar("Reading files to create DiGraphs... ", max=len(files)) as bar:
         file: Path
