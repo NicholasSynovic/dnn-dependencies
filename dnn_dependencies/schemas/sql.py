@@ -9,7 +9,8 @@ def createEngine(path: str) -> Engine:
     :param path: str:
 
     """
-    return create_engine(url=path)
+    url: str = f"sqlite:///{path}"
+    return create_engine(url=url)
 
 
 def schema_ModelStats(metadata: MetaData) -> Table:

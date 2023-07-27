@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 from os import listdir
 from pathlib import Path
 from typing import Any, List
@@ -7,7 +8,7 @@ import pandas
 from networkx import DiGraph
 from pandas import DataFrame
 from progress.bar import Bar
-from sqlalchemy import Engine, MetaData, Table
+from sqlalchemy import Engine, MetaData
 
 from dnn_dependencies.metrics.metrics import *
 from dnn_dependencies.schemas import sql
@@ -25,6 +26,7 @@ def readFiles(directory: Path) -> List[DiGraph]:
     :param directory: Path:
 
     """
+
     data: List[DiGraph] = []
 
     files: List[Path] = [Path(directory, f) for f in listdir(path=directory)]
@@ -59,51 +61,48 @@ def createDict(graph: DiGraph, modelName: str, modelFilepath: Path) -> dict[str,
     """
     data: dict[str, Any] = {}
 
-    with Bar("Computing metrics ", max=28) as bar:
-        data["Model Name"] = modelName
-        data["Model Filepath"] = modelFilepath.__str__()
-        data["Is Semiconnected"] = checkIsSemiconnected(graph=graph)
-        data["Is Attracting Component"] = checkIsAttractingComponent(graph=graph)
-        data["Is Strongly Connected"] = checkIsStronglyConnected(graph=graph)
-        data["Is Weakly Connected"] = checkIsWeaklyConnected(graph=graph)
-        data["Is Triad"] = checkIsTriad(graph=graph)
-        data["Is Regular"] = checkIsRegular(graph=graph)
-        data["Is Planar"] = checkIsPlanar(graph=graph)
-        data["Is Distance Regular"] = checkIsDistanceRegular(graph=graph)
-        data["Is Strongly Regular"] = checkIsStronglyRegular(graph=graph)
-        data["Is Bipartite"] = checkIsBipartite(graph=graph)
-        data["Is Aperiodic"] = checkIsAperiodic(graph=graph)
-        data["Is Directed Acyclic"] = checkIsDirectedAcyclicGraph(graph=graph)
-        data["Radius"] = computeRadius(graph=graph)
-        data["DAG Longest Path Length"] = computeDAGLongestPathLength(graph=graph)
-        data["Number of Isolates"] = computeNumberOfIsolates(graph=graph)
-        data["Robins Alexander Clustering"] = computeRobinsAlexanderClustering(
-            graph=graph
-        )
-        data["Transitivity"] = computeTransitivity(graph=graph)
-        data["Number of Nodes"] = computeNumberOfNodes(graph=graph)
-        data["Density"] = computeDensity(graph=graph)
-        data["Number of Edges"] = computeNumberOfEdges(graph=graph)
-        data["Number of Communities"] = computeNumberOfCommunities(graph=graph)
-        data["Degree Assortivity Coefficient"] = computeDegreeAssortativityCoefficient(
-            graph=graph
-        )
-        data[
-            "Attribute Assortivity Coefficient"
-        ] = computeAttributeAssortativityCoefficient(graph=graph)
-        data[
-            "Number of Weakly Connected Components"
-        ] = computeNumberOfWeaklyConnectedComponents(graph=graph)
-        data[
-            "Number of Strongly Connected Components"
-        ] = computeNumberOfStronglyConnectedComponents(graph=graph)
-        data["Number of Attracting Components"] = computeNumberOfAttracingComponents(
-            graph=graph
-        )
-        data["Barycenter"] = computeBarycenter(graph=graph)
-        data[
-            "Degree Pearson Correlation Coefficient"
-        ] = computeDegreePearsonCorrelationCoefficient(graph=graph)
+    data["Model Name"] = modelName
+    data["Model Filepath"] = modelFilepath.__str__()
+    data["Is Semiconnected"] = checkIsSemiconnected(graph=graph)
+    data["Is Attracting Component"] = checkIsAttractingComponent(graph=graph)
+    data["Is Strongly Connected"] = checkIsStronglyConnected(graph=graph)
+    data["Is Weakly Connected"] = checkIsWeaklyConnected(graph=graph)
+    data["Is Triad"] = checkIsTriad(graph=graph)
+    data["Is Regular"] = checkIsRegular(graph=graph)
+    data["Is Planar"] = checkIsPlanar(graph=graph)
+    data["Is Distance Regular"] = checkIsDistanceRegular(graph=graph)
+    data["Is Strongly Regular"] = checkIsStronglyRegular(graph=graph)
+    data["Is Bipartite"] = checkIsBipartite(graph=graph)
+    data["Is Aperiodic"] = checkIsAperiodic(graph=graph)
+    data["Is Directed Acyclic"] = checkIsDirectedAcyclicGraph(graph=graph)
+    data["Radius"] = computeRadius(graph=graph)
+    data["DAG Longest Path Length"] = computeDAGLongestPathLength(graph=graph)
+    data["Number of Isolates"] = computeNumberOfIsolates(graph=graph)
+    data["Robins Alexander Clustering"] = computeRobinsAlexanderClustering(graph=graph)
+    data["Transitivity"] = computeTransitivity(graph=graph)
+    data["Number of Nodes"] = computeNumberOfNodes(graph=graph)
+    data["Density"] = computeDensity(graph=graph)
+    data["Number of Edges"] = computeNumberOfEdges(graph=graph)
+    data["Number of Communities"] = computeNumberOfCommunities(graph=graph)
+    data["Degree Assortivity Coefficient"] = computeDegreeAssortativityCoefficient(
+        graph=graph
+    )
+    data[
+        "Attribute Assortivity Coefficient"
+    ] = computeAttributeAssortativityCoefficient(graph=graph)
+    data[
+        "Number of Weakly Connected Components"
+    ] = computeNumberOfWeaklyConnectedComponents(graph=graph)
+    data[
+        "Number of Strongly Connected Components"
+    ] = computeNumberOfStronglyConnectedComponents(graph=graph)
+    data["Number of Attracting Components"] = computeNumberOfAttracingComponents(
+        graph=graph
+    )
+    data["Barycenter"] = computeBarycenter(graph=graph)
+    data[
+        "Degree Pearson Correlation Coefficient"
+    ] = computeDegreePearsonCorrelationCoefficient(graph=graph)
 
     return data
 
@@ -164,22 +163,25 @@ def main(gexfDirectory: Path, dbFile: Path) -> None:
 
     graphs: List[DiGraph] = readFiles(directory=gexfDirectory)
 
-    graph: DiGraph
-    for graph in graphs:
-        modelName: str = getModelName(path=gexfDirectory)  # TODO: Fix this
+    with Bar("Computing metrics... ", max=len(graphs)) as bar:
+        graph: DiGraph
+        for graph in graphs:
+            modelName: str = getModelName(path=gexfDirectory)  # TODO: Fix this
 
-        data: dict[str, Any] = createDict(
-            graph=graph,
-            modelName=modelName,
-            modelFilepath=gexfDirectory,
-        )
+            data: dict[str, Any] = createDict(
+                graph=graph,
+                modelName=modelName,
+                modelFilepath=gexfDirectory,
+            )
 
-        df: DataFrame = DataFrame([data])
-        dfList.append(df)
+            df: DataFrame = DataFrame([data])
+            dfList.append(df)
+
+            bar.next()
 
     df: DataFrame = pandas.concat(objs=dfList)
 
-    dfToDB(df=df, conn=dbConn, table="Model Stats")
+    dfToDB(df=df, conn=dbConn, table="ModelStats")
 
 
 if __name__ == "__main__":
