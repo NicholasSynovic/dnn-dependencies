@@ -2,10 +2,13 @@ from pathlib import Path
 
 import click
 import pandas
-from pandas import DataFrame
+from numpy import NaN
+from pandas import DataFrame, Series
 from sqlalchemy import Connection, Engine
 
 from dnn_dependencies.schemas import sql
+
+COLUMN: str = "Model Filepath"
 
 
 def readDB(dbFile: Path) -> DataFrame:
@@ -15,6 +18,18 @@ def readDB(dbFile: Path) -> DataFrame:
     df: DataFrame = pandas.read_sql_table(table_name="ModelStats", con=dbConn)
 
     return df
+
+
+def createMask(df: DataFrame, column: str) -> Series:
+    series: Series = df[column]
+    mask: Series = (series.str.find("huggingface.co")) > -1
+    return mask
+
+
+def applyMask(df: DataFrame, mask: Series, column: str) -> DataFrame:
+    df.loc[~mask, column] = NaN
+    df.dropna(inplace=True, ignore_index=True)
+    print(df)
 
 
 @click.command()
@@ -28,7 +43,8 @@ def readDB(dbFile: Path) -> DataFrame:
 )
 def main(dbFile: Path) -> None:
     dbDF: DataFrame = readDB(dbFile=dbFile)
-    print(dbDF)
+    mask: Series = createMask(df=dbDF, column=COLUMN)
+    applyMask(df=dbDF, mask=mask, column=COLUMN)
 
 
 if __name__ == "__main__":
