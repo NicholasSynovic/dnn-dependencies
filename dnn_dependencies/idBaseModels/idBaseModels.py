@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import List
 
 import click
 import pandas
@@ -8,7 +9,7 @@ from sqlalchemy import Connection, Engine
 
 from dnn_dependencies.schemas import sql
 
-COLUMN: str = "Model Filepath"
+COLUMNS: dict[str, str] = {"name": "Model Name", "filepath": "Model Filepath"}
 
 
 def readDB(dbFile: Path) -> DataFrame:
@@ -28,8 +29,23 @@ def createMask(df: DataFrame, column: str) -> Series:
 
 def applyMask(df: DataFrame, mask: Series, column: str) -> DataFrame:
     df.loc[~mask, column] = NaN
-    df.dropna(inplace=True, ignore_index=True)
-    print(df)
+    df.dropna(inplace=True)
+    return df
+
+
+def formatDF(df: DataFrame, keepColumns: List[str]) -> DataFrame:
+    orderedColumns: List[str] = ["ID"] + keepColumns
+
+    df.drop(
+        columns=[column for column in df.columns if column not in keepColumns],
+        inplace=True,
+    )
+
+    df["ID"] = df.index
+    df.reset_index(inplace=True)
+    orderedDF: DataFrame = df.reindex(columns=orderedColumns)
+
+    return orderedDF
 
 
 @click.command()
@@ -43,8 +59,12 @@ def applyMask(df: DataFrame, mask: Series, column: str) -> DataFrame:
 )
 def main(dbFile: Path) -> None:
     dbDF: DataFrame = readDB(dbFile=dbFile)
-    mask: Series = createMask(df=dbDF, column=COLUMN)
-    applyMask(df=dbDF, mask=mask, column=COLUMN)
+    mask: Series = createMask(df=dbDF, column=COLUMNS["filepath"])
+    df: DataFrame = applyMask(df=dbDF, mask=mask, column=COLUMNS["filepath"])
+
+    orderedDF: DataFrame = formatDF(df=df, keepColumns=list(COLUMNS.values()))
+
+    print(orderedDF)
 
 
 if __name__ == "__main__":
