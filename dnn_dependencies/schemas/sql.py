@@ -17,6 +17,7 @@ def schema_ModelStats(metadata: MetaData) -> Table:
     """
     NOTE: Changes are made to the metadata object passed into the function
 
+
     :param metadata: MetaData:
 
     """
@@ -73,7 +74,7 @@ def schema_BaseModels(metadata: MetaData) -> Table:
 
     """
     table: Table = Table(
-        "baseModels",
+        "BaseModels",
         metadata,
         Column("ID", Integer, primary_key=True, unique=True, autoincrement=True),
         Column("Model ID", Integer, ForeignKey("ModelStats.ID"), unique=True),
