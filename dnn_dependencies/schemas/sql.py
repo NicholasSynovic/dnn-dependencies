@@ -110,18 +110,10 @@ class SQL:
         keepIndex: bool,
         indexColumn: str | None = None,
     ) -> None:
-        if keepIndex:
-            df.to_sql(
-                name=tableName,
-                con=self.conn,
-                if_exists="fail",
-                index=True,
-                index_label=indexColumn,
-            )
-        else:
-            df.to_sql(
-                name=tableName,
-                con=self.conn,
-                if_exists="fail",
-                index=False,
-            )
+        df.to_sql(
+            name=tableName,
+            con=self.conn,
+            if_exists="fail",
+            index=keepIndex,
+            index_label=indexColumn,
+        )
