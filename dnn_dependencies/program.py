@@ -7,10 +7,9 @@ import pandas
 from networkx import DiGraph
 from pandas import DataFrame
 from progress.bar import Bar
-from sqlalchemy import Engine, MetaData
 
 from dnn_dependencies.metrics.metrics import *
-from dnn_dependencies.schemas import sql
+from dnn_dependencies.schemas.sql import SQL
 
 RANDOM_SEED: int = 42
 
@@ -18,7 +17,7 @@ random.seed(a=RANDOM_SEED, version=2)
 numpy.random.seed(seed=RANDOM_SEED)
 
 
-def readFiles(directory: Path) -> List[Tuple[Path, DiGraph]]:
+def createFileGraphPairs(directory: Path) -> List[Tuple[Path, DiGraph]]:
     data: List[DiGraph] = []
 
     files: List[Path] = [Path(directory, f) for f in listdir(path=directory)]
@@ -32,16 +31,35 @@ def readFiles(directory: Path) -> List[Tuple[Path, DiGraph]]:
     return list(zip(files, data))
 
 
-def getModelName(path: Path) -> str:
-    name: str = path.stem
+def computeEveryModelProperties(
+    fileGraphPairs: List[Tuple[Path, DiGraph]]
+) -> DataFrame:
+    dfList: List[DataFrame] = []
+
+    with Bar("Computing model properties... ", max=len(fileGraphPairs)) as bar:
+        pair: Tuple[Path, DiGraph]
+        for pair in fileGraphPairs:
+            dfList.append(computeModelProperties(fileGraphPair=pair))
+            bar.next()
+
+    return pandas.concat(objs=dfList, ignore_index=True)
+
+
+def extractModelNameFromFilepath(filepath: Path) -> str:
+    name: str = filepath.stem
     splitName: List[str] = name.split("_")
     modelName: str = f"{splitName[0]}/{'_'.join(splitName[1::])}".replace(".onnx", "")
 
     return modelName
 
 
-def createDict(graph: DiGraph, modelName: str, modelFilepath: Path) -> dict[str, Any]:
+def computeModelProperties(fileGraphPair: Tuple[Path, DiGraph]) -> DataFrame:
     data: dict[str, Any] = {}
+
+    modelFilepath: Path = fileGraphPair[0]
+    graph: DiGraph = fileGraphPair[1]
+
+    modelName: str = extractModelNameFromFilepath(filepath=modelFilepath)
 
     data["Model Name"] = modelName
     data["Model Filepath"] = modelFilepath.__str__()
@@ -86,11 +104,7 @@ def createDict(graph: DiGraph, modelName: str, modelFilepath: Path) -> dict[str,
         "Degree Pearson Correlation Coefficient"
     ] = computeDegreePearsonCorrelationCoefficient(graph=graph)
 
-    return data
-
-
-def dfToDB(df: DataFrame, conn: Engine, table: str) -> None:
-    df.to_sql(name=table, con=conn, if_exists="replace", index=True, index_label="ID")
+    return DataFrame([data])
 
 
 @click.command()
@@ -125,35 +139,21 @@ def main(gexfDirectory: Path, dbFile: Path) -> None:
         print("Output database already exists. Exiting program")
         quit(1)
 
-    dfList: List[DataFrame] = []
+    sql: SQL = SQL(sqliteDBPath=dbFile)
 
-    dbConn: Engine = sql.createEngine(path=dbFile.__str__())
-    dbMetadata: MetaData = MetaData()
+    sql.createSchema_Models()
+    sql.createSchema_BaseModels()
+    sql.createSchema_ModelProperties()
 
-    sql.schema_ModelStats(metadata=dbMetadata)
-    sql.createTables(metadata=dbMetadata, engine=dbConn)
+    sql.createTables()
 
-    graphs: List[Tuple[Path, DiGraph]] = readFiles(directory=gexfDirectory)
+    sql.closeConnection()
+    quit()
 
-    with Bar("Computing metrics... ", max=len(graphs)) as bar:
-        pair: Tuple[Path, DiGraph]
-        for pair in graphs:
-            modelName: str = getModelName(path=pair[0])
-
-            data: dict[str, Any] = createDict(
-                graph=pair[1],
-                modelName=modelName,
-                modelFilepath=pair[0],
-            )
-
-            df: DataFrame = DataFrame([data])
-            dfList.append(df)
-
-            bar.next()
-
-    df: DataFrame = pandas.concat(objs=dfList)
-
-    dfToDB(df=df, conn=dbConn, table="ModelStats")
+    fileGraphPairs: List[Tuple[Path, DiGraph]] = createFileGraphPairs(
+        directory=gexfDirectory
+    )
+    df: DataFrame = computeEveryModelProperties(fileGraphPairs=fileGraphPairs)
 
 
 if __name__ == "__main__":

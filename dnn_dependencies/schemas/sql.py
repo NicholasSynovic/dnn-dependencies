@@ -8,7 +8,7 @@ from sqlalchemy import (Column, Connection, Engine, Float, ForeignKey, Integer,
 
 class SQL:
     def __init__(self, sqliteDBPath: Path) -> None:
-        sqliteURI: str = f"sqlite:///{sqliteDBPath.absolute.__str__}"
+        sqliteURI: str = f"sqlite:///{sqliteDBPath.absolute().__str__()}"
 
         self.modelsTableName: str = "Models"
         self.baseModelsTableName: str = "Base Models"
@@ -100,8 +100,8 @@ class SQL:
             Column("Degree Pearson Correlation Coefficient", Float),
         )
 
-    def createTables(self, metadata: MetaData) -> None:
-        metadata.create_all(bind=self.conn)
+    def createTables(self) -> None:
+        self.metadata.create_all(bind=self.conn)
 
     def writeDFToDB(
         self,
