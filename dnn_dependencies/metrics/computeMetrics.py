@@ -119,12 +119,7 @@ def dfToDB(df: DataFrame, conn: Engine, table: str) -> None:
     :param table: str:
 
     """
-    df.to_sql(
-        name=table,
-        con=conn,
-        if_exists="replace",
-        index=False,
-    )
+    df.to_sql(name=table, con=conn, if_exists="replace", index=True, index_label="ID")
 
 
 @click.command()

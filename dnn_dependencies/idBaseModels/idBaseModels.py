@@ -5,7 +5,7 @@ import click
 import pandas
 from numpy import NaN
 from pandas import DataFrame, Series
-from sqlalchemy import Connection, Engine
+from sqlalchemy import Connection, Engine, MetaData
 
 from dnn_dependencies.schemas import sql
 
@@ -17,6 +17,8 @@ def readDB(dbFile: Path) -> DataFrame:
     dbConn: Connection = dbEngine.connect()
 
     df: DataFrame = pandas.read_sql_table(table_name="ModelStats", con=dbConn)
+
+    dbConn.close()
 
     return df
 
@@ -48,6 +50,20 @@ def formatDF(df: DataFrame, keepColumns: List[str]) -> DataFrame:
     return orderedDF
 
 
+def writeToDB(df: DataFrame, dbFile: Path) -> None:
+    dbMetadata: MetaData = MetaData()
+
+    dbEngine: Engine = sql.createEngine(path=dbFile.__str__())
+    dbConn: Connection = dbEngine.connect()
+
+    sql.schema_BaseModels(metadata=dbMetadata)
+    sql.createTables(metadata=dbMetadata, engine=dbEngine)
+
+    df.to_sql(name="BaseModels", con=dbConn, if_exists="fail", index=True)
+
+    dbConn.close()
+
+
 @click.command()
 @click.option(
     "dbFile",
@@ -58,13 +74,17 @@ def formatDF(df: DataFrame, keepColumns: List[str]) -> DataFrame:
     help="Path to database to read from and write to",
 )
 def main(dbFile: Path) -> None:
+    dbFile = dbFile.absolute()
+
+    print(dbFile)
+
     dbDF: DataFrame = readDB(dbFile=dbFile)
     mask: Series = createMask(df=dbDF, column=COLUMNS["filepath"])
     df: DataFrame = applyMask(df=dbDF, mask=mask, column=COLUMNS["filepath"])
 
     orderedDF: DataFrame = formatDF(df=df, keepColumns=list(COLUMNS.values()))
 
-    print(orderedDF)
+    writeToDB(df=orderedDF, dbFile=dbFile)
 
 
 if __name__ == "__main__":

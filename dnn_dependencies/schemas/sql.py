@@ -1,15 +1,17 @@
+from pathlib import Path
+
 from sqlalchemy import (Column, Engine, Float, ForeignKey, Integer, MetaData,
                         String, Table, create_engine)
 
 
-def createEngine(path: str) -> Engine:
+def createEngine(path: Path) -> Engine:
     """
 
 
     :param path: str:
 
     """
-    url: str = f"sqlite:///{path}"
+    url: str = f"sqlite:///{path.absolute().__str__()}"
     return create_engine(url=url)
 
 
