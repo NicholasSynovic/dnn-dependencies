@@ -15,7 +15,7 @@ def createEngine(path: str) -> Engine:
 
 def schema_ModelStats(metadata: MetaData) -> Table:
     """
-
+    NOTE: Changes are made to the metadata object passed into the function
 
     :param metadata: MetaData:
 
@@ -66,6 +66,7 @@ def schema_ModelStats(metadata: MetaData) -> Table:
 
 def schema_BaseModels(metadata: MetaData) -> Table:
     """
+    NOTE: Changes are made to the metadata object passed into the function
 
 
     :param metadata: MetaData:
