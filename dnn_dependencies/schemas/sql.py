@@ -8,22 +8,57 @@ class SQL:
     def __init__(self, sqliteDBPath: Path) -> None:
         sqliteURI: str = f"sqlite:///{sqliteDBPath.absolute.__str__}"
 
+        self.modelsTableName: str = "Models"
+        self.baseModelsTableName: str = "Base Models"
+        self.modelPropertiesTableName: str = "Model Properties"
+
+        self.metadata: MetaData = MetaData()
+
         self.engine: Engine = create_engine(url=sqliteURI)
         self.conn: Connection = self.engine.connect()
-
-        self.modelPropertiesTableName: str = "Model Properties"
-        self.baseModelsTableName: str = "Base Models"
 
     def closeConnection(self) -> bool:
         self.conn.close()
         return self.conn.closed
 
-    def createSchema_GraphProperties(self) -> MetaData:
-        metadata: MetaData = MetaData()
+    def createSchema_Models(self) -> None:
+        Table(
+            self.modelsTableName,
+            self.metadata,
+            Column(
+                name="ID",
+                type_=Integer,
+                primary_key=True,
+                unique=True,
+                autoincrement=True,
+            ),
+            Column(name="Model Name", type_=String),
+            Column(name="Model Filepath", type_=String),
+        )
 
+    def createSchema_BaseModels(self) -> None:
+        Table(
+            self.baseModelsTableName,
+            self.metadata,
+            Column(
+                "ID",
+                Integer,
+                primary_key=True,
+                unique=True,
+                autoincrement=True,
+            ),
+            Column(
+                "Model ID",
+                Integer,
+                ForeignKey(f"{self.modelsTableName}.ID"),
+                unique=True,
+            ),
+        )
+
+    def createSchema_ModelProperties(self) -> None:
         Table(
             self.modelPropertiesTableName,
-            metadata,
+            self.metadata,
             Column(
                 "ID",
                 Integer,
@@ -62,31 +97,6 @@ class SQL:
             Column("Barycenter", Integer),
             Column("Degree Pearson Correlation Coefficient", Float),
         )
-
-        return metadata
-
-    def createSchema_BaseModels(self) -> MetaData:
-        metadata: MetaData = MetaData()
-
-        Table(
-            self.baseModelsTableName,
-            metadata,
-            Column(
-                "ID",
-                Integer,
-                primary_key=True,
-                unique=True,
-                autoincrement=True,
-            ),
-            Column(
-                "Model ID",
-                Integer,
-                ForeignKey(f"{self.baseModelsTableName}.ID"),
-                unique=True,
-            ),
-        )
-
-        return metadata
 
     def createTables(self, metadata: MetaData) -> None:
         metadata.create_all(bind=self.conn)
