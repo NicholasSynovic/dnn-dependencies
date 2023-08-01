@@ -1,5 +1,7 @@
 from pathlib import Path
+from typing import Literal
 
+from pandas import DataFrame
 from sqlalchemy import (Column, Connection, Engine, Float, ForeignKey, Integer,
                         MetaData, String, Table, create_engine)
 
@@ -100,3 +102,26 @@ class SQL:
 
     def createTables(self, metadata: MetaData) -> None:
         metadata.create_all(bind=self.conn)
+
+    def writeDFToDB(
+        self,
+        df: DataFrame,
+        tableName: Literal["Models", "Base Models", "Model Properties"],
+        keepIndex: bool,
+        indexColumn: str | None = None,
+    ) -> None:
+        if keepIndex:
+            df.to_sql(
+                name=tableName,
+                con=self.conn,
+                if_exists="fail",
+                index=True,
+                index_label=indexColumn,
+            )
+        else:
+            df.to_sql(
+                name=tableName,
+                con=self.conn,
+                if_exists="fail",
+                index=False,
+            )
