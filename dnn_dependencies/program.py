@@ -6,6 +6,8 @@ from pandas import DataFrame
 from progress.bar import Bar
 from sqlalchemy import Engine, create_engine
 
+from dnn_dependencies.schemas import sqlDev
+
 
 def openDBEngine(dbPath: Path) -> Engine:
     dbURI: str = f"sqlite:///{dbPath.absolute().__str__()}"
@@ -43,6 +45,19 @@ def createBaseModelsDF(modelsDF: DataFrame) -> DataFrame:
     return df
 
 
+def createModelPropertiesDF(modelsDF: DataFrame) -> DataFrame:
+    data: dict[str, List[int | float]] = {"Model ID": []}
+
+    with Bar("Computing properties of models... ", max=modelsDF.shape[0]) as bar:
+        MODEL_ID: int
+        MODEL_NAME: str
+        MODEL_FILEPATH: str
+        for MODEL_ID, MODEL_NAME, MODEL_FILEPATH in modelsDF.itertuples(index=False):
+            bar.next()
+
+    return DataFrame()
+
+
 def main() -> None:
     dbPath: Path = Path("test.db")
     gexfDirectory: Path = Path("../data/gexfFiles_7-27-2023")
@@ -51,6 +66,8 @@ def main() -> None:
 
     modelsDF: DataFrame = createModelsDF(directory=gexfDirectory)
     baseModelsDF: DataFrame = createBaseModelsDF(modelsDF=modelsDF)
+
+    createModelPropertiesDF(modelsDF=modelsDF)
 
 
 if __name__ == "__main__":
