@@ -1,15 +1,17 @@
+import random
 from os import listdir
 from pathlib import Path
 from typing import Any, List, Tuple
 
 import click
+import numpy
 import pandas
-from networkx import DiGraph
+from networkx import DiGraph, read_gexf
 from pandas import DataFrame
 from progress.bar import Bar
 from sqlalchemy import Engine, MetaData
 
-from dnn_dependencies.metrics.metrics import *
+from dnn_dependencies.metrics.graphProperties import _run as metricComputer
 from dnn_dependencies.schemas import sql
 
 RANDOM_SEED: int = 42
@@ -29,6 +31,8 @@ def readFiles(directory: Path) -> List[Tuple[Path, DiGraph]]:
     data: List[DiGraph] = []
 
     files: List[Path] = [Path(directory, f) for f in listdir(path=directory)]
+
+    files = files[0:2]
 
     with Bar("Reading files to create DiGraphs... ", max=len(files)) as bar:
         file: Path
@@ -51,63 +55,6 @@ def getModelName(path: Path) -> str:
     modelName: str = f"{splitName[0]}/{'_'.join(splitName[1::])}".replace(".onnx", "")
 
     return modelName
-
-
-def createDict(graph: DiGraph, modelName: str, modelFilepath: Path) -> dict[str, Any]:
-    """
-
-
-    :param graph: DiGraph:
-    :param modelName: str:
-    :param modelFilepath: Path:
-
-    """
-    data: dict[str, Any] = {}
-
-    data["Model Name"] = modelName
-    data["Model Filepath"] = modelFilepath.__str__()
-    data["Is Semiconnected"] = checkIsSemiconnected(graph=graph)
-    data["Is Attracting Component"] = checkIsAttractingComponent(graph=graph)
-    data["Is Strongly Connected"] = checkIsStronglyConnected(graph=graph)
-    data["Is Weakly Connected"] = checkIsWeaklyConnected(graph=graph)
-    data["Is Triad"] = checkIsTriad(graph=graph)
-    data["Is Regular"] = checkIsRegular(graph=graph)
-    data["Is Planar"] = checkIsPlanar(graph=graph)
-    data["Is Distance Regular"] = checkIsDistanceRegular(graph=graph)
-    data["Is Strongly Regular"] = checkIsStronglyRegular(graph=graph)
-    data["Is Bipartite"] = checkIsBipartite(graph=graph)
-    data["Is Aperiodic"] = checkIsAperiodic(graph=graph)
-    data["Is Directed Acyclic"] = checkIsDirectedAcyclicGraph(graph=graph)
-    data["Radius"] = computeRadius(graph=graph)
-    data["DAG Longest Path Length"] = computeDAGLongestPathLength(graph=graph)
-    data["Number of Isolates"] = computeNumberOfIsolates(graph=graph)
-    data["Robins Alexander Clustering"] = computeRobinsAlexanderClustering(graph=graph)
-    data["Transitivity"] = computeTransitivity(graph=graph)
-    data["Number of Nodes"] = computeNumberOfNodes(graph=graph)
-    data["Density"] = computeDensity(graph=graph)
-    data["Number of Edges"] = computeNumberOfEdges(graph=graph)
-    data["Number of Communities"] = computeNumberOfCommunities(graph=graph)
-    data["Degree Assortivity Coefficient"] = computeDegreeAssortativityCoefficient(
-        graph=graph
-    )
-    data[
-        "Attribute Assortivity Coefficient"
-    ] = computeAttributeAssortativityCoefficient(graph=graph)
-    data[
-        "Number of Weakly Connected Components"
-    ] = computeNumberOfWeaklyConnectedComponents(graph=graph)
-    data[
-        "Number of Strongly Connected Components"
-    ] = computeNumberOfStronglyConnectedComponents(graph=graph)
-    data["Number of Attracting Components"] = computeNumberOfAttracingComponents(
-        graph=graph
-    )
-    data["Barycenter"] = computeBarycenter(graph=graph)
-    data[
-        "Degree Pearson Correlation Coefficient"
-    ] = computeDegreePearsonCorrelationCoefficient(graph=graph)
-
-    return data
 
 
 def dfToDB(df: DataFrame, conn: Engine, table: str) -> None:
@@ -156,11 +103,13 @@ def main(gexfDirectory: Path, dbFile: Path) -> None:
 
     dfList: List[DataFrame] = []
 
-    dbConn: Engine = sql.createEngine(path=dbFile.__str__())
+    from sqlalchemy import create_engine
+
+    dbConn: Engine = create_engine(url=f"sqlite:///{dbFile.absolute().__str__()}")
     dbMetadata: MetaData = MetaData()
 
-    sql.schema_ModelStats(metadata=dbMetadata)
-    sql.createTables(metadata=dbMetadata, engine=dbConn)
+    # sql.schema_ModelStats(metadata=dbMetadata)
+    # sql.createTables(metadata=dbMetadata, engine=dbConn)
 
     graphs: List[Tuple[Path, DiGraph]] = readFiles(directory=gexfDirectory)
 
@@ -169,11 +118,11 @@ def main(gexfDirectory: Path, dbFile: Path) -> None:
         for pair in graphs:
             modelName: str = getModelName(path=pair[0])
 
-            data: dict[str, Any] = createDict(
-                graph=pair[1],
-                modelName=modelName,
-                modelFilepath=pair[0],
-            )
+            data: DataFrame = metricComputer(pair[1])
+
+            print()
+            print(data)
+            quit()
 
             df: DataFrame = DataFrame([data])
             dfList.append(df)
