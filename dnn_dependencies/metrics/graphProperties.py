@@ -11,6 +11,7 @@ from networkx.algorithms.community import louvain_communities
 from networkx.algorithms.components import *
 from networkx.algorithms.threshold import is_threshold_graph
 from networkx.exception import NetworkXNoPath, NetworkXNotImplemented
+from pandas import DataFrame
 
 RANDOM_SEED: int = 42
 
@@ -401,7 +402,7 @@ def computeNumberOfStronglyConnectedComponents(graph: DiGraph) -> int:
     return value
 
 
-def computeNumberOfAttracingComponents(graph: DiGraph) -> int:
+def computeNumberOfAttractingComponents(graph: DiGraph) -> int:
     """
 
 
@@ -411,3 +412,58 @@ def computeNumberOfAttracingComponents(graph: DiGraph) -> int:
     """
     value: int = number_attracting_components(G=graph)
     return value
+
+
+def _run(graph: DiGraph, id: int = 0) -> DataFrame:
+    data: dict[str, int | float] = {"Model ID": id}
+
+    data["Barycenter"] = computeBarycenter(graph=graph)
+    data["Radius"] = computeRadius(graph=graph)
+    data["DAG Longest Path Length"] = computeDAGLongestPathLength(graph=graph)
+    data["Average Shortest Path Length"] = computeAverageShortestPathLength(graph=graph)
+    data["Number of Isolates"] = computeNumberOfIsolates(graph=graph)
+    data["Is Threshold Graph"] = checkIsThresholdGraph(graph=graph)
+    data["Diameter"] = computeDiameter(graph=graph)
+    data[
+        "Attribute Assortativity Coefficient"
+    ] = computeAttributeAssortativityCoefficient(graph=graph)
+    data[
+        "Degree Pearson Correlation Coefficient"
+    ] = computeDegreePearsonCorrelationCoefficient(graph=graph)
+    data[
+        "Number of Weakly Connected Components"
+    ] = computeNumberOfWeaklyConnectedComponents(graph=graph)
+    data[
+        "Number of Strongly Connected Components"
+    ] = computeNumberOfStronglyConnectedComponents(graph=graph)
+    data["Number of Attracting Components"] = computeNumberOfAttractingComponents(
+        graph=graph
+    )
+    data["Is Semiconnected"] = checkIsSemiconnected(graph=graph)
+    data["Is Attracting Component"] = checkIsAttractingComponent(graph=graph)
+    data["Is Strongly Connected"] = checkIsStronglyConnected(graph=graph)
+    data["Is Weakly Connected"] = checkIsWeaklyConnected(graph=graph)
+    data["Is Triad"] = checkIsTriad(graph=graph)
+    data["Is Regular"] = checkIsRegular(graph=graph)
+    data["Is Planar"] = checkIsPlanar(graph=graph)
+    data["Is Distance Regular"] = checkIsDistanceRegular(graph=graph)
+    data["Is Strongly Regular"] = checkIsStronglyRegular(graph=graph)
+    data["Is Bipartite"] = checkIsBipartite(graph=graph)
+    data["Is Aperiodic"] = checkIsAperiodic(graph=graph)
+    data["Is Directed Acyclic"] = checkIsDirectedAcyclicGraph(graph=graph)
+    data["Radius"] = computeRadius(graph=graph)
+    data["DAG Longest Path Length"] = computeDAGLongestPathLength(graph=graph)
+    data["Number of Isolates"] = computeNumberOfIsolates(graph=graph)
+    data["Robins Alexander Clustering"] = computeRobinsAlexanderClustering(graph=graph)
+    data["Transitivity"] = computeTransitivity(graph=graph)
+    data["Number of Nodes"] = computeNumberOfNodes(graph=graph)
+    data["Density"] = computeDensity(graph=graph)
+    data["Number of Edges"] = computeNumberOfEdges(graph=graph)
+    data["Number of Communities"] = computeNumberOfCommunities(graph=graph)
+    data["Degree Assortivity Coefficient"] = computeDegreeAssortativityCoefficient(
+        graph=graph
+    )
+
+    df: DataFrame = DataFrame(data=[data])
+
+    return df
