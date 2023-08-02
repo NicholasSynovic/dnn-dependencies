@@ -30,9 +30,15 @@ def createModelsDF(directory: Path) -> DataFrame:
             bar.next()
 
     tempDF: DataFrame = DataFrame(data=data)
-    tempDF["ID"] = tempDF.index
-    tempDF.reset_index()
-    df: DataFrame = tempDF.reindex(columns=["ID", "Model Name", "Model Filepath"])
+    tempDF["Model ID"] = tempDF.index
+    tempDF.reset_index(inplace=True, drop=True)
+    df: DataFrame = tempDF.reindex(columns=["Model ID", "Model Name", "Model Filepath"])
+    return df
+
+
+def createBaseModelsDF(modelsDF: DataFrame) -> DataFrame:
+    df: DataFrame = modelsDF[modelsDF["Model Name"].str.contains("huggingface.co_")]
+    df.reset_index(inplace=True, drop=True)
 
     return df
 
@@ -44,9 +50,7 @@ def main() -> None:
     dbEngine: Engine = openDBEngine(dbPath=dbPath)
 
     modelsDF: DataFrame = createModelsDF(directory=gexfDirectory)
-    print(modelsDF)
-
-    pass
+    baseModelsDF: DataFrame = createBaseModelsDF(modelsDF=modelsDF)
 
 
 if __name__ == "__main__":
