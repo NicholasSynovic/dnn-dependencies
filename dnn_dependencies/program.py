@@ -82,17 +82,27 @@ def main() -> None:
     dbMetadata.create_all(bind=dbEngine)
 
     modelsDF: DataFrame = createModelsDF(directory=gexfDirectory)
-    modelsDF.to_sql(name="Models", con=dbEngine, if_exists="append", index=False)
+    modelsDF.to_sql(
+        name="Models",
+        con=dbEngine,
+        if_exists="append",
+        index=False,
+    )
 
     baseModelsDF: DataFrame = createBaseModelsDF(modelsDF=modelsDF)
     baseModelsDF.to_sql(
-        name="Base Models", con=dbEngine, if_exists="append", index=False
+        name="Base Models",
+        con=dbEngine,
+        if_exists="append",
+        index=False,
     )
 
     # modelPropertiesDF: DataFrame = createModelPropertiesDF(modelsDF=modelsDF)
     modelPropertiesDF: DataFrame = pandas.read_csv(
         filepath_or_buffer="modelProperties.csv"
     )
+    for col in modelPropertiesDF.columns:
+        print(f'Column("{col}", Float),')
 
 
 if __name__ == "__main__":
