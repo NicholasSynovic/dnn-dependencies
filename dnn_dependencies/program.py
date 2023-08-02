@@ -78,6 +78,7 @@ def main() -> None:
 
     sqlDev.createSchema_Models(metadata=dbMetadata)
     sqlDev.createSchema_BaseModels(metadata=dbMetadata)
+    sqlDev.createSchema_ModelProperties(metadata=dbMetadata)
 
     dbMetadata.create_all(bind=dbEngine)
 
@@ -101,8 +102,6 @@ def main() -> None:
     modelPropertiesDF: DataFrame = pandas.read_csv(
         filepath_or_buffer="modelProperties.csv"
     )
-    for col in modelPropertiesDF.columns:
-        print(f'Column("{col}", Float),')
 
 
 if __name__ == "__main__":
