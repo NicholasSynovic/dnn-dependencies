@@ -160,6 +160,7 @@ def main(gexfDirectory: Path, dbFile: Path) -> None:
         quit(1)
 
     sql: SQL = SQL(sqliteDBPath=dbFile)
+    sql.createSchema_Models()
 
     modelsDF: DataFrame = createModelsDF(directory=gexfDirectory)
     sql.writeDFToDB(

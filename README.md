@@ -10,6 +10,7 @@
   - [Table of Contents](#table-of-contents)
   - [About](#about)
     - [Dataset Utilized](#dataset-utilized)
+  - [Project Layout](#project-layout)
   - [Required Software](#required-software)
   - [How To Install](#how-to-install)
     - [From Source](#from-source)
@@ -34,6 +35,11 @@ To conduct our research, we utilized the
 For more information about the dataset, as well as instructions on how to
 download and access it, please see this
 [link](https://github.com/SoftwareSystemsLaboratory/PTMTorrent).
+
+## Project Layout
+
+Each sub directory of this project contains a `README.md` file that describes
+the content of that particular directory.
 
 ## Required Software
 

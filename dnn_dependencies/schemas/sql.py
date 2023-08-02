@@ -36,6 +36,7 @@ class SQL:
             ),
             Column(name="Model Name", type_=String),
             Column(name="Model Filepath", type_=String),
+            extend_existing=True,
         )
 
     def createSchema_BaseModels(self) -> None:
@@ -112,7 +113,7 @@ class SQL:
     ) -> None:
         df.to_sql(
             name=tableName,
-            con=self.conn,
+            con=self.engine,
             if_exists="fail",
             index=keepIndex,
             index_label=indexColumn,
