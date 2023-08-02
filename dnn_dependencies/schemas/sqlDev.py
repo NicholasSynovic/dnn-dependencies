@@ -37,7 +37,7 @@ def createSchema_BaseModels(
             autoincrement=True,
         ),
         Column(
-            "Model ID",
+            "Model_ID",
             Integer,
             ForeignKey(f"{fkTableName}.ID"),
             unique=True,
@@ -59,8 +59,6 @@ def createSchema_ModelProperties(
             unique=True,
             autoincrement=True,
         ),
-        Column("Model Name", String),
-        Column("Model Filepath", String),
         Column("Is Semiconnected", String),
         Column("Is Attracting Component", String),
         Column("Is Strongly Connected", Integer),
