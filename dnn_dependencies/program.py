@@ -17,6 +17,26 @@ random.seed(a=RANDOM_SEED, version=2)
 numpy.random.seed(seed=RANDOM_SEED)
 
 
+def createModelsDF(directory: Path) -> DataFrame:
+    data: dict[str, List[str]] = {"Model Name": [], "Model Filepath": []}
+
+    filepaths: List[Path] = [
+        Path(directory, filepath) for filepath in listdir(path=directory)
+    ]
+
+    with Bar("Creating DataFrame of models... ", max=len(filepaths)) as bar:
+        filepath: Path
+        for filepath in filepaths:
+            modelName: str = extractModelNameFromFilepath(filepath=filepath)
+            data["Model Name"].append(modelName)
+            data["Model Filepath"].append(filepath.__str__())
+            bar.next()
+
+    df: DataFrame = DataFrame(data=data)
+
+    return df
+
+
 def createFileGraphPairs(directory: Path) -> List[Tuple[Path, DiGraph]]:
     data: List[DiGraph] = []
 
@@ -141,13 +161,16 @@ def main(gexfDirectory: Path, dbFile: Path) -> None:
 
     sql: SQL = SQL(sqliteDBPath=dbFile)
 
-    sql.createSchema_Models()
-    sql.createSchema_BaseModels()
-    sql.createSchema_ModelProperties()
-
-    sql.createTables()
+    modelsDF: DataFrame = createModelsDF(directory=gexfDirectory)
+    sql.writeDFToDB(
+        df=modelsDF,
+        tableName="Models",
+        keepIndex=True,
+        indexColumn="ID",
+    )
 
     sql.closeConnection()
+
     quit()
 
     fileGraphPairs: List[Tuple[Path, DiGraph]] = createFileGraphPairs(
