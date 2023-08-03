@@ -10,7 +10,7 @@ from progress.bar import Bar
 from sqlalchemy import Connection, Engine, MetaData, create_engine
 
 from dnn_dependencies.metrics import graphProperties
-from dnn_dependencies.schemas import sqlDev
+from dnn_dependencies.schemas import sql
 
 
 def openDBEngine(dbPath: Path) -> Engine:
@@ -105,9 +105,9 @@ def main(gexfDirectory: Path, dbFile: Path) -> None:
     dbEngine: Engine = openDBEngine(dbPath=dbFile)
     dbMetadata: MetaData = MetaData()
 
-    sqlDev.createSchema_Models(metadata=dbMetadata)
-    sqlDev.createSchema_BaseModels(metadata=dbMetadata)
-    sqlDev.createSchema_ModelProperties(metadata=dbMetadata)
+    sql.createSchema_Models(metadata=dbMetadata)
+    sql.createSchema_BaseModels(metadata=dbMetadata)
+    sql.createSchema_ModelProperties(metadata=dbMetadata)
 
     dbMetadata.create_all(bind=dbEngine)
 
