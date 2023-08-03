@@ -1,5 +1,12 @@
-from sqlalchemy import (Column, Connection, Float, ForeignKey, Integer,
-                        MetaData, String, Table)
+from pathlib import Path
+
+from sqlalchemy import (Column, Connection, Engine, Float, ForeignKey, Integer,
+                        MetaData, String, Table, create_engine)
+
+
+def openDBEngine(dbPath: Path) -> Engine:
+    dbURI: str = f"sqlite:///{dbPath.absolute().__str__()}"
+    return create_engine(url=dbURI)
 
 
 def closeConnection(conn: Connection) -> bool:
