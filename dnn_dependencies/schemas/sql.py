@@ -47,7 +47,7 @@ def createSchema_BaseModels(
     )
 
 
-def createSchema_ModelProperties(
+def createSchema_GraphProperties(
     metadata: MetaData,
     tableName: str = "Graph Properties",
     fkTableName: str = "Models",

@@ -107,7 +107,7 @@ def main(gexfDirectory: Path, dbFile: Path) -> None:
 
     sql.createSchema_Models(metadata=dbMetadata)
     sql.createSchema_BaseModels(metadata=dbMetadata)
-    sql.createSchema_ModelProperties(metadata=dbMetadata)
+    sql.createSchema_GraphProperties(metadata=dbMetadata)
 
     dbMetadata.create_all(bind=dbEngine)
 
