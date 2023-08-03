@@ -15,11 +15,6 @@ from dnn_dependencies.schemas.df import (BaseModelsDF, GraphPropertiesDF,
                                          ModelsDF)
 
 
-def openDBEngine(dbPath: Path) -> Engine:
-    dbURI: str = f"sqlite:///{dbPath.absolute().__str__()}"
-    return create_engine(url=dbURI)
-
-
 def createModelsDF(directory: Path) -> DataFrame:
     data: dict[str, List[str]] = {"Model Name": [], "Model Filepath": []}
 
@@ -114,7 +109,7 @@ def main(gexfDirectory: Path, dbFile: Path) -> None:
         print("Output database already exists. Exiting program")
         quit(1)
 
-    dbEngine: Engine = openDBEngine(dbPath=dbFile)
+    dbEngine: Engine = sql.openDBEngine(dbPath=dbFile)
     dbMetadata: MetaData = MetaData()
 
     sql.createSchema_Models(metadata=dbMetadata)
