@@ -11,6 +11,8 @@ from sqlalchemy import Connection, Engine, MetaData, create_engine
 
 from dnn_dependencies.metrics import graphProperties
 from dnn_dependencies.schemas import sql
+from dnn_dependencies.schemas.df import (BaseModelsDF, GraphPropertiesDF,
+                                         ModelsDF)
 
 
 def openDBEngine(dbPath: Path) -> Engine:
@@ -39,7 +41,10 @@ def createModelsDF(directory: Path) -> DataFrame:
     tempDF["ID"] = tempDF.index
     tempDF.reset_index(inplace=True, drop=True)
     df: DataFrame = tempDF.reindex(columns=["ID", "Model Name", "Model Filepath"])
-    return df
+
+    typedDF: DataFrame = ModelsDF.convert(df=df, add_optional_cols=False).df
+
+    return typedDF
 
 
 def createBaseModelsDF(modelsDF: DataFrame) -> DataFrame:
@@ -49,8 +54,11 @@ def createBaseModelsDF(modelsDF: DataFrame) -> DataFrame:
     tempDF.drop(columns=["Model Name", "Model Filepath"], inplace=True)
     tempDF.columns = ["Model_ID"]
     df: DataFrame = tempDF.reset_index(drop=True)
+    df["ID"] = df.index
 
-    return df
+    typedDF: DataFrame = BaseModelsDF.convert(df=df, add_optional_cols=False).df
+
+    return typedDF
 
 
 def createModelPropertiesDF(modelsDF: DataFrame) -> DataFrame:
@@ -67,7 +75,11 @@ def createModelPropertiesDF(modelsDF: DataFrame) -> DataFrame:
 
             bar.next()
 
-    return pandas.concat(objs=dfList, ignore_index=True)
+    df: DataFrame = pandas.concat(objs=dfList, ignore_index=True)
+
+    typedDF: DataFrame = GraphPropertiesDF.convert(df=df, add_optional_cols=False).df
+
+    return typedDF
 
 
 @click.command()
