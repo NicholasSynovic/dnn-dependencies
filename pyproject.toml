@@ -17,5 +17,3 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.scripts]
 onnx2gexf = "dnn_dependencies.converters.onnx2gexf:main"
 gexf2dot = "dnn_dependencies.converters.gexf2dot:main"
-gexfNodeLabels2graph = "dnn_dependencies.extractors.gexfNodeLabels2graph:main"
-computeMetrics = "dnn_dependencies.metrics.computeMetrics:main"
