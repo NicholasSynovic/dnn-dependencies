@@ -61,7 +61,7 @@ def computeDAGLongestPathLength(graph: DiGraph) -> int:
     return value
 
 
-def computeAverageShortestPathLength(graph: DiGraph) -> float:
+def computeAverageShortestPathLength(graph: DiGraph) -> float | int:
     """
 
 
@@ -69,7 +69,10 @@ def computeAverageShortestPathLength(graph: DiGraph) -> float:
     :param bar: Bar:
 
     """
-    value: float = average_shortest_path_length(G=graph)
+    try:
+        value: float = average_shortest_path_length(G=graph)
+    except NetworkXError:
+        value: int = -1
     return value
 
 
@@ -283,7 +286,10 @@ def computeDiameter(graph: DiGraph) -> int:
     :param bar: Bar:
 
     """
-    value: int = diameter(G=graph)
+    try:
+        value: int = diameter(G=graph)
+    except NetworkXError:
+        value: int = -1
     return value
 
 
@@ -415,7 +421,7 @@ def computeNumberOfAttractingComponents(graph: DiGraph) -> int:
 
 
 def _run(graph: DiGraph, id: int = 0) -> DataFrame:
-    data: dict[str, int | float] = {"Model ID": id}
+    data: dict[str, int | float] = {"Model_ID": id}
 
     data["Barycenter"] = computeBarycenter(graph=graph)
     data["Radius"] = computeRadius(graph=graph)

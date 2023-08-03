@@ -2,6 +2,7 @@ from os import listdir
 from pathlib import Path
 from typing import List
 
+import click
 import pandas
 from networkx import DiGraph, read_gexf
 from pandas import DataFrame
@@ -69,11 +70,39 @@ def createModelPropertiesDF(modelsDF: DataFrame) -> DataFrame:
     return pandas.concat(objs=dfList, ignore_index=True)
 
 
-def main() -> None:
-    dbPath: Path = Path("test.db")
-    gexfDirectory: Path = Path("../data/gexfFiles_7-27-2023")
+@click.command()
+@click.option(
+    "gexfDirectory",
+    "-i",
+    "--input",
+    type=Path,
+    required=True,
+    nargs=1,
+    help="Path to a directory containing at least one (1) GEXF file",
+)
+@click.option(
+    "dbFile",
+    "-o",
+    "--output",
+    type=Path,
+    required=True,
+    nargs=1,
+    help="Path to SQLite3 database to store data",
+)
+def main(gexfDirectory: Path, dbFile: Path) -> None:
+    """
+    Compute graph metrics for GEXF files stored in a directory
+    \f
 
-    dbEngine: Engine = openDBEngine(dbPath=dbPath)
+    :param gexfDirectory: Path:
+    :param dbFile: Path:
+
+    """
+    if dbFile.is_file():
+        print("Output database already exists. Exiting program")
+        quit(1)
+
+    dbEngine: Engine = openDBEngine(dbPath=dbFile)
     dbMetadata: MetaData = MetaData()
 
     sqlDev.createSchema_Models(metadata=dbMetadata)
@@ -98,9 +127,12 @@ def main() -> None:
         index=False,
     )
 
-    # modelPropertiesDF: DataFrame = createModelPropertiesDF(modelsDF=modelsDF)
-    modelPropertiesDF: DataFrame = pandas.read_csv(
-        filepath_or_buffer="modelProperties.csv"
+    graphPropertiesDF: DataFrame = createModelPropertiesDF(modelsDF=modelsDF)
+    graphPropertiesDF.to_sql(
+        name="Graph Properties",
+        con=dbEngine,
+        if_exists="append",
+        index=False,
     )
 
 

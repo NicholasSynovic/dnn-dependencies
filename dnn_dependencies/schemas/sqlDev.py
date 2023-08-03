@@ -49,7 +49,7 @@ def createSchema_BaseModels(
 
 def createSchema_ModelProperties(
     metadata: MetaData,
-    tableName: str = "Model Properties",
+    tableName: str = "Graph Properties",
     fkTableName: str = "Models",
 ) -> None:
     Table(
