@@ -67,7 +67,6 @@ def createModelPropertiesDF(modelsDF: DataFrame) -> DataFrame:
 
             df: DataFrame = graphProperties._run(graph=graph, id=MODEL_ID)
             dfList.append(df)
-
             bar.next()
 
     df: DataFrame = pandas.concat(objs=dfList, ignore_index=True)

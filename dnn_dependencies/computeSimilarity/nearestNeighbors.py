@@ -36,6 +36,7 @@ def preprocessDataFrame(df: DataFrame) -> Tuple[DataFrame, DataFrame]:
 
 
 def computeNeighbors(df: DataFrame) -> Tuple[ndarray, ndarray]:
+    print("Computing neighbors...")
     data: ndarray = df.to_numpy()
 
     scaler: StandardScaler = StandardScaler()
@@ -77,7 +78,18 @@ def postProcessNeighbors(
             bar.next()
 
     df: DataFrame = pandas.concat(objs=dfList, ignore_index=True)
+    df.add_prefix(prefix="Model_ID_")
+    df.insert(loc=0, column="Model_ID", value=metadata["Model_ID"])
     return df
+
+
+def dist(row: int, df: DataFrame) -> None:
+    rowIndex = row
+    rowSort = df.iloc[rowIndex, :]
+    sortRowVals = sorted(rowSort)
+    df.iloc[rowIndex, :] = sortRowVals
+    printRow = df.iloc[rowIndex, :]
+    print(printRow)
 
 
 @click.command()
@@ -96,30 +108,12 @@ def main(dbFile: Path) -> None:
 
     metadata, df = preprocessDataFrame(df=rawDF)
 
-    #    neighbors: Tuple[ndarray, ndarray] = computeNeighbors(df=df)
+    neighbors: Tuple[ndarray, ndarray] = computeNeighbors(df=df)
 
-    #    df: DataFrame = postProcessNeighbors(metadata=metadata, neighbors=neighbors)
-    #    df.to_csv(path_or_buf="temp.csv")
-
-    dataDF: DataFrame = pandas.read_csv(filepath_or_buffer="temp.csv")
-
-    print(dataDF)
-
-    d: DataFrame = metadata.merge(
-        df,
-        left_on="Model_ID",
-    )  # TODO: Pickup here
-    print(d)
+    df: DataFrame = postProcessNeighbors(metadata=metadata, neighbors=neighbors)
+    print(df.dtypes)
+    # df.to_sql(name="Graph Properties Neighbors", con=dbEngine, index=False)
 
 
 if __name__ == "__main__":
     main()
-
-
-def dist(row: int, df: DataFrame) -> None:
-    rowIndex = row
-    rowSort = df.iloc[rowIndex, :]
-    sortRowVals = sorted(rowSort)
-    df.iloc[rowIndex, :] = sortRowVals
-    printRow = df.iloc[rowIndex, :]
-    print(printRow)

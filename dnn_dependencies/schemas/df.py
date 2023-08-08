@@ -21,7 +21,7 @@ class BaseModelsDF(TypedDataFrame):
 
 class GraphPropertiesDF(TypedDataFrame):
     schema: dict[str, Type[int] | Type[longdouble]] = {
-        "ID": int,
+        # "ID": int,
         "Model_ID": int,
         "Barycenter": longdouble,
         "Radius": longdouble,
