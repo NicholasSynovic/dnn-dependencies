@@ -100,9 +100,18 @@ def dist(row: int, df: DataFrame) -> None:
     type=Path,
     required=True,
     nargs=1,
-    help="Path to a SQLite3 database",
+    help="Path to a SQLite3 database to read graph properties from",
 )
-def main(dbFile: Path) -> None:
+@click.option(
+    "outputPath",
+    "-o",
+    "--output",
+    type=Path,
+    required=True,
+    nargs=1,
+    help="Path to a CSV file to store results",
+)
+def main(dbFile: Path, outputPath: Path) -> None:
     dbEngine: Engine = sql.openDBEngine(dbPath=dbFile)
     rawDF: DataFrame = readDatabase(dbEngine=dbEngine)
 
@@ -111,8 +120,8 @@ def main(dbFile: Path) -> None:
     neighbors: Tuple[ndarray, ndarray] = computeNeighbors(df=df)
 
     df: DataFrame = postProcessNeighbors(metadata=metadata, neighbors=neighbors)
-    print(df.dtypes)
-    # df.to_sql(name="Graph Properties Neighbors", con=dbEngine, index=False)
+
+    df.to_csv(path_or_buf=outputPath, index=False)
 
 
 if __name__ == "__main__":
