@@ -1,20 +1,12 @@
 from collections import defaultdict
-from pathlib import Path
 from typing import Generator, List, Tuple
 
-import click
-from networkx import DiGraph, read_gexf
+from networkx import DiGraph
 from networkx.classes.graph import NodeView
 from pandas import DataFrame
 
 
 def extractNodeChildren(graph: DiGraph) -> List[Tuple[str, Generator]]:
-    """
-
-
-    :param graph: DiGraph:
-
-    """
     nodePairs: List[Tuple[str, Generator]] = []
     nodes: NodeView = graph.nodes
 
@@ -26,17 +18,13 @@ def extractNodeChildren(graph: DiGraph) -> List[Tuple[str, Generator]]:
 
 
 def generateHistogramOfNodePairs(
-    graph: DiGraph, pairs: List[Tuple[str, Generator]]
-) -> defaultdict[Tuple[str, str], int]:
-    """
+    graph: DiGraph,
+    pairs: List[Tuple[str, Generator]],
+    modelID: int,
+) -> defaultdict[str, int]:
+    data: defaultdict[str, int] = defaultdict(int)
 
-
-    :param graph: DiGraph:
-    :param pairs: List[Tuple[str:
-    :param Generator]]:
-
-    """
-    data: defaultdict[Tuple[str, str], int] = defaultdict(int)
+    data["Model_ID"] = modelID
 
     nodes: NodeView = graph.nodes
 
@@ -61,39 +49,12 @@ def generateHistogramOfNodePairs(
     return data
 
 
-@click.command()
-@click.option(
-    "gexfFile",
-    "-i",
-    "--input",
-    type=Path,
-    required=True,
-    nargs=1,
-    help="Path to GEXF file",
-)
-@click.option(
-    "jsonFile",
-    "-o",
-    "--output",
-    type=Path,
-    required=True,
-    nargs=1,
-    help="Path to store JSON file",
-)
-def main(gexfFile: Path, jsonFile: Path) -> None:
-    """
-    Count the number of operation type pairings in a GEXF file
-    \f
-
-    :param gexfFile: Path:
-    :param jsonFile: Path:
-
-    """
-    graph: DiGraph = read_gexf(gexfFile)
+def _run(graph: DiGraph, id: int = 0) -> DataFrame:
     nodeChildren: List[Tuple[str, Generator]] = extractNodeChildren(graph=graph)
-
-    histogram: defaultdict[Tuple[str, str], int] = generateHistogramOfNodePairs(
-        graph=graph, pairs=nodeChildren
+    histogram: defaultdict[str, int] = generateHistogramOfNodePairs(
+        graph=graph,
+        pairs=nodeChildren,
+        modelID=id,
     )
 
     df: DataFrame = DataFrame().from_dict(data=histogram, orient="index")
@@ -101,7 +62,7 @@ def main(gexfFile: Path, jsonFile: Path) -> None:
     df.columns = ["Node Type Pairs", "Count"]
     df.sort_values(by="Count", inplace=True, ignore_index=True)
 
-    df.T.to_json(path_or_buf=jsonFile, indent=4)
+    return df
 
 
 if __name__ == "__main__":
